@@ -2,7 +2,9 @@
 const Dashboard = () => {
     return (
         <>
-            HELLO WORLD
+            <div>
+                HELLO WORLD
+            </div>
         </>
     )
 }

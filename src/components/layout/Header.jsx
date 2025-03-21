@@ -1,8 +1,7 @@
-import { Outlet } from 'react-router-dom';
 const Header = () => {
     return (
         <>
-            <Outlet />
+            <header class="w-full h-[70px] bg-[#932236] flex-shrink-0"></header>
         </>
     )
 }
