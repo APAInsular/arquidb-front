@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
                 <Header />
                 <div class="flex flex-1">
                     <Aside />
-                    <div className="flex-1 bg-white p-4 rounded-[20px] me-3 mb-3">
+                    <div className="flex-1 bg-white p-4 rounded-[13px] me-2.5 mb-2.5">
                     <Outlet />
                         {children}
                     </div>

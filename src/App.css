@@ -1,3 +1,20 @@
+.hover-shadow {
+
+  transition-duration: 1s;
+  transition-property: box-shadow;
+}
+
+.hover-shadow:hover {
+
+  box-shadow: inset 0 200px 0 white;
+  color: black;
+}
+
+.hover-shadow > span:hover {
+
+  filter: invert(1);
+}
+
 /* #root {
   max-width: 1280px;
   margin: 0 auto;

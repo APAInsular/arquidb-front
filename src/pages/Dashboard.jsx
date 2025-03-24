@@ -3,7 +3,7 @@ const Dashboard = () => {
     return (
         <>
             <div>
-                HELLO WORLD
+
             </div>
         </>
     )
