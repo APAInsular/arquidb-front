@@ -2,6 +2,7 @@ import { Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
+import Login from './pages/auth/Login';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           {/* Paginas */}
           <Route path="/" element={<Dashboard />} />
         </Route>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
 
