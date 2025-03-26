@@ -3,6 +3,7 @@ import './App.css';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/auth/Login';
+import Expediente from './pages/crud/Expediente';
 
 function App() {
 
@@ -12,9 +13,10 @@ function App() {
       {/* rutas de la pagina */}
       <Routes>
         {/* El contenedor general con el header y aside */}
-        <Route element={<Layout />} >
+        <Route path="/" element={<Layout />} >
           {/* Paginas */}
           <Route path="/" element={<Dashboard />} />
+          <Route path="/expedientes" element={<Expediente />} />
         </Route>
         <Route path="/login" element={<Login />} />
       </Routes>
