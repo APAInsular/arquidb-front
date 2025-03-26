@@ -1,14 +1,15 @@
 import Avatar from "../ui/Avatar";
 import BotonIcons from "../ui/BotonIcons";
+import Logo from '../../assets/images/logo.png'
 
 const Header = () => {
     return (
         <>
-            <header class="w-full bg-[#932236] flex items-center px-5 p-2">
+            <header class="w-full flex items-center px-3 p-2">
                 {/* Logo */}
                 <div className="w-full flex flex-row justify-between items-center">
                     <div>
-                        <img src="https://coacfue.es/wp-content/uploads/2024/04/logo_COACFUE.png" className=" brightness-700" alt="COACFUE" width={150} height={150} />
+                        <img src={Logo} className=" brightness-120 rounded-md" alt="COACFUE" width={50} height={50} />
                     </div>
                     <div className=" mx-2 ms-auto sm:ms-10 sm:me-auto sm:w-150 ">
                         <form className="bg-[#cb415a] text-white/60 px-2 py-1 rounded-4xl flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]" action="">
@@ -25,20 +26,22 @@ const Header = () => {
                             </div>
                         </form>
                     </div>
-                    <div className="flex justify-between items-center gap-2 text-white">
+                    <div className="flex justify-between items-center gap-2 text-white/80">
                         <div>
-                            <BotonIcons size={48} color={"red"}
-                                icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
-                                </svg>}
+                            <BotonIcons size={48}
+                                icon={<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7">
+                                    <path fill-rule="evenodd" d="M5.25 9a6.75 6.75 0 0 1 13.5 0v.75c0 2.123.8 4.057 2.118 5.52a.75.75 0 0 1-.297 1.206c-1.544.57-3.16.99-4.831 1.243a3.75 3.75 0 1 1-7.48 0 24.585 24.585 0 0 1-4.831-1.244.75.75 0 0 1-.298-1.205A8.217 8.217 0 0 0 5.25 9.75V9Zm4.502 8.9a2.25 2.25 0 1 0 4.496 0 25.057 25.057 0 0 1-4.496 0Z" clip-rule="evenodd" />
+                                  </svg>
+                                  }
                                 notis={1}
                             />
                         </div>
                         <div>
-                            <BotonIcons size={48} color={"red"}
-                                icon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H18A2.25 2.25 0 0 1 20.25 6v12A2.25 2.25 0 0 1 18 20.25H6A2.25 2.25 0 0 1 3.75 18V6A2.25 2.25 0 0 1 6 3.75h1.5m9 0h-9" />
-                                </svg>}
+                            <BotonIcons size={48}
+                                icon={<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                    <path d="M11.25 4.533A9.707 9.707 0 0 0 6 3a9.735 9.735 0 0 0-3.25.555.75.75 0 0 0-.5.707v14.25a.75.75 0 0 0 1 .707A8.237 8.237 0 0 1 6 18.75c1.995 0 3.823.707 5.25 1.886V4.533ZM12.75 20.636A8.214 8.214 0 0 1 18 18.75c.966 0 1.89.166 2.75.47a.75.75 0 0 0 1-.708V4.262a.75.75 0 0 0-.5-.707A9.735 9.735 0 0 0 18 3a9.707 9.707 0 0 0-5.25 1.533v16.103Z" />
+                                  </svg>
+                                  }
                             />
                         </div>
                         {/* avatar */}
