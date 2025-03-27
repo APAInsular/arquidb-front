@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 const Expediente = () => {
     return (
@@ -29,7 +30,7 @@ const Expediente = () => {
                                 <td>35600</td>
                                 <td>300,50</td>
                                 <td>
-                                    <button type="button" className="bg-red-700 text-white py-1 px-6 rounded-lg">Ver</button>
+                                    <Link to="/expedientes/1" className="bg-red-700 text-white py-1 px-6 rounded-lg">Ver</Link>
                                 </td>
                                 <td>
                                     <button type="button" className="bg-red-700 text-white py-1 px-6 rounded-lg">Editar</button>
@@ -40,7 +41,7 @@ const Expediente = () => {
                             </tr>
                         </tbody>
                     </table>
-                    <button type="button" className="bg-red-700 text-white rounded-full text-6xl">+</button>
+                    <Link to="/expedientes/crear" className="bg-red-700 text-white rounded-full text-5xl">+</Link>
                 </div>
             </div>
         </>
