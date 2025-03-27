@@ -4,6 +4,7 @@ const Expediente = () => {
     return (
         <>
             <div>
+                <Link to="/" className="text-5xl">←</Link>
                 <div className="flex justify-center gap-x-10 mt-10 mb-5">
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Persona</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fecha</button>
