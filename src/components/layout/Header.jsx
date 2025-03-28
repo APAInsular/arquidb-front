@@ -4,11 +4,13 @@ import Logo from '../../assets/images/logo.png'
 import { useState } from "react";
 import ProfileUser from "../modals/profile/ProfileUser";
 import Notification from "../modals/profile/Notification";
+import Search from "../modals/filters/Search";
 
 const Header = () => {
 
     const [profile, setProfile] = useState(false);
-    const [modalNotis, setNodalNotis] = useState(false);
+    const [modalNotis, setModalNotis] = useState(false);
+    const [modalFilter, setModalFilter] = useState(false);
 
     const handleClick = (cases) => {
 
@@ -19,16 +21,24 @@ const Header = () => {
                 }
                 else {
                     setProfile(true);
-                    setNodalNotis(false)
+                    setModalNotis(false)
                 }
                 break;
             case 2:
                 if (modalNotis) {
-                    setNodalNotis(false);
+                    setModalNotis(false);
                 }
                 else {
-                    setNodalNotis(true);
+                    setModalNotis(true);
                     setProfile(false);
+                }
+                break;
+            case 3:
+                if (modalFilter) {
+                    setModalFilter(false);
+                }
+                else {
+                    setModalFilter(true);
                 }
                 break;
         }
@@ -45,17 +55,23 @@ const Header = () => {
                         <img src={Logo} className=" brightness-120 rounded-md" alt="COACFUE" width={50} height={50} />
                     </div>
                     <div className=" mx-2 ms-auto sm:ms-10 sm:me-auto sm:w-150 ">
-                        <form className="bg-[#cb415a] text-white/60 px-2 py-1 rounded-4xl flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]" action="">
+                        {/* search */}
+                        <form className="bg-[#cb415a] text-white/60 px-3 py-1 rounded-4xl flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]" action="">
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                 </svg>
                             </div>
                             <input placeholder="Buscar en Arquidb" type="search" className="hidden sm:flex outline-0 p-2 w-full text-white text-md" />
-                            <div className="hidden md:flex">
+                            {/* filtro Search */}
+                            <div onClick={() => handleClick(3)} className="hidden relative md:flex cursor-pointer hover:bg-red-300/20 p-2 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                                 </svg>
+                                {/* dasda */}
+                                {modalFilter && (
+                                    <Search />
+                                )}
                             </div>
                         </form>
                     </div>
