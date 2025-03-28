@@ -76,38 +76,38 @@ const CrearExpediente = () => {
 
                             {/* Ejemplos adicionales (puedes agregar más campos) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
-                                <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
                                     Código Postal
                                 </label>
                                 <input
                                     type="text"
-                                    name="postalCode"
-                                    id="postalCode"
+                                    name="postal_code"
+                                    id="postal_code"
                                     className="w-full p-2 border border-gray-300 rounded-md"
                                     minLength={5} maxLength={5}
                                 />
                             </div>
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
-                                <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">
                                     Fecha Inicial
                                 </label>
                                 <input
                                     type="datetime-local"
-                                    name="startDate"
-                                    id="startDate"
+                                    name="start_date"
+                                    id="start_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
                                 />
                             </div>
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
-                                <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+                                <label htmlFor="end_date" className="block text-sm font-medium text-gray-700">
                                     Fecha Final
                                 </label>
                                 <input
                                     type="datetime-local"
-                                    name="endDate"
-                                    id="endDate"
+                                    name="end_date"
+                                    id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
                                 />
                             </div>
@@ -117,7 +117,11 @@ const CrearExpediente = () => {
                 <div className="p-2 mb-10">
                     <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
                     <div>
-                        <button type="button" className="bg-red-700 text-white rounded-full text-5xl">+</button>
+                        <button type="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
                 <div className="text-center">

@@ -42,8 +42,8 @@ const Expediente = () => {
                             </tr>
                         </tbody>
                     </table>
-                    <Link to="/expedientes/crear" className="bg-red-700 text-white rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
+                    <Link to="/expedientes/crear" className="text-center flex justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-red-700 text-white rounded-full">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                     </Link>
