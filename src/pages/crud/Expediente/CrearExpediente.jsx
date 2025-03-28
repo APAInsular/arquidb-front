@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 const CrearExpediente = () => {
-
-
     return (
         <>
             <div>
@@ -117,7 +115,10 @@ const CrearExpediente = () => {
                     </form>
                 </div>
                 <div className="p-2 mb-10">
-                    <h4 className="text-3xl text-gray-400">Fases</h4>
+                    <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
+                    <div>
+                        <button type="button" className="bg-red-700 text-white rounded-full text-5xl">+</button>
+                    </div>
                 </div>
                 <div className="text-center">
                     <button type="button" className="bg-blue-600 text-white rounded-full py-2 px-6">Enviar</button>
