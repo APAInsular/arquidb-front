@@ -15,21 +15,22 @@ const Cliente = () => {
                     <table className="table-fixed w-full mb-5">
                         <thead className="bg-gray-200">
                             <tr>
-                                <th>Título</th>
-                                <th>Número</th>
-                                <th>Emplazamiento</th>
+                                <th colSpan={2}>Identificación</th>
+                                <th>Nombre</th>
+                                <th>Apellidos</th>
                                 <th>Código postal</th>
-                                <th>Presupuesto</th>
+                                <th>Observaciones</th>
                                 <th colSpan={3}>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Apartamento 83</td>
-                                <td>71-09382</td>
-                                <td>Leon y Castillo</td>
+                                <td>DNI</td>
+                                <td>12345678A</td>
+                                <td>Pedro</td>
+                                <td>Pablo Santo</td>
                                 <td>35600</td>
-                                <td>300,50</td>
+                                <td>Requiere atención especial</td>
                                 <td>
                                     <Link to="/clientes/1" className="bg-red-700 text-white py-1 px-6 rounded-lg">Ver</Link>
                                 </td>
