@@ -20,16 +20,16 @@ function App() {
         {/* rutas de la pagina */}
         <Routes>
           {/* El contenedor general con el header y aside */}
-         <Route path="/" element={<Layout />} >
-          {/* Paginas */}
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/expedientes" element={<Expediente />} />
-          <Route path="/expedientes/:id" element={<VerExpediente />} />
-          <Route path="/expedientes/crear" element={<CrearExpediente />} />
-          <Route path="/personas" element={<Persona />} />
-          <Route path="/colegiados" element={<Colegiado />}></Route>
-          <Route path="/clientes" element={<Cliente />}></Route>
-        </Route>
+          <Route path="/" element={<Layout />} >
+            {/* Paginas */}
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/expedientes" element={<Expediente />} />
+            <Route path="/expedientes/:id" element={<VerExpediente />} />
+            <Route path="/expedientes/crear" element={<CrearExpediente />} />
+            <Route path="/personas" element={<Persona />} />
+            <Route path="/colegiados" element={<Colegiado />}></Route>
+            <Route path="/clientes" element={<Cliente />}></Route>
+          </Route>
           <Route path="/login" element={<Login />} />
         </Routes>
       </ExpedientContenxt>
