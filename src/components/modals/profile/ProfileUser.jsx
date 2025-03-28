@@ -6,8 +6,7 @@ const ProfileUser = () => {
         <>
 
             <Default className="w-45">
-                <div className="text-center text-xs text-white">
-
+                <div className="text-center text-md text-white">
                     hector@gmail.com
                 </div>
                 <div className="flex items-center my-2 px-2">

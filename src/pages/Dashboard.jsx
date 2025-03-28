@@ -1,9 +1,19 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { ArquidbContext } from "../store/contexts/ExpedientContenxt";
 
 const Dashboard = () => {
+
+    // const { expedients } = useContext(ArquidbContext);
+
     return (
         <>
             <div>
+                {/* {expedients.map(datos => (
+                    <div key={datos.id}>
+                        <h2>{datos.title}</h2>
+                    </div>
+                ))} */}
+
                 <div className="flex justify-center gap-x-10 mt-10 mb-5">
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Persona</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fecha</button>
