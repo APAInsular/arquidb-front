@@ -10,6 +10,7 @@ import CrearExpediente from './pages/crud/Expediente/CrearExpediente';
 import Persona from './pages/Persona';
 import Colegiado from './pages/crud/Colegiado/Colegiado';
 import Cliente from './pages/crud/Cliente/Cliente';
+import Usuario from './pages/crud/Usuario/Usuario';
 
 function App() {
 
@@ -27,8 +28,9 @@ function App() {
             <Route path="/expedientes/:id" element={<VerExpediente />} />
             <Route path="/expedientes/crear" element={<CrearExpediente />} />
             <Route path="/personas" element={<Persona />} />
-            <Route path="/colegiados" element={<Colegiado />}></Route>
-            <Route path="/clientes" element={<Cliente />}></Route>
+            <Route path="/colegiados" element={<Colegiado />} />
+            <Route path="/clientes" element={<Cliente />} />
+            <Route path="/usuarios" element={<Usuario />} />
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>
