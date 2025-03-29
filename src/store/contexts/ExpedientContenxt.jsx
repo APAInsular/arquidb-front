@@ -1,7 +1,8 @@
-import { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
 
-export const ArquidbContext = createContext();
+const ArquidbContext = createContext();
+export const useExpedient = () => useContext(ArquidbContext);
 
 const ExpedientContenxt = ({ children }) => {
 

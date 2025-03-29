@@ -1,6 +1,17 @@
 import { Link } from "react-router-dom";
+import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
+import { useState, useEffect } from "react";
 
 const Expediente = () => {
+    const [expedientes, setExpedientes] = useState([]);
+    const { expedients } = useExpedient();
+    console.log(expedientes);
+    useEffect(() => {
+        if (expedients) {
+            setExpedientes(expedients);
+        }
+    }, [expedients]);
+
     return (
         <>
             <div>
@@ -24,22 +35,26 @@ const Expediente = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Apartamento 83</td>
-                                <td>71-09382</td>
-                                <td>Leon y Castillo</td>
-                                <td>35600</td>
-                                <td>300,50</td>
-                                <td>
-                                    <Link to="/expedientes/1" className="bg-red-700 text-white py-1 px-6 rounded-lg">Ver</Link>
-                                </td>
-                                <td>
-                                    <button type="button" className="bg-red-700 text-white py-1 px-6 rounded-lg">Editar</button>
-                                </td>
-                                <td>
-                                    <button type="button" className="bg-red-700 text-white py-1 px-6 rounded-lg">Borrar</button>
-                                </td>
-                            </tr>
+                            {expedientes.map(expediente => {
+                                return (
+                                    <tr key={expediente.id}>
+                                        <td>{expediente.title}</td>
+                                        <td>{expediente.number}</td>
+                                        <td>{expediente.site}</td>
+                                        <td>{expediente.postal_code}</td>
+                                        <td>{expediente.budget}</td>
+                                        <td>
+                                            <Link to={`/expedientes/${expediente.id}`} className="bg-red-700 text-white py-1 px-6 rounded-lg">Ver</Link>
+                                        </td>
+                                        <td>
+                                            <button type="button" className="bg-red-700 text-white py-1 px-6 rounded-lg">Editar</button>
+                                        </td>
+                                        <td>
+                                            <button type="button" className="bg-red-700 text-white py-1 px-6 rounded-lg">Borrar</button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                     <Link to="/expedientes/crear" className="text-center flex justify-center">

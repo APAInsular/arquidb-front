@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { ArquidbContext } from "../store/contexts/ExpedientContenxt";
+import { useExpedient } from "../store/contexts/ExpedientContenxt";
 
 const Dashboard = () => {
 
-    // const { expedients } = useContext(ArquidbContext);
+    // const { expedients } = useExpedient();
 
     return (
         <>
