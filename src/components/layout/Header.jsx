@@ -5,45 +5,32 @@ import { useState } from "react";
 import ProfileUser from "../modals/profile/ProfileUser";
 import Notification from "../modals/profile/Notification";
 import Search from "../modals/filters/Search";
+import { useAuth } from "../../hooks/auth";
 
 const Header = () => {
 
     const [profile, setProfile] = useState(false);
     const [modalNotis, setModalNotis] = useState(false);
     const [modalFilter, setModalFilter] = useState(false);
+    // Tener al usuario conectado
+    const { user } = useAuth({ middleware: 'auth' });
 
     const handleClick = (cases) => {
 
         switch (cases) {
             case 1:
-                if (profile) {
-                    setProfile(false);
-                }
-                else {
-                    setProfile(true);
-                    setModalNotis(false)
-                }
+                if (profile) { setProfile(false); }
+                else { setProfile(true); setModalNotis(false) }
                 break;
             case 2:
-                if (modalNotis) {
-                    setModalNotis(false);
-                }
-                else {
-                    setModalNotis(true);
-                    setProfile(false);
-                }
+                if (modalNotis) { setModalNotis(false); }
+                else { setModalNotis(true); setProfile(false); }
                 break;
             case 3:
-                if (modalFilter) {
-                    setModalFilter(false);
-                }
-                else {
-                    setModalFilter(true);
-                }
+                if (modalFilter) { setModalFilter(false); }
+                else { setModalFilter(true); }
                 break;
         }
-
-
     }
 
     return (
@@ -99,10 +86,14 @@ const Header = () => {
                             />
                         </div>
                         {/* avatar */}
-                        <div className="relative" onClick={() => handleClick(1)}>
-                            <Avatar name="H" foto="" size={48} />
-                            {profile && (
-                                <ProfileUser />
+                        <div className="relative" onClick={user ? () => handleClick(1) : undefined}>
+                            <Avatar name={user?.name.at(1).toUpperCase()} foto="" size={48} />
+                            {user && (
+                                <>
+                                    {profile && (
+                                        <ProfileUser user={user} />
+                                    )}
+                                </>
                             )}
                         </div>
                     </div>
