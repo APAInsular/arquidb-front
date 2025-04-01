@@ -32,22 +32,22 @@ const Expediente = () => {
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fase</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Otros</button>
                 </div>
-                <div className="text-center">
-                    <table className="table-fixed w-full mb-5">
-                        <thead className="bg-gray-200">
-                            <tr>
-                                <th>Título</th>
-                                <th>Número</th>
-                                <th>Emplazamiento</th>
-                                <th>Código postal</th>
-                                <th>Presupuesto</th>
-                                <th colSpan={3}>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {expedientes.map(expediente => {
-                                return (
-                                    <>
+                <div className="flex-1 overflow-y-auto max-h-[calc(100vh-200px)]">
+                    <div className="text-center">
+                        <table className="table-fixed w-full mb-5">
+                            <thead className="bg-gray-200">
+                                <tr>
+                                    <th>Título</th>
+                                    <th>Número</th>
+                                    <th>Emplazamiento</th>
+                                    <th>Código postal</th>
+                                    <th>Presupuesto</th>
+                                    <th colSpan={3}>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {expedientes.map(expediente => {
+                                    return (
                                         <tr key={expediente.id}>
                                             <td>{expediente.title}</td>
                                             <td>{expediente.number}</td>
@@ -64,17 +64,17 @@ const Expediente = () => {
                                                 <button type="button" onClick={() => deleteActivate(expediente.id)} className="bg-red-700 text-white py-1 px-6 rounded-lg">Borrar</button>
                                             </td>
                                         </tr>
-                                        {modalDelete && expediente.id == deleteId && <Delete />}
-                                    </>
-                                )
-                            })}
-                        </tbody>
-                    </table>
-                    <Link to="/expedientes/crear" className="inline-block text-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-red-700 text-white rounded-full">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                    </Link>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                        {modalDelete && <Delete />}
+                        <Link to="/expedientes/crear" className="inline-block text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-red-700 text-white rounded-full">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            </svg>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </>
