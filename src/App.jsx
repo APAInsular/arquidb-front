@@ -24,15 +24,12 @@ function App() {
           <Route path="/" element={<Layout />} >
             {/* Paginas */}
             <Route path="/" element={<Dashboard />} />
-            {/* expedientes */}
             <Route path="/expedientes" element={<Expediente />} />
             <Route path="/expedientes/:id" element={<VerExpediente />} />
             <Route path="/expedientes/crear" element={<CrearExpediente />} />
-            {/* colegiado y cliente */}
             <Route path="/personas" element={<Persona />} />
-            <Route path="/colegiados" element={<Colegiado />}></Route>
-            <Route path="/clientes" element={<Cliente />}></Route>
-            {/* usuario */}
+            <Route path="/colegiados" element={<Colegiado />} />
+            <Route path="/clientes" element={<Cliente />} />
             <Route path="/usuarios" element={<Usuarios />}></Route>
           </Route>
           <Route path="/login" element={<Login />} />
