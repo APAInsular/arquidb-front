@@ -10,7 +10,7 @@ import CrearExpediente from './pages/crud/Expediente/CrearExpediente';
 import Persona from './pages/Persona';
 import Colegiado from './pages/crud/Colegiado/Colegiado';
 import Cliente from './pages/crud/Cliente/Cliente';
-import Usuario from './pages/crud/Usuario/Usuario';
+import Usuarios from './pages/admin/usuarios/usuarios';
 
 function App() {
 
@@ -30,7 +30,7 @@ function App() {
             <Route path="/personas" element={<Persona />} />
             <Route path="/colegiados" element={<Colegiado />} />
             <Route path="/clientes" element={<Cliente />} />
-            <Route path="/usuarios" element={<Usuario />} />
+            <Route path="/usuarios" element={<Usuarios />}></Route>
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

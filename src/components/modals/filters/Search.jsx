@@ -3,11 +3,36 @@ import Default from "../Default";
 const Search = () => {
     return (
         <>
-            <Default className="w-45 top-10 right-[-4px]">
+            <Default className="w-150 top-10 right-[-4px]">
                 <form action="">
-                    {/* ul>li*6>input */}
+                    <ul className="px-2 space-y-3 mt-1">
+                        <div className=" text-xs">Expedientes</div>
+                        <li className="grid grid-cols-4 justify-between items-center gap-2">
+                            <input className="bg-white/20 border-b-1 rounded-t-lg col-span-2 px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Expediente..." type="text" />
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Fases..." type="text" />
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Cantidad..." type="text" />
+                        </li>
+                        <div className=" text-xs">Personas</div>
+                        <li className="grid grid-cols-2 justify-between items-center gap-2">
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Cliente..." type="text" />
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Colegiado..." type="text" />
+                        </li>
+                        <div className=" text-xs">Fecha Creación</div>
+                        <li className="grid grid-cols-2 justify-between items-center gap-2">
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Desde..." type="date" />
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Desde..." type="date" />
+                        </li>
+                        <div className="text-xs">Fecha de Visado</div>
+                        <li className="grid grid-cols-2 justify-between items-center gap-2">
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Desde..." type="date" />
+                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Desde..." type="date" />
+                        </li>
+                    </ul>
+                    <div className="px-2 mt-5">
+                        <button type="submit" className="bg-red-900 text-red-300 cursor-pointer hover:bg-red-800 p-2 w-full rounded-full font-medium">Buscar</button>
+                    </div>
                 </form>
-            </Default>
+            </Default >
         </>
     )
 }
