@@ -58,7 +58,9 @@ const Header = () => {
                                 </svg>
                                 {/* dasda */}
                                 {modalFilter && (
-                                    <Search />
+                                    <div onClick={(e) => e.stopPropagation()}>
+                                        <Search />
+                                    </div>
                                 )}
                             </div>
                         </form>
@@ -74,7 +76,9 @@ const Header = () => {
                                 notis={1}
                             />
                             {modalNotis && (
-                                <Notification />
+                                <div onClick={(e) => e.stopPropagation()}>
+                                    <Notification />
+                                </div>
                             )}
                         </div>
                         {/* historial */}

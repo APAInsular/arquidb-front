@@ -7,9 +7,9 @@ const Layout = ({ children }) => {
 
             <div className="w-screen h-screen overflow-hidden flex flex-col layout">
                 <Header />
-                <div className="flex flex-1">
+                <div className="flex flex-1 overflow-hidden">
                     <Aside />
-                    <div className=" flex-1 bg-gray-100 p-4 rounded-[13px] me-2.5 mb-2.5">
+                    <div className=" flex-1 bg-gray-100 p-4 pb-1 rounded-[13px] overflow-hidden relative me-2.5 mb-2.5">
                     <Outlet />
                         {children}
                     </div>

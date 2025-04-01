@@ -10,6 +10,7 @@ import CrearExpediente from './pages/crud/Expediente/CrearExpediente';
 import Persona from './pages/Persona';
 import Colegiado from './pages/crud/Colegiado/Colegiado';
 import Cliente from './pages/crud/Cliente/Cliente';
+import Usuarios from './pages/admin/usuarios/usuarios';
 
 function App() {
 
@@ -20,16 +21,20 @@ function App() {
         {/* rutas de la pagina */}
         <Routes>
           {/* El contenedor general con el header y aside */}
-         <Route path="/" element={<Layout />} >
-          {/* Paginas */}
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/expedientes" element={<Expediente />} />
-          <Route path="/expedientes/:id" element={<VerExpediente />} />
-          <Route path="/expedientes/crear" element={<CrearExpediente />} />
-          <Route path="/personas" element={<Persona />} />
-          <Route path="/colegiados" element={<Colegiado />}></Route>
-          <Route path="/clientes" element={<Cliente />}></Route>
-        </Route>
+          <Route path="/" element={<Layout />} >
+            {/* Paginas */}
+            <Route path="/" element={<Dashboard />} />
+            {/* expedientes */}
+            <Route path="/expedientes" element={<Expediente />} />
+            <Route path="/expedientes/:id" element={<VerExpediente />} />
+            <Route path="/expedientes/crear" element={<CrearExpediente />} />
+            {/* colegiado y cliente */}
+            <Route path="/personas" element={<Persona />} />
+            <Route path="/colegiados" element={<Colegiado />}></Route>
+            <Route path="/clientes" element={<Cliente />}></Route>
+            {/* usuario */}
+            <Route path="/usuarios" element={<Usuarios />}></Route>
+          </Route>
           <Route path="/login" element={<Login />} />
         </Routes>
       </ExpedientContenxt>
