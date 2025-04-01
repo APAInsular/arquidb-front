@@ -8,9 +8,9 @@ const CrearExpediente = () => {
                     <Link to="/expedientes" className="text-5xl">←</Link>
                     <h3 className="text-5xl">Crear expediente</h3>
                 </div>
-                <div className="p-2">
-                    <h4 className="text-3xl text-gray-400">Datos Generales</h4>
-                    <form>
+                <form className="mb-10">
+                    <div className="p-2">
+                        <h4 className="text-3xl text-gray-400">Datos Generales</h4>
                         <div className="grid grid-cols-12 gap-4 p-4">
                             {/* Cada div ocupa 4 columnas (12/3 = 4 columnas por elemento) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
@@ -112,20 +112,20 @@ const CrearExpediente = () => {
                                 />
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div className="p-2 mb-10">
-                    <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
-                    <div>
-                        <button type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                            </svg>
-                        </button>
                     </div>
-                </div>
+                    <div className="p-2">
+                        <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
+                        <div>
+                            <button type="button" onClick={() => console.log("Fase")}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </form>
                 <div className="text-center">
-                    <button type="button" className="bg-blue-600 text-white rounded-full py-2 px-6">Enviar</button>
+                    <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6">Enviar</button>
                 </div>
             </div>
         </>
