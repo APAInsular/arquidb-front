@@ -126,12 +126,13 @@ const CrearExpediente = () => {
                     </div>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
-                        <div>
+                        <div className="flex space-x-2">
                             <button type="button" onClick={() => phaseSelectorActivate()} className="cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                             </button>
+                            <button type="button" className="bg-blue-700 text-white rounded-full py-2 px-6">300</button>
                         </div>
                     </div>
                 </form>

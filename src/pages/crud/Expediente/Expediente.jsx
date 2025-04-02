@@ -8,7 +8,7 @@ const Expediente = () => {
     const [modalDelete, setModalDelete] = useState(false);
     const [deleteId, setDeleteId] = useState(null);
     const { expedients } = useExpedient();
-    console.log(expedientes);
+
     useEffect(() => {
         if (expedients) {
             setExpedientes(expedients);
