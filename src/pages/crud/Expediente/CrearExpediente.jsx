@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
+import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
+import { useState } from "react";
 
 const CrearExpediente = () => {
+    const [modalPhase, setModalPhase] = useState(false);
+
+    const phaseSelectorActivate = () => {
+        if (!modalPhase) {
+            setModalPhase(true);
+        }
+    }
+
     return (
         <>
             <div>
@@ -11,6 +21,7 @@ const CrearExpediente = () => {
                 <form className="mb-10">
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
+                        {modalPhase && <PhaseSelector setModalPhase={setModalPhase} />}
                         <div className="grid grid-cols-12 gap-4 p-4">
                             {/* Cada div ocupa 4 columnas (12/3 = 4 columnas por elemento) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
@@ -116,7 +127,7 @@ const CrearExpediente = () => {
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
                         <div>
-                            <button type="button" onClick={() => console.log("Fase")}>
+                            <button type="button" onClick={() => phaseSelectorActivate()} className="cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
