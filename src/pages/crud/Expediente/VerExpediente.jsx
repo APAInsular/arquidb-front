@@ -13,6 +13,8 @@ const VerExpediente = () => {
         }
     }, [expedients]);
 
+    if (!expedient) return <h1>Cargando...</h1>
+
     return (
         <>
             <div>
@@ -58,11 +60,11 @@ const VerExpediente = () => {
                                 <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
                                     <div>
                                         <p>Expediente</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.number}</strong>
                                     </div>
                                     <div>
                                         <p>Título del proyecto</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.title}</strong>
                                     </div>
                                     <div>
                                         <p>Clase de trabajo</p>
@@ -78,15 +80,15 @@ const VerExpediente = () => {
                                 <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
                                     <div>
                                         <p>Dirección</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.site}</strong>
                                     </div>
                                     <div>
                                         <p>Observación</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.description}</strong>
                                     </div>
                                     <div>
                                         <p>Facturas</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.budget}</strong>
                                     </div>
                                     <div>
                                         <p>Expedientes asociados</p>
