@@ -1,8 +1,6 @@
 import Default from "../Default";
-import { usePhase } from "../../../store/contexts/PhaseContext";
 
-const PhaseSelector = ({ setModalPhase }) => {
-    const { phases } = usePhase();
+const PhaseSelector = ({ phases, setModalPhase }) => {
     let types = [
         { id: 1, phase: "000" }, { id: 2, phase: "100" }, { id: 3, phase: "200" },
         { id: 4, phase: "300" }, { id: 5, phase: "310" }, { id: 6, phase: "400" },
