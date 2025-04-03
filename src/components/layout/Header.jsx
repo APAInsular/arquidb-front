@@ -91,7 +91,7 @@ const Header = () => {
                         </div>
                         {/* avatar */}
                         <div className="relative" onClick={user ? () => handleClick(1) : undefined}>
-                            <Avatar name={user?.name.at(1).toUpperCase()} foto="" size={48} />
+                            <Avatar name={user?.name.at(0).toUpperCase()} foto="" size={48} text={"text-white text-xl"} />
                             {user && (
                                 <>
                                     {profile && (

@@ -11,6 +11,7 @@ import Persona from './pages/Persona';
 import Colegiado from './pages/crud/Colegiado/Colegiado';
 import Cliente from './pages/crud/Cliente/Cliente';
 import Usuarios from './pages/admin/usuarios/usuarios';
+import Profile from './pages/auth/Profile';
 
 function App() {
 
@@ -24,6 +25,8 @@ function App() {
           <Route path="/" element={<Layout />} >
             {/* Paginas */}
             <Route path="/" element={<Dashboard />} />
+            {/* usuario */}
+            <Route path="/profile" element={<Profile />} />
             <Route path="/expedientes" element={<Expediente />} />
             <Route path="/expedientes/:id" element={<VerExpediente />} />
             <Route path="/expedientes/crear" element={<CrearExpediente />} />
