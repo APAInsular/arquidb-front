@@ -151,7 +151,7 @@ const CrearExpediente = () => {
                     </div>
                 </form>
                 <div className="text-center">
-                    <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6">Enviar</button>
+                    <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                 </div>
             </div>
         </>
