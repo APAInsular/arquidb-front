@@ -19,7 +19,7 @@ const PhaseSelector = ({ phases, setModalPhase }) => {
                 <div className="mb-10 text-black">
                     <h3 className="text-3xl border-b">Fases</h3>
                     <div className="flex justify-center">
-                        <div className="w-2/3 overflow-y-auto">
+                        <div className="w-2/3 overflow-y-auto max-h-[200px]">
                             {/* {phases.reduce((uniquePhases, phase) => {
                                 // Filtra fases únicas
                                 if (!uniquePhases.some(item => item.phase === phase.phase)) {

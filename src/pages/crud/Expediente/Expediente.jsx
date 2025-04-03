@@ -24,7 +24,7 @@ const Expediente = () => {
 
     return (
         <>
-            <div>
+            <div className="overflow-y-auto h-full">
                 <Link to="/" className="text-5xl">←</Link>
                 <div className="flex justify-center gap-x-10 mt-10 mb-5">
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Persona</button>
@@ -32,7 +32,7 @@ const Expediente = () => {
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fase</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Otros</button>
                 </div>
-                <div className="flex-1 overflow-y-auto max-h-[calc(100vh-200px)]">
+                <div className="flex-1">
                     <div className="text-center">
                         <table className="table-fixed w-full mb-5">
                             <thead className="bg-gray-200">
