@@ -12,6 +12,7 @@ import Colegiado from './pages/crud/Colegiado/Colegiado';
 import Cliente from './pages/crud/Cliente/Cliente';
 import Usuarios from './pages/admin/usuarios/usuarios';
 import Profile from './pages/auth/Profile';
+import VerUsuario from './pages/admin/usuarios/VerUsuario';
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/colegiados" element={<Colegiado />} />
             <Route path="/clientes" element={<Cliente />} />
             <Route path="/usuarios" element={<Usuarios />}></Route>
+            <Route path="/usuarios/:id/show" element={<VerUsuario />}></Route>
           </Route>
           <Route path="/login" element={<Login />} />
         </Routes>

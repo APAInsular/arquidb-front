@@ -140,20 +140,6 @@ const Profile = () => {
 
                             </div>
                         </div>
-                        <div className="flex items-center my-4">
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                        </div>
-                        <div className="grid grid-cols-3 w-full text-md">
-                            <div>Contraseña</div>
-                            <div className="text-xl font-medium text-center">****</div>
-                            <div className="flex justify-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
-
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div >

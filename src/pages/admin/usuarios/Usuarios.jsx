@@ -1,23 +1,28 @@
 import { Link } from "react-router-dom";
 import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Delete from "../../../components/modals/crud/Delete";
+import CrudManager from "../../../hooks/CrudManager";
 
 const Usuarios = () => {
 
+    const { views } = CrudManager({ url: `users` });
+
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
 
-    const data = Array.from({ length: 40 }, (_, index) => ({
-        id: index + 1,
-        name: `Usuario ${index + 1}`,
-        email: `usuario${index + 1}@gmail.com`,
-        role: "Admin",
-    }));
+    useEffect(() => {
+        views({ setData: setUsers, setLoading, setErrors: setError });
+    }, []);
 
-    const admin = data.filter((item) => item.role === "Admin");
-    const visator = data.filter((item) => item.role === "Visator");
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error}</p>;
 
+    const admin = users.filter((item) => item.role === "Admin");
+    const visator = users.filter((item) => item.role === "Visator");
 
     return (
         <>
@@ -40,7 +45,7 @@ const Usuarios = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Usuarios (Cualquier usuario)"}
-                        value={data.length}
+                        value={users.length}
                     />
                     <StatsCard
                         title={"Total Admin (Solo usuarios Admin)"}
@@ -65,15 +70,15 @@ const Usuarios = () => {
                                 </tr>
                             </thead>
                             <tbody className="">
-                                {data.map((user) => (
+                                {users.map((user) => (
                                     <tr key={user.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll">
                                         <td className="py-1.5 px-4">{user.id}</td>
                                         <td className="py-1.5 px-4">{user.name}</td>
                                         <td className="py-1.5 px-4">{user.email}</td>
-                                        <td className="py-1.5 px-4">{user.role}</td>
+                                        <td className="py-1.5 px-4">***</td>
                                         <td className="py-1.5 px-4">
                                             <div className="grid grid-cols-3 gap-2">
-                                                <Link to={`/expedientes/${user.id}`} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
+                                                <Link to={`/usuarios/${user.id}/show`} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                                         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
                                                         <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
