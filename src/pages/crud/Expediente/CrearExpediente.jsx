@@ -1,6 +1,29 @@
 import { Link } from "react-router-dom";
+import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
+import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
+import { usePhase } from "../../../store/contexts/PhaseContext";
+import { useState } from "react";
 
 const CrearExpediente = () => {
+    const [modalPhase, setModalPhase] = useState(false);
+    const [modalDocument, setModalDocument] = useState(false);
+    const [expedientPhases, setExpedientPhases] = useState([]);
+    const [documentsPhase, setDocumentsPhase] = useState(null);
+    const { phases } = usePhase();
+
+    const phaseSelectorActivate = () => {
+        if (!modalPhase) {
+            setModalPhase(true);
+        }
+    }
+
+    const documentSelectorActivate = (phase) => {
+        if (!modalDocument) {
+            setDocumentsPhase(phase)
+            setModalDocument(true);
+        }
+    }
+    console.log(expedientPhases);
     return (
         <>
             <div>
@@ -8,6 +31,8 @@ const CrearExpediente = () => {
                     <Link to="/expedientes" className="text-5xl">←</Link>
                     <h3 className="text-5xl">Crear expediente</h3>
                 </div>
+                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
+                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10">
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
@@ -115,17 +140,23 @@ const CrearExpediente = () => {
                     </div>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
-                        <div>
-                            <button type="button" onClick={() => console.log("Fase")}>
+                        <div className="flex space-x-2">
+                            <button type="button" onClick={() => phaseSelectorActivate()} className="cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                             </button>
+                            {expedientPhases.map(phase => {
+                                return (
+                                    <button type="button" key={phase} className="bg-blue-700 text-white rounded-full py-2 px-6"
+                                        onClick={() => documentSelectorActivate(phase)}>{phase}</button>
+                                );
+                            })}
                         </div>
                     </div>
                 </form>
                 <div className="text-center">
-                    <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6">Enviar</button>
+                    <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                 </div>
             </div>
         </>
