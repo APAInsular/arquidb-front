@@ -7,7 +7,7 @@ const DocumentSelector = ({ phase, setModalDocument }) => {
                 <div className="mb-10 text-black p-2">
                     <div className="flex justify-between border-b space-x-4">
                         <button type="button" onClick={() => setModalDocument(false)}>X</button>
-                        <h3 className="text-3xl">300</h3>
+                        <h3 className="text-3xl">{phase}</h3>
                     </div>
                 </div>
                 <div className="w-full bg-gray-300 rounded-lg mb-10">

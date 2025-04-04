@@ -1,6 +1,9 @@
 import Default from "../Default";
+import { useState } from "react";
 
-const PhaseSelector = ({ phases, setModalPhase }) => {
+const PhaseSelector = ({ expedientPhases, setExpedientPhases, setModalPhase }) => {
+    const [newPhase, setNewPhase] = useState("");
+
     let types = [
         { id: 1, phase: "000" }, { id: 2, phase: "100" }, { id: 3, phase: "200" },
         { id: 4, phase: "300" }, { id: 5, phase: "310" }, { id: 6, phase: "400" },
@@ -13,20 +16,34 @@ const PhaseSelector = ({ phases, setModalPhase }) => {
         { id: 25, phase: "980" }
     ];
 
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (newPhase.length === 4 && !expedientPhases.some(item => item === newPhase)) {
+            setExpedientPhases([...expedientPhases, newPhase])
+        } else {
+            alert("Por favor ingrese un número de 4 dígitos que no exista.");
+        }
+        console.log(newPhase);
+    };
+
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        if (/^\d{0,4}$/.test(value)) { // Solo permite hasta 4 dígitos
+            setNewPhase(value);
+        }
+    };
+
     return (
         <Default className="text-center">
             <div className="bg-white text-red-500">
-                <div className="mb-10 text-black">
-                    <h3 className="text-3xl border-b">Fases</h3>
-                    <div className="flex justify-center">
-                        <div className="w-2/3 overflow-y-auto max-h-[200px]">
-                            {/* {phases.reduce((uniquePhases, phase) => {
-                                // Filtra fases únicas
-                                if (!uniquePhases.some(item => item.phase === phase.phase)) {
-                                    return [...uniquePhases, phase];
-                                }
-                                return uniquePhases;
-                            }, []).sort((a, b) => a.phase - b.phase).map(phaseType => {
+                <form method="POST" onSubmit={handleSubmit}>
+                    <div className="mb-10 text-black">
+                        <h3 className="text-3xl border-b">Fases</h3>
+                        <div className="flex justify-center">
+                            <div className="w-2/3 overflow-y-auto max-h-[200px]">
+                                {/* {types.map(phaseType => {
                                 return (
                                     <div className="flex justify-between items-end border-b pt-3 px-4" key={phaseType.id}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -36,26 +53,18 @@ const PhaseSelector = ({ phases, setModalPhase }) => {
                                     </div>
                                 );
                             })} */}
-                            {types.map(phaseType => {
-                                return (
-                                    <div className="flex justify-between items-end border-b pt-3 px-4" key={phaseType.id}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                                        </svg>
-                                        <p className="text-lg">{phaseType.phase}</p>
-                                    </div>
-                                );
-                            })}
+                                <input type="number" name="new_phase" id="new_phase" value={newPhase} onChange={handleInputChange} min={0} max={9999} className="w-full p-2 border border-gray-300 rounded-md mt-10" />
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="p-2">
-                    <h4 className="text-2xl">¿Está seguro/a de su elección?</h4>
-                    <div className="flex justify-center space-x-10 mt-5 p-2">
-                        <button type="button" className="bg-red-700 text-white py-2 px-4 rounded-lg">Crear</button>
-                        <button type="button" className="bg-gray-200 py-2 px-4 rounded-lg" onClick={() => setModalPhase(false)}>Cancelar</button>
+                    <div className="p-2">
+                        <h4 className="text-2xl">¿Está seguro/a de su elección?</h4>
+                        <div className="flex justify-center space-x-10 mt-5 p-2">
+                            <button type="submit" className="bg-red-700 text-white py-2 px-4 rounded-lg">Crear</button>
+                            <button type="button" className="bg-gray-200 py-2 px-4 rounded-lg" onClick={() => setModalPhase(false)}>Cancelar</button>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         </Default>
     );

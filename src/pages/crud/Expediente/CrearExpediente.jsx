@@ -7,7 +7,8 @@ import { useState } from "react";
 const CrearExpediente = () => {
     const [modalPhase, setModalPhase] = useState(false);
     const [modalDocument, setModalDocument] = useState(false);
-    const [documentPhase, setDocumentPhase] = useState(null);
+    const [expedientPhases, setExpedientPhases] = useState([]);
+    const [documentsPhase, setDocumentsPhase] = useState(null);
     const { phases } = usePhase();
 
     const phaseSelectorActivate = () => {
@@ -16,13 +17,13 @@ const CrearExpediente = () => {
         }
     }
 
-    const documentSelectorActivate = (id) => {
+    const documentSelectorActivate = (phase) => {
         if (!modalDocument) {
-            setDocumentPhase(phases.find(phase => phase.id == id))
+            setDocumentsPhase(phase)
             setModalDocument(true);
         }
     }
-
+    console.log(expedientPhases);
     return (
         <>
             <div>
@@ -30,11 +31,11 @@ const CrearExpediente = () => {
                     <Link to="/expedientes" className="text-5xl">←</Link>
                     <h3 className="text-5xl">Crear expediente</h3>
                 </div>
+                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
+                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10">
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
-                        {modalPhase && <PhaseSelector phases={phases} setModalPhase={setModalPhase} />}
-                        {modalDocument && <DocumentSelector phase={documentPhase} setModalDocument={setModalDocument} />}
                         <div className="grid grid-cols-12 gap-4 p-4">
                             {/* Cada div ocupa 4 columnas (12/3 = 4 columnas por elemento) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
@@ -145,8 +146,12 @@ const CrearExpediente = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                             </button>
-                            <button type="button" className="bg-blue-700 text-white rounded-full py-2 px-6"
-                                onClick={() => documentSelectorActivate(2)}>300</button>
+                            {expedientPhases.map(phase => {
+                                return (
+                                    <button type="button" key={phase} className="bg-blue-700 text-white rounded-full py-2 px-6"
+                                        onClick={() => documentSelectorActivate(phase)}>{phase}</button>
+                                );
+                            })}
                         </div>
                     </div>
                 </form>
