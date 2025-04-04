@@ -1,11 +1,16 @@
 import { useParams, Link } from "react-router-dom";
 import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
+import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useState, useEffect } from "react";
+import { format } from "date-fns";
 
 const VerExpediente = () => {
     const [expedient, setExpedient] = useState({});
+    const [expedientPhases, setExpedientPhases] = useState([]);
+    const [phaseSelected, setPhaseSelected] = useState(null);
     const params = useParams();
     const { expedients } = useExpedient();
+    const { phases } = usePhase();
 
     useEffect(() => {
         if (expedients) {
@@ -13,16 +18,30 @@ const VerExpediente = () => {
         }
     }, [expedients]);
 
+    useEffect(() => {
+        if (phases) {
+            setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+        }
+    }, [expedient]);
+
+    useEffect(() => {
+        if (expedientPhases[0]) {
+            setPhaseSelected(expedientPhases[0]);
+        }
+    }, [expedientPhases]);
+
+    if (!expedient || !expedientPhases) return <h1>Cargando...</h1>
+
     return (
         <>
-            <div>
+            <div className="overflow-y-auto h-full">
                 <div className="flex justify-between p-2 mb-5">
                     <h3 className="text-3xl">Vivienda Familiar</h3>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                     </svg>
                 </div>
-                <div className="mx-28">
+                <div className="mx-28 p-2">
                     <div className="bg-gray-200 rounded-lg p-2 mb-4">
                         <Link to="/expedientes" className="inline-block">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -58,11 +77,11 @@ const VerExpediente = () => {
                                 <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
                                     <div>
                                         <p>Expediente</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.number}</strong>
                                     </div>
                                     <div>
                                         <p>Título del proyecto</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.title}</strong>
                                     </div>
                                     <div>
                                         <p>Clase de trabajo</p>
@@ -78,15 +97,15 @@ const VerExpediente = () => {
                                 <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
                                     <div>
                                         <p>Dirección</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.site}</strong>
                                     </div>
                                     <div>
                                         <p>Observación</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.description}</strong>
                                     </div>
                                     <div>
                                         <p>Facturas</p>
-                                        <strong>Info</strong>
+                                        <strong>{expedient.budget}</strong>
                                     </div>
                                     <div>
                                         <p>Expedientes asociados</p>
@@ -107,40 +126,51 @@ const VerExpediente = () => {
                     <div className="bg-gray-200 rounded-lg p-2">
                         <div className="border-t">
                             <strong>Fases</strong>
-                            <div>
-                                <p>(Falta el selector de fase*)</p>
+                            <div className="flex justify-center">
+                                {expedientPhases.map(phase => {
+                                    return (
+                                        <div className="flex flex-col" key={phase.phase}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+                                            </svg>
+                                            <p>{phase.phase}</p>
+                                        </div>
+                                    );
+                                })}
                             </div>
                             <button type="button" className="bg-blue-700 text-white py-2 px-6 rounded-full mb-5">Editar Fase</button>
-                            <div className="grid grid-cols-12 gap-4 p-2">
-                                <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
-                                    <div>
-                                        <p>N° Fase</p>
-                                        <strong>Info</strong>
+                            {phaseSelected && (
+                                <div className="grid grid-cols-12 gap-4 p-2">
+                                    <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
+                                        <div>
+                                            <p>N° Fase</p>
+                                            <strong>{phaseSelected.phase}</strong>
+                                        </div>
+                                        <div>
+                                            <p>Fecha de Inicio</p>
+                                            <strong>Info</strong>
+                                        </div>
+                                        <div>
+                                            <p>Fecha de creación</p>
+                                            <strong>{format(new Date(phaseSelected.created_at), "dd 'de' MMM, yyyy")}</strong>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p>Fecha de Inicio</p>
-                                        <strong>Info</strong>
+                                    <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
+                                        <div>
+                                            <p>Estado</p>
+                                            <strong>Info</strong>
+                                        </div>
+                                        <div>
+                                            <p>Visado</p>
+                                            <strong>Info</strong>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p>Fecha de creación</p>
+                                    <div className="col-span-12 lg:col-span-2">
+                                        <p>Visador</p>
                                         <strong>Info</strong>
                                     </div>
                                 </div>
-                                <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
-                                    <div>
-                                        <p>Estado</p>
-                                        <strong>Info</strong>
-                                    </div>
-                                    <div>
-                                        <p>Visado</p>
-                                        <strong>Info</strong>
-                                    </div>
-                                </div>
-                                <div className="col-span-12 lg:col-span-2">
-                                    <p>Visador</p>
-                                    <strong>Info</strong>
-                                </div>
-                            </div>
+                            )}
                         </div>
                     </div>
                 </div>
