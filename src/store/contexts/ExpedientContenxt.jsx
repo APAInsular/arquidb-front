@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
+import WebLoader from '../../routes/loaders/WebLoader';
 
 const ArquidbContext = createContext();
 export const useExpedient = () => useContext(ArquidbContext);
@@ -16,7 +17,7 @@ const ExpedientContenxt = ({ children }) => {
         views({ setData: setExpedients, setLoading, setErrors: setError });
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;
 
     return (
