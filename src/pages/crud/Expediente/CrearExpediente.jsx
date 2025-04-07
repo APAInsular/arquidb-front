@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import { usePhase } from "../../../store/contexts/PhaseContext";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const CrearExpediente = () => {
     const [modalPhase, setModalPhase] = useState(false);
@@ -11,19 +11,49 @@ const CrearExpediente = () => {
     const [documentsPhase, setDocumentsPhase] = useState(null);
     const { phases } = usePhase();
 
-    const phaseSelectorActivate = () => {
-        if (!modalPhase) {
-            setModalPhase(true);
-        }
-    }
+    const [number, setNumber] = useState("");
+    const [postalCode, setPostalCode] = useState("");
+    const [budget, setBudget] = useState(0)
 
-    const documentSelectorActivate = (phase) => {
-        if (!modalDocument) {
-            setDocumentsPhase(phase)
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+
+        switch (e.target.name) {
+            case "number":
+                if (value.length <= 8) {
+                    if (
+                        (value.length < 3 && /^\d*$/.test(value)) || // Primeros 2 dígitos
+                        (value.length === 3 && /^\d{2}-?$/.test(value)) || // Guion en 3ª posición
+                        (value.length > 3 && /^\d{2}-\d*$/.test(value)) // Resto de dígitos
+                    ) {
+                        setNumber(value);
+                    }
+                }
+                break;
+            case "postal_code":
+                if (/^\d+$/.test(value)) setPostalCode(value);
+                break;
+            case "budget":
+                if (/^\d+$/.test(value) && parseInt(value) >= 0) setBudget(value);
+                break;
+        }
+    };
+
+    const phaseSelectorActivate = useCallback(() => {
+        if (!modalPhase) setModalPhase(true);
+    }, [modalPhase]);
+
+    const documentSelectorActivate = useCallback((phase) => {
+        if (!modalDocument && phase) {
+            setDocumentsPhase(phase);
             setModalDocument(true);
         }
-    }
-    console.log(expedientPhases);
+    }, [modalDocument]);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    };
+
     return (
         <>
             <div>
@@ -33,7 +63,7 @@ const CrearExpediente = () => {
                 </div>
                 {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
-                <form className="mb-10">
+                <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
                         <div className="grid grid-cols-12 gap-4 p-4">
@@ -46,7 +76,7 @@ const CrearExpediente = () => {
                                     type="text"
                                     name="title"
                                     id="title"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    className="w-full p-2 border border-gray-300 rounded-md" required
                                 />
                             </div>
 
@@ -59,7 +89,7 @@ const CrearExpediente = () => {
                                     name="number"
                                     id="number"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={8} maxLength={8}
+                                    minLength={8} maxLength={8} value={number} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -84,6 +114,7 @@ const CrearExpediente = () => {
                                     name="budget"
                                     id="budget"
                                     className="w-full p-2 border border-gray-300 rounded-md"
+                                    value={budget} onChange={handleInputChange} min={0} required
                                 />
                             </div>
 
@@ -95,7 +126,7 @@ const CrearExpediente = () => {
                                     type="text"
                                     name="site"
                                     id="site"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    className="w-full p-2 border border-gray-300 rounded-md" required
                                 />
                             </div>
 
@@ -109,7 +140,7 @@ const CrearExpediente = () => {
                                     name="postal_code"
                                     id="postal_code"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={5} maxLength={5}
+                                    minLength={5} maxLength={5} value={postalCode} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -121,7 +152,7 @@ const CrearExpediente = () => {
                                     type="datetime-local"
                                     name="start_date"
                                     id="start_date"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    className="w-full p-2 border border-gray-300 rounded-md" required
                                 />
                             </div>
 
@@ -133,7 +164,7 @@ const CrearExpediente = () => {
                                     type="datetime-local"
                                     name="end_date"
                                     id="end_date"
-                                    className="w-full p-2 border border-gray-300 rounded-md"
+                                    className="w-full p-2 border border-gray-300 rounded-md" required
                                 />
                             </div>
                         </div>
@@ -148,16 +179,17 @@ const CrearExpediente = () => {
                             </button>
                             {expedientPhases.map(phase => {
                                 return (
-                                    <button type="button" key={phase} className="bg-blue-700 text-white rounded-full py-2 px-6"
+                                    <button type="button" key={phase}
+                                        className="bg-blue-700 text-white rounded-full py-2 px-6 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
                                         onClick={() => documentSelectorActivate(phase)}>{phase}</button>
                                 );
                             })}
                         </div>
                     </div>
+                    <div className="text-center">
+                        <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
+                    </div>
                 </form>
-                <div className="text-center">
-                    <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
-                </div>
             </div>
         </>
     )
