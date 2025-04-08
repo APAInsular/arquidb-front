@@ -58,7 +58,7 @@ const Expediente = () => {
                                                 <Link to={`/expedientes/${expediente.id}`} className="bg-red-700 text-white py-1 px-6 rounded-lg">Ver</Link>
                                             </td>
                                             <td>
-                                                <button type="button" className="bg-red-700 text-white py-1 px-6 rounded-lg">Editar</button>
+                                                <Link to={`/expedientes/${expediente.id}/editar`} className="bg-red-700 text-white py-1 px-6 rounded-lg">Editar</Link>
                                             </td>
                                             <td>
                                                 <button type="button" onClick={() => deleteActivate(expediente.id)} className="bg-red-700 text-white py-1 px-6 rounded-lg">Borrar</button>

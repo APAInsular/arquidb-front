@@ -1,19 +1,27 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import { usePhase } from "../../../store/contexts/PhaseContext";
-import { useState, useCallback } from "react";
+import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
+import { useState, useCallback, useEffect } from "react";
 import axios from "../../../lib/axios";
 
-const CrearExpediente = () => {
+const EditarExpediente = () => {
+    const params = useParams();
+    const { expedients } = useExpedient();
+    const { phases } = usePhase();
+    const navigate = useNavigate();
+    const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-    const navigate = useNavigate();
-    const { phases } = usePhase();
 
-    const [expedient, setExpedient] = useState({});
+    useEffect(() => {
+        if (expedients) setExpedient(expedients.find(e => e.id == params.id));
+    }, [expedients]);
+
+    if (!expedient) return <h1>Cargando...</h1>
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -83,6 +91,9 @@ const CrearExpediente = () => {
             console.error("Error creando el evento:", error);
         }
     };
+
+    //expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 19);
+    //expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 19);
 
     console.log(expedient);
 
@@ -233,4 +244,4 @@ const CrearExpediente = () => {
     );
 };
 
-export default CrearExpediente;
+export default EditarExpediente;
