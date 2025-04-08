@@ -1,14 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useState, useCallback } from "react";
+import axios from "../../../lib/axios";
 
 const CrearExpediente = () => {
     const [modalPhase, setModalPhase] = useState(false);
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
+    const navigate = useNavigate();
     const { phases } = usePhase();
 
     const [number, setNumber] = useState("");
@@ -50,8 +52,28 @@ const CrearExpediente = () => {
         }
     }, [modalDocument]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Crear un objeto FormData a partir del formulario
+        const formData = new FormData(e.target);
+
+        // Convertir FormData a un objeto plano
+        const newExpedient = Object.fromEntries(formData.entries());
+        newExpedient.budget = parseFloat(newExpedient.budget);
+
+        console.log(newExpedient);
+
+        try {
+            if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
+
+            await axios.get("/sanctum/csrf-cookie");
+            await axios.post("/api/expedient", newExpedient);
+            navigate('/expedientes');
+            navigate(0);
+        } catch (error) {
+            console.error("Error creando el evento:", error);
+        }
     };
 
     return (
@@ -186,6 +208,7 @@ const CrearExpediente = () => {
                             })}
                         </div>
                     </div>
+                    <input type="hidden" name="center_id" value={1} />
                     <div className="text-center">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>
