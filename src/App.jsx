@@ -13,6 +13,7 @@ import Cliente from './pages/crud/Cliente/Cliente';
 import Usuarios from './pages/admin/usuarios/usuarios';
 import Profile from './pages/auth/Profile';
 import VerUsuario from './pages/admin/usuarios/VerUsuario';
+import VerColegiado from './pages/crud/Colegiado/VerColegiado';
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/expedientes/crear" element={<CrearExpediente />} />
             <Route path="/personas" element={<Persona />} />
             <Route path="/colegiados" element={<Colegiado />} />
+            <Route path="/colegiados/:id/show" element={<VerColegiado />}></Route>
             <Route path="/clientes" element={<Cliente />} />
             <Route path="/usuarios" element={<Usuarios />}></Route>
             <Route path="/usuarios/:id/show" element={<VerUsuario />}></Route>
