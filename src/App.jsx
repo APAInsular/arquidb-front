@@ -13,6 +13,7 @@ import Persona from './pages/Persona';
 import Colegiado from './pages/crud/Colegiado/Colegiado';
 import Cliente from './pages/crud/Cliente/Cliente';
 import Profile from './pages/auth/Profile';
+import Usuarios from './pages/admin/usuarios/Usuarios';
 import VerUsuario from './pages/admin/usuarios/VerUsuario';
 import VerColegiado from './pages/crud/Colegiado/VerColegiado';
 
@@ -37,10 +38,10 @@ function App() {
               <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
               <Route path="/personas" element={<Persona />} />
               <Route path="/colegiados" element={<Colegiado />} />
-              <Route path="/colegiados/:id/show" element={<VerColegiado />}></Route>
+              <Route path="/colegiados/:id/show" element={<VerColegiado />} />
               <Route path="/clientes" element={<Cliente />} />
-              <Route path="/usuarios" element={<Usuarios />}></Route>
-              <Route path="/usuarios/:id/show" element={<VerUsuario />}></Route>
+              <Route path="/usuarios" element={<Usuarios />} />
+              <Route path="/usuarios/:id/show" element={<VerUsuario />} />
             </Route>
             <Route path="/login" element={<Login />} />
           </Routes>
