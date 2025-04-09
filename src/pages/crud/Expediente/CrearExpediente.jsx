@@ -75,15 +75,54 @@ const CrearExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/api/expedient", newExpedient);
-            navigate('/expedientes');
-            navigate(0);
+            let response = await axios.post("/api/expedient", newExpedient);
+
+            console.log(response.data.data.id);
+
+            const newPhases = expedientPhases.map(phase => {
+                let title = "";
+
+                if (phase.slice(0, 3) == '911') title = "Plan Parcial";
+                else if (phase.slice(0, 2) == '31') title = "Minuta A/C de Proyecto básico";
+                else if (phase.slice(0, 2) == '45') title = "Proyecto de ejecución - Proyectos parciales";
+                else if (phase.slice(0, 2) == '55') title = "Proyecto básico + Ejecución - Proyectos parciales";
+                else if (phase.slice(0, 2) == '62') title = "Libro de órdenes";
+                else if (phase.slice(0, 2) == '64') title = "Minutas A/C de Dirección de obras";
+                else if (phase.slice(0, 2) == '78') title = "Anexos a proyectos";
+                else if (phase.slice(0, 2) == '85') title = "Certificios";
+                else if (phase.slice(0, 2) == '92') title = "Plan General";
+                else if (phase.slice(0, 2) == '93') title = "Normas subsidiarias";
+                else if (phase.slice(0, 2) == '94') title = "Proyecto de urbanización";
+                else if (phase.slice(0, 2) == '95') title = "Plan especial";
+                else if (phase.slice(0, 2) == '96') title = "Informes";
+                else if (phase.slice(0, 2) == '97') title = "Varios urbanismo";
+                else if (phase.slice(0, 2) == '98') title = "Otros";
+                else if (phase.slice(0, 1) == '0') title = "Contrato o Comunicación de encargo";
+                else if (phase.slice(0, 1) == '1') title = "Estudios previos";
+                else if (phase.slice(0, 1) == '2') title = "Anteproyecto";
+                else if (phase.slice(0, 1) == '3') title = "Proyecto básico";
+                else if (phase.slice(0, 1) == '4') title = "Proyecto de ejecución";
+                else if (phase.slice(0, 1) == '5') title = "Proyecto básico + Ejecución";
+                else if (phase.slice(0, 1) == '6') title = "Certificado Parcial";
+                else if (phase.slice(0, 1) == '7') title = "Certificado final";
+                else if (phase.slice(0, 1) == '8') title = "Ampliación, Reformados y Acondicionamientos";
+                else if (phase.slice(0, 1) == '9') title = "Estudio de detalles";
+
+                return { phase: phase, title: title, expedient_id: response.data.data.id };
+            })
+
+            console.log(newPhases);
+
+            //await axios.post("/api/phase", newPhases);
+
+            // navigate('/expedientes');
+            // navigate(0);
         } catch (error) {
             console.error("Error creando el evento:", error);
         }
     };
 
-    console.log(expedient);
+    console.log(expedientPhases);
 
     return (
         <>
