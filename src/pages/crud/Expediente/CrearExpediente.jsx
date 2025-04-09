@@ -20,32 +20,31 @@ const CrearExpediente = () => {
 
         switch (name) {
             case "number":
+                // Validación mejorada para el formato XX-XXXXX
                 if (value.length <= 8) {
-                    if (
-                        (value.length < 3 && /^\d*$/.test(value)) || // Primeros 2 dígitos
-                        (value.length === 3 && /^\d{2}-?$/.test(value)) || // Guion en 3ª posición
-                        (value.length > 3 && /^\d{2}-\d*$/.test(value)) // Resto de dígitos
-                    ) {
-                        handleChange();
+                    const isValid = (
+                        (value.length < 3 && /^\d*$/.test(value)) ||
+                        (value.length === 3 && /^\d{2}-?$/.test(value)) ||
+                        (value.length > 3 && /^\d{2}-\d*$/.test(value))
+                    );
+                    if (isValid) {
+                        setExpedient(prev => ({ ...prev, [name]: value }));
                     }
                 }
                 break;
             case "postal_code":
-                if (/^\d+$/.test(value)) handleChange();
+                if (/^\d*$/.test(value) && value.length <= 5) {
+                    setExpedient(prev => ({ ...prev, [name]: value }));
+                }
                 break;
             case "budget":
-                if (/^\d+$/.test(value) && parseInt(value) >= 0) handleChange();
+                if (/^\d*$/.test(value) && (value === '' || parseInt(value) >= 0)) {
+                    setExpedient(prev => ({ ...prev, [name]: value }));
+                }
                 break;
             default:
-                handleChange();
+                setExpedient(prev => ({ ...prev, [name]: value }));
                 break;
-        }
-
-        function handleChange() {
-            setExpedient({
-                ...expedient,
-                [name]: value
-            });
         }
     };
 
@@ -109,7 +108,7 @@ const CrearExpediente = () => {
                                     name="title"
                                     id="title"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.title} onChange={handleInputChange} required
+                                    value={expedient.title || ''} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -122,7 +121,7 @@ const CrearExpediente = () => {
                                     name="number"
                                     id="number"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={8} maxLength={8} value={expedient.number} onChange={handleInputChange} required
+                                    minLength={8} maxLength={8} value={expedient.number || ''} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -135,7 +134,7 @@ const CrearExpediente = () => {
                                     name="description"
                                     id="description"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.description} onChange={handleInputChange}
+                                    value={expedient.description || ''} onChange={handleInputChange}
                                 />
                             </div>
 
@@ -148,7 +147,7 @@ const CrearExpediente = () => {
                                     name="budget"
                                     id="budget"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.budget} onChange={handleInputChange} min={0} required
+                                    value={expedient.budget || ''} onChange={handleInputChange} min={0} required
                                 />
                             </div>
 
@@ -161,7 +160,7 @@ const CrearExpediente = () => {
                                     name="site"
                                     id="site"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.site} onChange={handleInputChange} required
+                                    value={expedient.site || ''} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -175,7 +174,7 @@ const CrearExpediente = () => {
                                     name="postal_code"
                                     id="postal_code"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={5} maxLength={5} value={expedient.postal_code} onChange={handleInputChange} required
+                                    minLength={5} maxLength={5} value={expedient.postal_code || ''} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -188,7 +187,7 @@ const CrearExpediente = () => {
                                     name="start_date"
                                     id="start_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.start_date} onChange={handleInputChange} required
+                                    value={expedient.start_date || ''} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -201,7 +200,7 @@ const CrearExpediente = () => {
                                     name="end_date"
                                     id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.end_date} onChange={handleInputChange} required
+                                    value={expedient.end_date || ''} onChange={handleInputChange} required
                                 />
                             </div>
                         </div>

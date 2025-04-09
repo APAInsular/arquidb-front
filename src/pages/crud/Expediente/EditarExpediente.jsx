@@ -28,32 +28,31 @@ const EditarExpediente = () => {
 
         switch (name) {
             case "number":
+                // Validación mejorada para el formato XX-XXXXX
                 if (value.length <= 8) {
-                    if (
-                        (value.length < 3 && /^\d*$/.test(value)) || // Primeros 2 dígitos
-                        (value.length === 3 && /^\d{2}-?$/.test(value)) || // Guion en 3ª posición
-                        (value.length > 3 && /^\d{2}-\d*$/.test(value)) // Resto de dígitos
-                    ) {
-                        handleChange();
+                    const isValid = (
+                        (value.length < 3 && /^\d*$/.test(value)) ||
+                        (value.length === 3 && /^\d{2}-?$/.test(value)) ||
+                        (value.length > 3 && /^\d{2}-\d*$/.test(value))
+                    );
+                    if (isValid) {
+                        setExpedient(prev => ({ ...prev, [name]: value }));
                     }
                 }
                 break;
             case "postal_code":
-                if (/^\d+$/.test(value)) handleChange();
+                if (/^\d*$/.test(value) && value.length <= 5) {
+                    setExpedient(prev => ({ ...prev, [name]: value }));
+                }
                 break;
             case "budget":
-                if (/^\d+$/.test(value) && parseInt(value) >= 0) handleChange();
+                if (/^\d*$/.test(value) && (value === '' || parseInt(value) >= 0)) {
+                    setExpedient(prev => ({ ...prev, [name]: value }));
+                }
                 break;
             default:
-                handleChange();
+                setExpedient(prev => ({ ...prev, [name]: value }));
                 break;
-        }
-
-        function handleChange() {
-            setExpedient({
-                ...expedient,
-                [name]: value
-            });
         }
     };
 
@@ -84,7 +83,7 @@ const EditarExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/api/expedient", newExpedient);
+            await axios.put(`/api/expedient/${params.id}`, newExpedient);
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
@@ -92,8 +91,10 @@ const EditarExpediente = () => {
         }
     };
 
-    //expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 19);
-    //expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 19);
+    if (!expedient.start_date || !expedient.end_date) return <h1>Cargando...</h1>
+
+    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 19);
+    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 19);
 
     console.log(expedient);
 
