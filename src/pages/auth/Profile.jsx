@@ -10,7 +10,7 @@ const Profile = () => {
             <div className="h-full overflow-y-scroll xl:px-20">
                 {/* imagen y banner */}
                 <div className="relative flex flex-col justify-center items-center">
-                    <div className=" items-end relative w-full bg-gradient-to-l from-gray-300 to-gray-400 h-[150px] rounded-2xl rounded-b-none"></div>
+                    <div className=" items-end relative w-full bg-gradient-to-l from-gray-300 to-gray-400 h-[180px] rounded-2xl rounded-b-none"></div>
                     <div className="absolute border-7 border-gray-100 rounded-full">
                         <Avatar name={user?.name.at(0).toUpperCase()} foto="" size={120} text={"text-white text-5xl"} />
                     </div>
