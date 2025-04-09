@@ -1,19 +1,27 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import { usePhase } from "../../../store/contexts/PhaseContext";
-import { useState, useCallback } from "react";
+import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
+import { useState, useCallback, useEffect } from "react";
 import axios from "../../../lib/axios";
 
-const CrearExpediente = () => {
+const EditarExpediente = () => {
+    const params = useParams();
+    const { expedients } = useExpedient();
+    const { phases } = usePhase();
+    const navigate = useNavigate();
+    const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-    const navigate = useNavigate();
-    const { phases } = usePhase();
 
-    const [expedient, setExpedient] = useState({});
+    useEffect(() => {
+        if (expedients) setExpedient(expedients.find(e => e.id == params.id));
+    }, [expedients]);
+
+    if (!expedient) return <h1>Cargando...</h1>
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -75,13 +83,18 @@ const CrearExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/api/expedient", newExpedient);
+            await axios.put(`/api/expedient/${params.id}`, newExpedient);
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
             console.error("Error creando el evento:", error);
         }
     };
+
+    if (!expedient.start_date || !expedient.end_date) return <h1>Cargando...</h1>
+
+    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 19);
+    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 19);
 
     console.log(expedient);
 
@@ -108,7 +121,7 @@ const CrearExpediente = () => {
                                     name="title"
                                     id="title"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.title || ''} onChange={handleInputChange} required
+                                    value={expedient.title} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -121,7 +134,7 @@ const CrearExpediente = () => {
                                     name="number"
                                     id="number"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={8} maxLength={8} value={expedient.number || ''} onChange={handleInputChange} required
+                                    minLength={8} maxLength={8} value={expedient.number} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -134,7 +147,7 @@ const CrearExpediente = () => {
                                     name="description"
                                     id="description"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.description || ''} onChange={handleInputChange}
+                                    value={expedient.description} onChange={handleInputChange}
                                 />
                             </div>
 
@@ -147,7 +160,7 @@ const CrearExpediente = () => {
                                     name="budget"
                                     id="budget"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.budget || ''} onChange={handleInputChange} min={0} required
+                                    value={expedient.budget} onChange={handleInputChange} min={0} required
                                 />
                             </div>
 
@@ -160,7 +173,7 @@ const CrearExpediente = () => {
                                     name="site"
                                     id="site"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.site || ''} onChange={handleInputChange} required
+                                    value={expedient.site} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -174,7 +187,7 @@ const CrearExpediente = () => {
                                     name="postal_code"
                                     id="postal_code"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={5} maxLength={5} value={expedient.postal_code || ''} onChange={handleInputChange} required
+                                    minLength={5} maxLength={5} value={expedient.postal_code} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -187,7 +200,7 @@ const CrearExpediente = () => {
                                     name="start_date"
                                     id="start_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.start_date || ''} onChange={handleInputChange} required
+                                    value={expedient.start_date} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -200,7 +213,7 @@ const CrearExpediente = () => {
                                     name="end_date"
                                     id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.end_date || ''} onChange={handleInputChange} required
+                                    value={expedient.end_date} onChange={handleInputChange} required
                                 />
                             </div>
                         </div>
@@ -232,4 +245,4 @@ const CrearExpediente = () => {
     );
 };
 
-export default CrearExpediente;
+export default EditarExpediente;

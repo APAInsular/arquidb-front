@@ -8,6 +8,7 @@ import PhaseContext from './store/contexts/PhaseContext';
 import Expediente from './pages/crud/Expediente/Expediente';
 import VerExpediente from './pages/crud/Expediente/VerExpediente';
 import CrearExpediente from './pages/crud/Expediente/CrearExpediente';
+import EditarExpediente from './pages/crud/Expediente/EditarExpediente';
 import Persona from './pages/Persona';
 import Colegiado from './pages/crud/Colegiado/Colegiado';
 import Cliente from './pages/crud/Cliente/Cliente';
@@ -32,6 +33,7 @@ function App() {
               <Route path="/expedientes" element={<Expediente />} />
               <Route path="/expedientes/:id" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />
+              <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
               <Route path="/personas" element={<Persona />} />
               <Route path="/colegiados" element={<Colegiado />} />
               <Route path="/clientes" element={<Cliente />} />
