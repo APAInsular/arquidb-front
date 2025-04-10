@@ -21,7 +21,11 @@ const EditarExpediente = () => {
         if (expedients) setExpedient(expedients.find(e => e.id == params.id));
     }, [expedients]);
 
-    if (!expedient) return <h1>Cargando...</h1>
+    useEffect(() => {
+        if (phases) setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+    }, [expedient]);
+
+    if (!expedient || !expedientPhases) return <h1>Cargando...</h1>
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -84,6 +88,9 @@ const EditarExpediente = () => {
 
             await axios.get("/sanctum/csrf-cookie");
             await axios.put(`/api/expedient/${params.id}`, newExpedient);
+
+
+            
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
@@ -228,9 +235,9 @@ const EditarExpediente = () => {
                             </button>
                             {expedientPhases.map(phase => {
                                 return (
-                                    <button type="button" key={phase}
+                                    <button type="button" key={phase.id}
                                         className="bg-blue-700 text-white rounded-full py-2 px-6 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
-                                        onClick={() => documentSelectorActivate(phase)}>{phase}</button>
+                                        onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                 );
                             })}
                         </div>
