@@ -113,10 +113,12 @@ const CrearExpediente = () => {
 
             console.log(newPhases);
 
-            //await axios.post("/api/phase", newPhases);
+            for (const phase of newPhases) {
+                await axios.post("/api/phase", phase);
+            };
 
-            // navigate('/expedientes');
-            // navigate(0);
+            navigate('/expedientes');
+            navigate(0);
         } catch (error) {
             console.error("Error creando el evento:", error);
         }
