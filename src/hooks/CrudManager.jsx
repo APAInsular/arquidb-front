@@ -2,7 +2,7 @@ import axios from '../lib/axios'
 
 export default function CrudManager({ url }) {
 
-    const api = "api/" 
+    const api = "api/"
     // Ver los datos 
     const views = ({ setData, setLoading, setErrors }) => {
         setLoading(true);
@@ -16,8 +16,8 @@ export default function CrudManager({ url }) {
     };
 
     // Crear los datos
-    const creates = ({ setErrors, setStatus, ...props }) => {
-        setErrors([]);
+    const creates = async ({ setErrors, setStatus, ...props }) => {
+        setErrors(null);
         setStatus(null);
         return axios
             .post(api + url, props.data)
@@ -36,7 +36,7 @@ export default function CrudManager({ url }) {
 
     // Actualizar los datos
     const updates = async ({ setErrors, setStatus, ...props }) => {
-        setErrors([]);
+        setErrors(null);
         setStatus(null);
         axios
             .put(api + url, props.data)
@@ -49,7 +49,7 @@ export default function CrudManager({ url }) {
 
     // Borrar los datos
     const deletes = async ({ setErrors, setStatus, ElementId }) => {
-        setErrors([]);
+        setErrors(null);
         setStatus(true);
         axios
             .delete(`${api}${url}/${ElementId}`,)
