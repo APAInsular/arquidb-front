@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
-import { usePhase } from "../../../store/contexts/PhaseContext";
+import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { useState, useCallback } from "react";
 import axios from "../../../lib/axios";
 
@@ -12,7 +12,7 @@ const CrearExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
     const navigate = useNavigate();
-    const { phases } = usePhase();
+    const { createExpedient } = useExpedient();
 
     const [expedient, setExpedient] = useState({});
 
@@ -79,9 +79,9 @@ const CrearExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            let response = await axios.post("/api/expedient", newExpedient);
+            let response = await createExpedient(newExpedient);
 
-            console.log(response.data.data.id);
+            console.log(response.data.id);
 
             const newPhases = expedientPhases.map(phase => {
                 let title = "";
@@ -112,7 +112,7 @@ const CrearExpediente = () => {
                 else if (phase.slice(0, 1) == '8') title = "Ampliación, Reformados y Acondicionamientos";
                 else if (phase.slice(0, 1) == '9') title = "Estudio de detalles";
 
-                return { phase: phase, title: title, expedient_id: response.data.data.id };
+                return { phase: phase, title: title, expedient_id: response.data.id };
             })
 
             console.log(newPhases);

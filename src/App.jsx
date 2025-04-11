@@ -3,7 +3,7 @@ import './App.css';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/auth/Login';
-import ExpedientContenxt from './store/contexts/ExpedientContenxt';
+import ExpedientContext from './store/contexts/ExpedientContext';
 import PhaseContext from './store/contexts/PhaseContext';
 import Expediente from './pages/crud/Expediente/Expediente';
 import VerExpediente from './pages/crud/Expediente/VerExpediente';
@@ -22,7 +22,7 @@ function App() {
   return (
 
     <>
-      <ExpedientContenxt>
+      <ExpedientContext>
         <PhaseContext>
           {/* rutas de la pagina */}
           <Routes>
@@ -46,7 +46,7 @@ function App() {
             <Route path="/login" element={<Login />} />
           </Routes>
         </PhaseContext>
-      </ExpedientContenxt>
+      </ExpedientContext>
     </>
 
   )

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
+import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { useState, useEffect } from "react";
 import Delete from "../../../components/modals/crud/Delete";
 

@@ -39,7 +39,7 @@ export default function CrudManager({ url }) {
         setErrors(null);
         setStatus(null);
         axios
-            .put(api + url, props.data)
+            .put(api + url + "/" + props.id, props.data)
             .then(res => res.data)
             .catch(error => {
                 setErrors(

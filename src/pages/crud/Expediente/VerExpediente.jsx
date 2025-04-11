@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
+import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";

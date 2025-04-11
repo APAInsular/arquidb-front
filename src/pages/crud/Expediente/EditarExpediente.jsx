@@ -2,13 +2,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import { usePhase } from "../../../store/contexts/PhaseContext";
-import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
+import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { useState, useCallback, useEffect } from "react";
 import axios from "../../../lib/axios";
 
 const EditarExpediente = () => {
     const params = useParams();
-    const { expedients } = useExpedient();
+    const { expedients, updateExpedient } = useExpedient();
     const { phases } = usePhase();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
@@ -87,10 +87,9 @@ const EditarExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            await axios.put(`/api/expedient/${params.id}`, newExpedient);
+            await updateExpedient(params.id, newExpedient);
 
 
-            
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
