@@ -36,7 +36,7 @@ const VerExpediente = () => {
         <>
             <div className="overflow-y-auto h-full">
                 <div className="flex justify-between p-2 mb-5">
-                    <h3 className="text-3xl">Vivienda Familiar</h3>
+                    <h3 className="text-3xl">{expedient.title}</h3>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                     </svg>
@@ -105,7 +105,7 @@ const VerExpediente = () => {
                                     </div>
                                     <div>
                                         <p>Facturas</p>
-                                        <strong>{expedient.budget}</strong>
+                                        <strong>{expedient.budget} €</strong>
                                     </div>
                                     <div>
                                         <p>Expedientes asociados</p>
@@ -126,14 +126,14 @@ const VerExpediente = () => {
                     <div className="bg-gray-200 rounded-lg p-2">
                         <div className="border-t">
                             <strong>Fases</strong>
-                            <div className="flex justify-center">
+                            <div className="flex justify-center space-x-4">
                                 {expedientPhases.map(phase => {
                                     return (
                                         <div className="flex flex-col" key={phase.phase}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 self-center">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                                             </svg>
-                                            <p>{phase.phase}</p>
+                                            <p className="self-center">{phase.phase}</p>
                                         </div>
                                     );
                                 })}

@@ -1,9 +1,10 @@
+import { useState, useCallback, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useExpedient } from "../../../store/contexts/ExpedientContext";
+import { usePhase } from "../../../store/contexts/PhaseContext";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
-import { usePhase } from "../../../store/contexts/PhaseContext";
-import { useExpedient } from "../../../store/contexts/ExpedientContext";
-import { useState, useCallback, useEffect } from "react";
+import WebLoader from "../../../routes/loaders/WebLoader";
 import axios from "../../../lib/axios";
 
 const EditarExpediente = () => {
@@ -28,7 +29,7 @@ const EditarExpediente = () => {
         };
     }, [expedient]);
 
-    if (!expedient || !expedientPhases) return <h1>Cargando...</h1>
+    if (!expedient || !expedientPhases) return <WebLoader />;
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -245,11 +246,6 @@ const EditarExpediente = () => {
                                         onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                 );
                             })}
-                            <button type="button" onClick={() => phaseSelectorActivate("old_phase")} className="cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
-                                </svg>
-                            </button>
                         </div>
                     </div>
                     <input type="hidden" name="center_id" value={1} />
