@@ -2,7 +2,7 @@ import axios from '../lib/axios'
 
 export default function CrudManager({ url }) {
 
-    const api = "api/" 
+    const api = "api/"
     // Ver los datos 
     const views = ({ setData, setLoading, setErrors }) => {
         setLoading(true);
