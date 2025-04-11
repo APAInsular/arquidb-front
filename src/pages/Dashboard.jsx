@@ -1,4 +1,4 @@
-import { useExpedient } from "../store/contexts/ExpedientContenxt";
+import { useExpedient } from "../store/contexts/ExpedientContext";
 
 const Dashboard = () => {
 

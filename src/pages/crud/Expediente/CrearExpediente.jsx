@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
+import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useState, useCallback } from "react";
 import axios from "../../../lib/axios";
 
@@ -13,6 +14,7 @@ const CrearExpediente = () => {
     const [documentsPhase, setDocumentsPhase] = useState(null);
     const navigate = useNavigate();
     const { createExpedient } = useExpedient();
+    const { createPhase } = usePhase();
 
     const [expedient, setExpedient] = useState({});
 
@@ -118,7 +120,7 @@ const CrearExpediente = () => {
             console.log(newPhases);
 
             for (const phase of newPhases) {
-                await axios.post("/api/phase", phase);
+                await createPhase(phase);
             };
 
             navigate('/expedientes');
