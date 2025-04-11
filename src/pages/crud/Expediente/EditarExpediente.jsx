@@ -13,6 +13,7 @@ const EditarExpediente = () => {
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
+    const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
@@ -22,7 +23,9 @@ const EditarExpediente = () => {
     }, [expedients]);
 
     useEffect(() => {
-        if (phases) setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+        if (phases) {
+            setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+        };
     }, [expedient]);
 
     if (!expedient || !expedientPhases) return <h1>Cargando...</h1>
@@ -60,8 +63,11 @@ const EditarExpediente = () => {
         }
     };
 
-    const phaseSelectorActivate = useCallback(() => {
-        if (!modalPhase) setModalPhase(true);
+    const phaseSelectorActivate = useCallback((type) => {
+        if (!modalPhase) {
+            setModalPhase(true);
+            setModalPhaseType(type);
+        }
     }, [modalPhase]);
 
     const documentSelectorActivate = useCallback((phase) => {
@@ -102,16 +108,16 @@ const EditarExpediente = () => {
     expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 19);
     expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 19);
 
-    console.log(expedient);
+    console.log(expedientPhases);
 
     return (
         <>
             <div>
                 <div className="flex justify-between border-b p-2">
                     <Link to="/expedientes" className="text-5xl">←</Link>
-                    <h3 className="text-5xl">Crear expediente</h3>
+                    <h3 className="text-5xl">Editar expediente</h3>
                 </div>
-                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
+                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
@@ -227,18 +233,23 @@ const EditarExpediente = () => {
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
                         <div className="flex space-x-2">
-                            <button type="button" onClick={() => phaseSelectorActivate()} className="cursor-pointer">
+                            <button type="button" onClick={() => phaseSelectorActivate("new_phase")} className="cursor-pointer">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                             </button>
                             {expedientPhases.map(phase => {
                                 return (
-                                    <button type="button" key={phase.id}
+                                    <button type="button" key={phase.phase}
                                         className="bg-blue-700 text-white rounded-full py-2 px-6 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
                                         onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                 );
                             })}
+                            <button type="button" onClick={() => phaseSelectorActivate("old_phase")} className="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     <input type="hidden" name="center_id" value={1} />

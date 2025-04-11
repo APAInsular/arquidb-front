@@ -88,33 +88,33 @@ const CrearExpediente = () => {
             const newPhases = expedientPhases.map(phase => {
                 let title = "";
 
-                if (phase.slice(0, 3) == '911') title = "Plan Parcial";
-                else if (phase.slice(0, 2) == '31') title = "Minuta A/C de Proyecto básico";
-                else if (phase.slice(0, 2) == '45') title = "Proyecto de ejecución - Proyectos parciales";
-                else if (phase.slice(0, 2) == '55') title = "Proyecto básico + Ejecución - Proyectos parciales";
-                else if (phase.slice(0, 2) == '62') title = "Libro de órdenes";
-                else if (phase.slice(0, 2) == '64') title = "Minutas A/C de Dirección de obras";
-                else if (phase.slice(0, 2) == '78') title = "Anexos a proyectos";
-                else if (phase.slice(0, 2) == '85') title = "Certificios";
-                else if (phase.slice(0, 2) == '92') title = "Plan General";
-                else if (phase.slice(0, 2) == '93') title = "Normas subsidiarias";
-                else if (phase.slice(0, 2) == '94') title = "Proyecto de urbanización";
-                else if (phase.slice(0, 2) == '95') title = "Plan especial";
-                else if (phase.slice(0, 2) == '96') title = "Informes";
-                else if (phase.slice(0, 2) == '97') title = "Varios urbanismo";
-                else if (phase.slice(0, 2) == '98') title = "Otros";
-                else if (phase.slice(0, 1) == '0') title = "Contrato o Comunicación de encargo";
-                else if (phase.slice(0, 1) == '1') title = "Estudios previos";
-                else if (phase.slice(0, 1) == '2') title = "Anteproyecto";
-                else if (phase.slice(0, 1) == '3') title = "Proyecto básico";
-                else if (phase.slice(0, 1) == '4') title = "Proyecto de ejecución";
-                else if (phase.slice(0, 1) == '5') title = "Proyecto básico + Ejecución";
-                else if (phase.slice(0, 1) == '6') title = "Certificado Parcial";
-                else if (phase.slice(0, 1) == '7') title = "Certificado final";
-                else if (phase.slice(0, 1) == '8') title = "Ampliación, Reformados y Acondicionamientos";
-                else if (phase.slice(0, 1) == '9') title = "Estudio de detalles";
+                if (phase.phase.slice(0, 3) == '911') title = "Plan Parcial";
+                else if (phase.phase.slice(0, 2) == '31') title = "Minuta A/C de Proyecto básico";
+                else if (phase.phase.slice(0, 2) == '45') title = "Proyecto de ejecución - Proyectos parciales";
+                else if (phase.phase.slice(0, 2) == '55') title = "Proyecto básico + Ejecución - Proyectos parciales";
+                else if (phase.phase.slice(0, 2) == '62') title = "Libro de órdenes";
+                else if (phase.phase.slice(0, 2) == '64') title = "Minutas A/C de Dirección de obras";
+                else if (phase.phase.slice(0, 2) == '78') title = "Anexos a proyectos";
+                else if (phase.phase.slice(0, 2) == '85') title = "Certificios";
+                else if (phase.phase.slice(0, 2) == '92') title = "Plan General";
+                else if (phase.phase.slice(0, 2) == '93') title = "Normas subsidiarias";
+                else if (phase.phase.slice(0, 2) == '94') title = "Proyecto de urbanización";
+                else if (phase.phase.slice(0, 2) == '95') title = "Plan especial";
+                else if (phase.phase.slice(0, 2) == '96') title = "Informes";
+                else if (phase.phase.slice(0, 2) == '97') title = "Varios urbanismo";
+                else if (phase.phase.slice(0, 2) == '98') title = "Otros";
+                else if (phase.phase.slice(0, 1) == '0') title = "Contrato o Comunicación de encargo";
+                else if (phase.phase.slice(0, 1) == '1') title = "Estudios previos";
+                else if (phase.phase.slice(0, 1) == '2') title = "Anteproyecto";
+                else if (phase.phase.slice(0, 1) == '3') title = "Proyecto básico";
+                else if (phase.phase.slice(0, 1) == '4') title = "Proyecto de ejecución";
+                else if (phase.phase.slice(0, 1) == '5') title = "Proyecto básico + Ejecución";
+                else if (phase.phase.slice(0, 1) == '6') title = "Certificado Parcial";
+                else if (phase.phase.slice(0, 1) == '7') title = "Certificado final";
+                else if (phase.phase.slice(0, 1) == '8') title = "Ampliación, Reformados y Acondicionamientos";
+                else if (phase.phase.slice(0, 1) == '9') title = "Estudio de detalles";
 
-                return { phase: phase, title: title, expedient_id: response.data.id };
+                return { ...phase, title: title, expedient_id: response.data.id };
             })
 
             console.log(newPhases);
@@ -262,9 +262,9 @@ const CrearExpediente = () => {
                             </button>
                             {expedientPhases.map(phase => {
                                 return (
-                                    <button type="button" key={phase}
+                                    <button type="button" key={phase.phase}
                                         className="bg-blue-700 text-white rounded-full py-2 px-6 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
-                                        onClick={() => documentSelectorActivate(phase)}>{phase}</button>
+                                        onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                 );
                             })}
                             <button type="button" onClick={() => phaseSelectorActivate("old_phase")} className="cursor-pointer">

@@ -2,22 +2,22 @@ import Default from "../Default";
 import { useState } from "react";
 
 const PhaseSelector = ({ expedientPhases, setExpedientPhases, setModalPhase, inputName }) => {
-    const [phase, setPhase] = useState("");
+    const [phase, setPhase] = useState({});
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (phase.length === 4) {
+        if (phase.phase.length === 4) {
             switch (inputName) {
                 case "new_phase":
-                    if (!expedientPhases.some(item => item === phase)) {
+                    if (!expedientPhases.some(item => item.phase === phase.phase)) {
                         setExpedientPhases([...expedientPhases, phase]);
                         setPhase("");
                     } else alert("Por favor ingrese una fase que no exista.");
                     break;
                 case "old_phase":
-                    if (expedientPhases.some(item => item === phase)) {
-                        setExpedientPhases(expedientPhases.filter(oldPhase => oldPhase != phase));
+                    if (expedientPhases.some(item => item.phase === phase.phase)) {
+                        setExpedientPhases(expedientPhases.filter(oldPhase => oldPhase.phase != phase.phase));
                         setPhase("");
                     } else alert("Por favor ingrese una fase que exista.");
                     break;
@@ -30,7 +30,7 @@ const PhaseSelector = ({ expedientPhases, setExpedientPhases, setModalPhase, inp
     const handleInputChange = (e) => {
         const value = e.target.value;
         if (/^\d{0,4}$/.test(value)) { // Solo permite hasta 4 dígitos
-            setPhase(value);
+            setPhase({ phase: value });
         }
     };
 
@@ -42,7 +42,7 @@ const PhaseSelector = ({ expedientPhases, setExpedientPhases, setModalPhase, inp
                         <h3 className="text-3xl border-b">Fases</h3>
                         <div className="flex justify-center">
                             <div className="w-2/3 overflow-y-auto max-h-[200px]">
-                                <input type="number" name={inputName} id={inputName} value={phase} onChange={handleInputChange} min={0} max={9999} className="w-full p-2 border border-gray-300 rounded-md mt-10" />
+                                <input type="number" name={inputName} id={inputName} value={phase.phase || ""} onChange={handleInputChange} min={0} max={9999} className="w-full p-2 border border-gray-300 rounded-md mt-10" />
                             </div>
                         </div>
                     </div>
