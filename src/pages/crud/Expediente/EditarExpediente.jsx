@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
-import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
+import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import axios from "../../../lib/axios";
@@ -10,11 +10,10 @@ import axios from "../../../lib/axios";
 const EditarExpediente = () => {
     const params = useParams();
     const { expedients, updateExpedient } = useExpedient();
-    const { phases } = usePhase();
+    const { phases, updatePhase } = usePhase();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
-    const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
@@ -27,7 +26,7 @@ const EditarExpediente = () => {
         if (phases) {
             setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
         };
-    }, [expedient]);
+    }, [phases, expedient]);
 
     if (!expedient || !expedientPhases) return <WebLoader />;
 
@@ -64,10 +63,9 @@ const EditarExpediente = () => {
         }
     };
 
-    const phaseSelectorActivate = useCallback((type) => {
+    const phaseEditorActivate = useCallback(() => {
         if (!modalPhase) {
             setModalPhase(true);
-            setModalPhaseType(type);
         }
     }, [modalPhase]);
 
@@ -96,6 +94,45 @@ const EditarExpediente = () => {
             await axios.get("/sanctum/csrf-cookie");
             await updateExpedient(params.id, newExpedient);
 
+            console.log(params.id);
+
+            const newPhases = expedientPhases.map(phase => {
+                let title = "";
+
+                if (phase.phase.slice(0, 3) == '911') title = "Plan Parcial";
+                else if (phase.phase.slice(0, 2) == '31') title = "Minuta A/C de Proyecto básico";
+                else if (phase.phase.slice(0, 2) == '45') title = "Proyecto de ejecución - Proyectos parciales";
+                else if (phase.phase.slice(0, 2) == '55') title = "Proyecto básico + Ejecución - Proyectos parciales";
+                else if (phase.phase.slice(0, 2) == '62') title = "Libro de órdenes";
+                else if (phase.phase.slice(0, 2) == '64') title = "Minutas A/C de Dirección de obras";
+                else if (phase.phase.slice(0, 2) == '78') title = "Anexos a proyectos";
+                else if (phase.phase.slice(0, 2) == '85') title = "Certificios";
+                else if (phase.phase.slice(0, 2) == '92') title = "Plan General";
+                else if (phase.phase.slice(0, 2) == '93') title = "Normas subsidiarias";
+                else if (phase.phase.slice(0, 2) == '94') title = "Proyecto de urbanización";
+                else if (phase.phase.slice(0, 2) == '95') title = "Plan especial";
+                else if (phase.phase.slice(0, 2) == '96') title = "Informes";
+                else if (phase.phase.slice(0, 2) == '97') title = "Varios urbanismo";
+                else if (phase.phase.slice(0, 2) == '98') title = "Otros";
+                else if (phase.phase.slice(0, 1) == '0') title = "Contrato o Comunicación de encargo";
+                else if (phase.phase.slice(0, 1) == '1') title = "Estudios previos";
+                else if (phase.phase.slice(0, 1) == '2') title = "Anteproyecto";
+                else if (phase.phase.slice(0, 1) == '3') title = "Proyecto básico";
+                else if (phase.phase.slice(0, 1) == '4') title = "Proyecto de ejecución";
+                else if (phase.phase.slice(0, 1) == '5') title = "Proyecto básico + Ejecución";
+                else if (phase.phase.slice(0, 1) == '6') title = "Certificado Parcial";
+                else if (phase.phase.slice(0, 1) == '7') title = "Certificado final";
+                else if (phase.phase.slice(0, 1) == '8') title = "Ampliación, Reformados y Acondicionamientos";
+                else if (phase.phase.slice(0, 1) == '9') title = "Estudio de detalles";
+
+                return { ...phase, title: title, expedient_id: params.id };
+            })
+
+            console.log(newPhases);
+
+            for (const phase of newPhases) {
+                await updatePhase(phase.id, phase);
+            };
 
             navigate('/expedientes');
             navigate(0);
@@ -104,10 +141,10 @@ const EditarExpediente = () => {
         }
     };
 
-    if (!expedient.start_date || !expedient.end_date) return <h1>Cargando...</h1>
+    if (!expedient.start_date || !expedient.end_date) return <WebLoader />;
 
-    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 19);
-    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 19);
+    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
+    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16);
 
     console.log(expedientPhases);
 
@@ -118,7 +155,7 @@ const EditarExpediente = () => {
                     <Link to="/expedientes" className="text-5xl">←</Link>
                     <h3 className="text-5xl">Editar expediente</h3>
                 </div>
-                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
+                {modalPhase && <PhaseEditor expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
@@ -234,9 +271,9 @@ const EditarExpediente = () => {
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
                         <div className="flex space-x-2">
-                            <button type="button" onClick={() => phaseSelectorActivate("new_phase")} className="cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            <button type="button" onClick={() => phaseEditorActivate()} className="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 bg-blue-700 text-white rounded-full p-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                 </svg>
                             </button>
                             {expedientPhases.map(phase => {
