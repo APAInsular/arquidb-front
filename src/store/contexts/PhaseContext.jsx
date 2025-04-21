@@ -18,11 +18,11 @@ const PhaseContext = ({ children }) => {
     }, []);
 
     const createPhase = async (data) => {
-        return creates({ setErrors: setError, setStatus, data });
+        return await creates({ setErrors: setError, setStatus, data });
     }
 
     const updatePhase = async (id, data) => {
-        updates({ setErrors: setError, setStatus, id, data });
+        await updates({ setErrors: setError, setStatus, id, data });
     }
 
     if (loading) return <WebLoader />;

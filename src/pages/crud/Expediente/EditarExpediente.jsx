@@ -92,7 +92,7 @@ const EditarExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            await updateExpedient(params.id, newExpedient);
+            updateExpedient(params.id, newExpedient);
 
             console.log(params.id);
 
