@@ -31,7 +31,7 @@ const Usuarios = () => {
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
-                <TitleCard name={"Usuarios"} />
+                <TitleCard name="Usuarios" link="/" />
                 {/* añadir algo */}
                 <div className="w-full flex justify-end">
                     <button className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
