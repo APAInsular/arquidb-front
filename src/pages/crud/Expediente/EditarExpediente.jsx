@@ -130,12 +130,15 @@ const EditarExpediente = () => {
 
             console.log(newPhases);
 
-            for (const phase of newPhases) {
-                await updatePhase(phase.id, phase);
-            };
+            const updatePromises = newPhases.map(phase => updatePhase(phase.id, phase));
+            await Promise.all(updatePromises);
 
             navigate('/expedientes');
-            navigate(0);
+
+            // Pequeño delay para asegurar que la navegación ocurra primero
+            setTimeout(() => {
+                navigate(0);
+            }, 200);
         } catch (error) {
             console.error("Error creando el evento:", error);
         }
