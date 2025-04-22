@@ -1,21 +1,17 @@
 import { useState } from "react";
 import InputForm from "../../../components/ui/InputForm";
 import Stepper from "../../../components/ui/Stepper";
+import { useNavigate } from "react-router-dom";
 
-const FormColegiado = (colegiado, onSubmit, status, errors) => {
+const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
 
-    // console.log(colegiado)
-    const person = colegiado.colegiado?.person;
-    const collegiate = colegiado.colegiado?.collegiate?.[0];
-    const email = colegiado.colegiado?.email;
-    const address = colegiado.colegiado?.address;
-    const phone = colegiado.colegiado?.phone;
-
-    console.log(person)
-    console.log(collegiate)
-    console.log(email)
-    console.log(address)
-    console.log(phone)
+    console.log(errors)
+    const navigate = useNavigate();
+    const person = colegiado?.person;
+    const collegiate = colegiado?.collegiate?.[0];
+    const email = colegiado?.email;
+    const address = colegiado?.address;
+    const phone = colegiado?.phone;
 
     const [step, setStep] = useState(1);
 
@@ -79,9 +75,9 @@ const FormColegiado = (colegiado, onSubmit, status, errors) => {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        onSubmit(formData)
+    const handleSubmit = () => {
+        onSubmit(formData);
+        navigate("/colegiados");
 
     };
 
@@ -93,7 +89,7 @@ const FormColegiado = (colegiado, onSubmit, status, errors) => {
             <Stepper currentStep={step} totalSteps={3} />
 
             <div className="flex-1 overflow-y-scroll">
-                {errors ? `Error : ${errors}` : ""}
+                {/* {errors  ? `Error : ${errors}` : ""} */}
                 {step === 1 && (
                     <div>
                         <div className="text-xl font-medium text-gray-400 border-b-1 pb-3 mb-4">

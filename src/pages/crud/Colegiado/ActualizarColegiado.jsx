@@ -8,7 +8,7 @@ import WebLoader from "../../../routes/loaders/WebLoader";
 const ActualizarColegiado = () => {
 
     const { id } = useParams();
-    const { updates } = CrudManager({ url: `person/${id}` });
+    const { updates } = CrudManager({ url: `personCollegiate/${id}` });
     const { views } = CrudManager({ url: `personCollegiate/${id}` });
 
     const [colegiado, setColegiado] = useState({});
