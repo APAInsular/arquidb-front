@@ -11,7 +11,7 @@ import TitleCard from "../../../components/ui/TitleCard";
 const EditarExpediente = () => {
     const params = useParams();
     const { expedients, updateExpedient } = useExpedient();
-    const { phases, updatePhase } = usePhase();
+    const { phases, updatePhase, getPhaseTitles } = usePhase();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -93,24 +93,19 @@ const EditarExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            updateExpedient(params.id, newExpedient);
+            await updateExpedient(params.id, newExpedient);
 
             console.log(params.id);
 
-            const newPhases = await axios.post('api/phase/titles', { expedientPhases, expedientId: params.id })
-                .then(res => res.data);
+            const newPhases = await getPhaseTitles({ expedientPhases, expedientId: params.id });
 
             console.log(newPhases);
 
             const updatePromises = newPhases.map(phase => updatePhase(phase.id, phase));
             await Promise.all(updatePromises);
 
-            // navigate('/expedientes');
-
-            // // Pequeño delay para asegurar que la navegación ocurra primero
-            // setTimeout(() => {
-            //     navigate(0);
-            // }, 200);
+            navigate('/expedientes');
+            navigate(0);
         } catch (error) {
             console.error("Error creando el evento:", error);
         }

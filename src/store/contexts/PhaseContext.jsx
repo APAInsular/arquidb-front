@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
+import axios from '../../lib/axios';
 
 const ArquidbContext = createContext();
 export const usePhase = () => useContext(ArquidbContext);
@@ -25,11 +26,15 @@ const PhaseContext = ({ children }) => {
         await updates({ setErrors: setError, setStatus, id, data });
     }
 
+    const getPhaseTitles = async (data) => {
+        return await axios.post('api/phase/titles', data).then(res => res.data);
+    }
+
     if (loading) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase }}>
+        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles }}>
             {children}
         </ArquidbContext.Provider>
     );
