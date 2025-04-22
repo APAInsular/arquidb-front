@@ -5,6 +5,7 @@ import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useState, useCallback } from "react";
 import axios from "../../../lib/axios";
+import TitleCard from "../../../components/ui/TitleCard";
 
 const CrearExpediente = () => {
     const [modalPhase, setModalPhase] = useState(false);
@@ -135,10 +136,7 @@ const CrearExpediente = () => {
     return (
         <>
             <div>
-                <div className="flex justify-between border-b p-2">
-                    <Link to="/expedientes" className="text-5xl">←</Link>
-                    <h3 className="text-5xl">Crear expediente</h3>
-                </div>
+                <TitleCard name="Crear expediente" link="/expedientes" />
                 {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>

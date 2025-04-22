@@ -6,6 +6,7 @@ import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import axios from "../../../lib/axios";
+import TitleCard from "../../../components/ui/TitleCard";
 
 const EditarExpediente = () => {
     const params = useParams();
@@ -133,12 +134,12 @@ const EditarExpediente = () => {
             const updatePromises = newPhases.map(phase => updatePhase(phase.id, phase));
             await Promise.all(updatePromises);
 
-            navigate('/expedientes');
+            // navigate('/expedientes');
 
-            // Pequeño delay para asegurar que la navegación ocurra primero
-            setTimeout(() => {
-                navigate(0);
-            }, 200);
+            // // Pequeño delay para asegurar que la navegación ocurra primero
+            // setTimeout(() => {
+            //     navigate(0);
+            // }, 200);
         } catch (error) {
             console.error("Error creando el evento:", error);
         }
@@ -154,10 +155,7 @@ const EditarExpediente = () => {
     return (
         <>
             <div>
-                <div className="flex justify-between border-b p-2">
-                    <Link to="/expedientes" className="text-5xl">←</Link>
-                    <h3 className="text-5xl">Editar expediente</h3>
-                </div>
+                <TitleCard name="Editar expediente" link="/expedientes" />
                 {modalPhase && <PhaseEditor expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
