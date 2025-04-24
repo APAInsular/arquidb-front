@@ -78,7 +78,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
 
     const handleSubmit = () => {
         onSubmit(formData);
-        navigate("/colegiados");
+        // navigate("/colegiados");
 
     };
 
