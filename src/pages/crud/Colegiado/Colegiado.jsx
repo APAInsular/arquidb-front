@@ -16,6 +16,8 @@ const Colegiado = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
 
+    const [sortOrder, setSortOrder] = useState("asc");
+
     useEffect(() => {
         views({ setData: setCollegiate, setLoading, setErrors: setError });
         people({ setData: setPeoples, setLoading, setErrors: setError });
@@ -23,6 +25,7 @@ const Colegiado = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
+
 
     const colegiados = peoples
         .filter(person => collegiates.some(collegiate => collegiate.person_id === person.id))
@@ -34,6 +37,13 @@ const Colegiado = () => {
             };
         });
 
+    const filterColegiados = [...colegiados].sort((a, b) => {
+        if (sortOrder === "asc") {
+            return a.name.localeCompare(b.name);
+        } else {
+            return b.name.localeCompare(a.name);
+        }
+    });
 
     return (
         <>
@@ -74,7 +84,18 @@ const Colegiado = () => {
                             <thead>
                                 <tr className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
                                     <th className="border-e-1 p-2 border-gray-300">#</th>
-                                    <th className="border-e-1 p-2 border-gray-300">Nombre</th>
+                                    <th className="flex flex-row justify-center space-x-2 border-e-1 p-2 border-gray-300 cursor-pointer hover:text-red-300 transition"
+                                        onClick={() => setSortOrder(prev => (prev === "asc" ? "desc" : "asc"))}>
+                                        <p>Nombre</p> {sortOrder === "asc" ?
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                            </svg>
+                                            :
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        }
+                                    </th>
                                     <th className="border-e-1 p-2 border-gray-300">Apellidos</th>
                                     <th className="border-e-1 p-2 border-gray-300">Identificación</th>
                                     <th className="border-e-1 p-2 border-gray-300">Fecha de nacimiento</th>
@@ -83,7 +104,7 @@ const Colegiado = () => {
                                 </tr>
                             </thead>
                             <tbody className="">
-                                {colegiados.map((datos) => (
+                                {filterColegiados.map((datos) => (
                                     <tr key={datos.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll">
                                         <td className="py-1.5 px-4">{datos.id}</td>
                                         <td className="py-1.5 px-4">{datos.name}</td>
@@ -122,7 +143,7 @@ const Colegiado = () => {
                         </table>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

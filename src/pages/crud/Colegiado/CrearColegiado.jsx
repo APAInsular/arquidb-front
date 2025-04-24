@@ -6,7 +6,7 @@ import FormColegiado from "./FormColegiado";
 
 const CrearColegiado = () => {
 
-    const { creates } = CrudManager({ url: `person` });
+    const { creates } = CrudManager({ url: `personCollegiate` });
 
     const [status, setStatus] = useState(null);
     const [errors, setErrors] = useState([]);

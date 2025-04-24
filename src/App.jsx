@@ -19,6 +19,7 @@ import CrearColegiado from './pages/crud/Colegiado/CrearColegiado';
 import VerCliente from './pages/crud/Cliente/VerCliente';
 import CrearCliente from './pages/crud/Cliente/CrearCliente';
 import ActualizarColegiado from './pages/crud/Colegiado/ActualizarColegiado';
+import ActualizarCliente from './pages/crud/Cliente/ActualizarCliente';
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
               <Route path="/colegiados/crear" element={<CrearColegiado />}></Route>
               <Route path="/clientes" element={<Cliente />} />
               <Route path="/clientes/:id/show" element={<VerCliente />}></Route>
+              <Route path="/clientes/:id/actualizar" element={<ActualizarCliente />}></Route>
               <Route path="/clientes/crear" element={<CrearCliente />}></Route>
               <Route path="/usuarios" element={<Usuarios />}></Route>
               <Route path="/usuarios/:id/show" element={<VerUsuario />}></Route>

@@ -1,19 +1,29 @@
 import Avatar from "../ui/Avatar";
 import BotonIcons from "../ui/BotonIcons";
 import Logo from '../../assets/images/logo.png'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ProfileUser from "../modals/profile/ProfileUser";
 import Notification from "../modals/profile/Notification";
 import Search from "../modals/filters/Search";
 import { useAuth } from "../../hooks/auth";
+import { useExpedient } from "../../store/contexts/ExpedientContenxt";
 
 const Header = () => {
 
     const [profile, setProfile] = useState(false);
     const [modalNotis, setModalNotis] = useState(false);
     const [modalFilter, setModalFilter] = useState(false);
+    const [expedientes, setExpedientes] = useState([]);
     // Tener al usuario conectado
     const { user } = useAuth({ middleware: 'auth' });
+
+    const { expedients } = useExpedient();
+
+    useEffect(() => {
+        if (expedients) {
+            setExpedientes(expedients);
+        }
+    }, [expedients]);
 
     const handleClick = (cases) => {
 
