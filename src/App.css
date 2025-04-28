@@ -1,5 +1,21 @@
 /* All */
 
+/* .animate-text {
+  animation: text 20s infinite;
+}
+
+@keyframes text {
+
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(-200%);
+  }
+} */
+
 *::-webkit-scrollbar {
   width: 10px;
   background-color: #d0000000;

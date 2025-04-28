@@ -20,6 +20,7 @@ import VerCliente from './pages/crud/Cliente/VerCliente';
 import CrearCliente from './pages/crud/Cliente/CrearCliente';
 import ActualizarColegiado from './pages/crud/Colegiado/ActualizarColegiado';
 import ActualizarCliente from './pages/crud/Cliente/ActualizarCliente';
+import PageSearch from './pages/PageSearch';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
               {/* usuario */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/expedientes" element={<Expediente />} />
+              <Route path="/search/:search" element={<PageSearch />} />
               <Route path="/expedientes/:id" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />
               <Route path="/personas" element={<Persona />} />
