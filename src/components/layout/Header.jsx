@@ -1,32 +1,81 @@
 import Avatar from "../ui/Avatar";
 import BotonIcons from "../ui/BotonIcons";
 import Logo from '../../assets/images/logo.png'
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProfileUser from "../modals/profile/ProfileUser";
 import Notification from "../modals/profile/Notification";
 import Search from "../modals/filters/Search";
 import { useAuth } from "../../hooks/auth";
+import CrudManager from "../../hooks/CrudManager";
+import { useSearchParams } from "react-router-dom";
+import DataSearch from "../modals/filters/DataSearch"
 
 const Header = () => {
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const searchRef = useRef(null);
 
     const [profile, setProfile] = useState(false);
     const [modalNotis, setModalNotis] = useState(false);
     const [modalFilter, setModalFilter] = useState(false);
-    // Tener al usuario conectado
+    const [modalSearch, setModalSearch] = useState(false);
+
+    const [expedientes, setExpedientes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const { user } = useAuth({ middleware: 'auth' });
+
+    const query = searchParams.get("search") || "";
+
+    const { views } = CrudManager({
+        url: `expedient${query ? `?title=${query}` : ""}`
+    });
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            views({ setData: setExpedientes, setLoading, setError });
+        }, 300);
+
+        return () => clearTimeout(timeout);
+    }, [query]);
+
+    // forma para que se cierre si haces click fuera (buscado con )
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setModalSearch(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    // console.log(expedientes)
+
+    const handleSearchChange = (event) => {
+        setModalSearch(true);
+        setSearchParams(event.target.value ? { search: event.target.value } : {});
+    };
 
     const handleClick = (cases) => {
 
         switch (cases) {
             case 1:
+                setModalSearch(false);
                 if (profile) { setProfile(false); }
                 else { setProfile(true); setModalNotis(false) }
                 break;
             case 2:
+                setModalSearch(false);
                 if (modalNotis) { setModalNotis(false); }
                 else { setModalNotis(true); setProfile(false); }
                 break;
             case 3:
+                setModalSearch(false);
                 if (modalFilter) { setModalFilter(false); }
                 else { setModalFilter(true); }
                 break;
@@ -43,13 +92,19 @@ const Header = () => {
                     </div>
                     <div className=" mx-2 ms-auto sm:ms-10 sm:me-auto sm:w-150 ">
                         {/* search */}
-                        <form className="bg-[#cb415a] text-white/60 px-3 py-1 rounded-4xl flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]" action="">
+                        <form action="/search" ref={searchRef} className={`bg-[#cb415a] relative text-white/60 px-3 py-1 ${modalSearch ? "rounded-t-4xl" : "rounded-4xl"} flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]`} >
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                 </svg>
                             </div>
-                            <input onFocus={() => setModalFilter(false)} placeholder="Buscar en Arquidb" type="search" className="hidden sm:flex outline-0 p-2 w-full text-white text-md" />
+                            <input onFocus={() => setModalFilter(false)}
+                                placeholder="Buscar en Arquidb"
+                                type="search"
+                                name="search"
+                                value={query}
+                                onChange={handleSearchChange}
+                                className="hidden sm:flex outline-0 p-2 w-full text-white text-md" />
                             {/* filtro Search */}
                             <div onClick={() => handleClick(3)} className="hidden relative md:flex cursor-pointer hover:bg-red-300/20 p-2 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
@@ -62,6 +117,9 @@ const Header = () => {
                                     </div>
                                 )}
                             </div>
+                            {modalSearch && (
+                                <DataSearch datos={expedientes} query={query} />
+                            )}
                         </form>
                     </div>
                     <div className="flex justify-between items-center gap-2 text-white/80">

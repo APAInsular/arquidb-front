@@ -16,6 +16,8 @@ const Colegiado = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
 
+    const [sortOrder, setSortOrder] = useState("asc");
+
     useEffect(() => {
         views({ setData: setCollegiate, setLoading, setErrors: setError });
         people({ setData: setPeoples, setLoading, setErrors: setError });
@@ -23,6 +25,7 @@ const Colegiado = () => {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
+
 
     const colegiados = peoples
         .filter(person => collegiates.some(collegiate => collegiate.person_id === person.id))
@@ -34,6 +37,13 @@ const Colegiado = () => {
             };
         });
 
+    const filterColegiados = [...colegiados].sort((a, b) => {
+        if (sortOrder === "asc") {
+            return a.name.localeCompare(b.name);
+        } else {
+            return b.name.localeCompare(a.name);
+        }
+    });
 
     return (
         <>
@@ -45,12 +55,12 @@ const Colegiado = () => {
                 <TitleCard name={"Colegiados"} />
                 {/* añadir algo */}
                 <div className="w-full flex justify-end">
-                    <button className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
+                    <Link to={"/colegiados/crear"} className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
                         </svg>
                         <p>Añadir</p>
-                    </button>
+                    </Link>
                 </div>
                 {/* card  */}
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
@@ -74,7 +84,18 @@ const Colegiado = () => {
                             <thead>
                                 <tr className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
                                     <th className="border-e-1 p-2 border-gray-300">#</th>
-                                    <th className="border-e-1 p-2 border-gray-300">Nombre</th>
+                                    <th className="flex flex-row justify-center space-x-2 border-e-1 p-2 border-gray-300 cursor-pointer hover:text-red-300 transition"
+                                        onClick={() => setSortOrder(prev => (prev === "asc" ? "desc" : "asc"))}>
+                                        <p>Nombre</p> {sortOrder === "asc" ?
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+                                            </svg>
+                                            :
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        }
+                                    </th>
                                     <th className="border-e-1 p-2 border-gray-300">Apellidos</th>
                                     <th className="border-e-1 p-2 border-gray-300">Identificación</th>
                                     <th className="border-e-1 p-2 border-gray-300">Fecha de nacimiento</th>
@@ -83,7 +104,7 @@ const Colegiado = () => {
                                 </tr>
                             </thead>
                             <tbody className="">
-                                {colegiados.map((datos) => (
+                                {filterColegiados.map((datos) => (
                                     <tr key={datos.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll">
                                         <td className="py-1.5 px-4">{datos.id}</td>
                                         <td className="py-1.5 px-4">{datos.name}</td>
@@ -100,13 +121,13 @@ const Colegiado = () => {
                                                     </svg>
 
                                                 </Link>
-                                                <button type="button" className="flex justify-center items-center bg-orange-300 text-orange-600 hover:bg-orange-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
+                                                <Link to={`/colegiados/${datos.id}/actualizar`} className="flex justify-center items-center bg-orange-300 text-orange-600 hover:bg-orange-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                                         <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
                                                         <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
                                                     </svg>
 
-                                                </button>
+                                                </Link>
                                                 <button onClick={() => setDeletes(datos.id)} type="button" className="flex justify-center items-center bg-red-300 text-red-600 hover:bg-red-600 hover:text-red-300 cursor-pointer font-medium py-1 text-sm rounded-full">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
@@ -122,7 +143,7 @@ const Colegiado = () => {
                         </table>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

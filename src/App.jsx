@@ -16,6 +16,13 @@ import Profile from './pages/auth/Profile';
 import Usuarios from './pages/admin/usuarios/Usuarios';
 import VerUsuario from './pages/admin/usuarios/VerUsuario';
 import VerColegiado from './pages/crud/Colegiado/VerColegiado';
+import Usuarios from './pages/admin/usuarios/Usuarios';
+import CrearColegiado from './pages/crud/Colegiado/CrearColegiado';
+import VerCliente from './pages/crud/Cliente/VerCliente';
+import CrearCliente from './pages/crud/Cliente/CrearCliente';
+import ActualizarColegiado from './pages/crud/Colegiado/ActualizarColegiado';
+import ActualizarCliente from './pages/crud/Cliente/ActualizarCliente';
+import PageSearch from './pages/PageSearch';
 
 function App() {
 
@@ -33,13 +40,19 @@ function App() {
               {/* usuario */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/expedientes" element={<Expediente />} />
+              <Route path="/search" element={<PageSearch />} />
               <Route path="/expedientes/:id" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />
               <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
               <Route path="/personas" element={<Persona />} />
               <Route path="/colegiados" element={<Colegiado />} />
               <Route path="/colegiados/:id/show" element={<VerColegiado />} />
+              <Route path="/colegiados/:id/actualizar" element={<ActualizarColegiado />} />
+              <Route path="/colegiados/crear" element={<CrearColegiado />} />
               <Route path="/clientes" element={<Cliente />} />
+              <Route path="/clientes/:id/show" element={<VerCliente />} />
+              <Route path="/clientes/:id/actualizar" element={<ActualizarCliente />} />
+              <Route path="/clientes/crear" element={<CrearCliente />} />
               <Route path="/usuarios" element={<Usuarios />} />
               <Route path="/usuarios/:id/show" element={<VerUsuario />} />
             </Route>

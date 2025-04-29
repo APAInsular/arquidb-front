@@ -27,7 +27,7 @@ const Usuarios = () => {
     return (
         <>
             {deletes && (
-                <Delete userId={deletes} type={"Usuario"} onClose={() => setDeletes(false)} />
+                <Delete DatoId={deletes} type={"Usuario"} onClose={() => setDeletes(false)} url={"users"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
