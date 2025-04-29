@@ -16,7 +16,6 @@ import Profile from './pages/auth/Profile';
 import Usuarios from './pages/admin/usuarios/Usuarios';
 import VerUsuario from './pages/admin/usuarios/VerUsuario';
 import VerColegiado from './pages/crud/Colegiado/VerColegiado';
-import Usuarios from './pages/admin/usuarios/Usuarios';
 import CrearColegiado from './pages/crud/Colegiado/CrearColegiado';
 import VerCliente from './pages/crud/Cliente/VerCliente';
 import CrearCliente from './pages/crud/Cliente/CrearCliente';

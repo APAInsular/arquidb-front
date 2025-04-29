@@ -17,16 +17,9 @@ const Expediente = () => {
         }
     }, [expedients]);
 
-    const deleteActivate = (id) => {
-        if (!modalDelete) {
-            setModalDelete(true);
-            setDeleteId(id);
-        }
-    }
-
     return (
         <>
-            {modalDelete && <Delete userId={deleteId} type="Expediente" onClose={() => setModalDelete(false)} />}
+            {modalDelete && <Delete userId={deleteId} type="Expediente" onClose={() => setModalDelete(false)} url={"expedient"} />}
             <div className="flex flex-col h-full">
                 <TitleCard name="Expedientes" link="/" />
                 <div className="w-full flex justify-end">

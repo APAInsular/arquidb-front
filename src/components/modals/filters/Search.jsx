@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import Default from "../Default";
-import CrudManager from "../../../hooks/CrudManager";
 
 const Search = () => {
 
     const [formData, setFormData] = useState({
+        number: "",
         title: "",
         phase: "",
         client: "",
@@ -41,8 +41,16 @@ const Search = () => {
                                 name="title"
                                 value={formData.title}
                                 onChange={handleChange}
+                                className="bg-white/20 border-b-1 rounded-t-lg col-span-4 px-2 py-1.5 outline-none transition-all focus:border-red-600"
+                                placeholder="Titulo Expediente..."
+                                type="text"
+                            />
+                            <input
+                                name="number"
+                                value={formData.number}
+                                onChange={handleChange}
                                 className="bg-white/20 border-b-1 rounded-t-lg col-span-2 px-2 py-1.5 outline-none transition-all focus:border-red-600"
-                                placeholder="Expediente..."
+                                placeholder="Numero Expediente..."
                                 type="text"
                             />
 

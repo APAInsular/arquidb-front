@@ -48,7 +48,7 @@ const Colegiado = () => {
     return (
         <>
             {deletes && (
-                <Delete colegiadoId={deletes} type={"Colegiado"} onClose={() => setDeletes(false)} />
+                <Delete DatoId={deletes} type={"Colegiado"} onClose={() => setDeletes(false)} url={"collegiate"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
