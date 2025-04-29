@@ -1,23 +1,35 @@
-import { Link, useNavigate } from "react-router-dom";
-import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
-import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
+import { useState, useCallback, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
-import { useState, useCallback } from "react";
+import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
+import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
+import WebLoader from "../../../routes/loaders/WebLoader";
 import axios from "../../../lib/axios";
 import TitleCard from "../../../components/ui/TitleCard";
 
-const CrearExpediente = () => {
+const EditarExpediente = () => {
+    const params = useParams();
+    const { expedients, updateExpedient } = useExpedient();
+    const { phases, updatePhase, getPhaseTitles } = usePhase();
+    const navigate = useNavigate();
+    const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
-    const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-    const navigate = useNavigate();
-    const { createExpedient } = useExpedient();
-    const { createPhase, getPhaseTitles } = usePhase();
 
-    const [expedient, setExpedient] = useState({});
+    useEffect(() => {
+        if (expedients) setExpedient(expedients.find(e => e.id == params.id));
+    }, [expedients]);
+
+    useEffect(() => {
+        if (phases) {
+            setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+        };
+    }, [phases, expedient]);
+
+    if (!expedient || !expedientPhases) return <WebLoader />;
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -52,10 +64,9 @@ const CrearExpediente = () => {
         }
     };
 
-    const phaseSelectorActivate = useCallback((type) => {
+    const phaseEditorActivate = useCallback(() => {
         if (!modalPhase) {
             setModalPhase(true);
-            setModalPhaseType(type);
         }
     }, [modalPhase]);
 
@@ -82,16 +93,16 @@ const CrearExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            let response = await createExpedient(newExpedient);
+            await updateExpedient(params.id, newExpedient);
 
-            console.log(response.data.id);
+            console.log(params.id);
 
-            const newPhases = await getPhaseTitles({ expedientPhases, expedientId: response.data.id });
+            const newPhases = await getPhaseTitles({ expedientPhases, expedientId: params.id });
 
             console.log(newPhases);
 
-            const createPromises = newPhases.map(phase => createPhase(phase));
-            await Promise.all(createPromises);
+            const updatePromises = newPhases.map(phase => updatePhase(phase.id, phase));
+            await Promise.all(updatePromises);
 
             navigate('/expedientes');
             navigate(0);
@@ -100,13 +111,18 @@ const CrearExpediente = () => {
         }
     };
 
+    if (!expedient.start_date || !expedient.end_date) return <WebLoader />;
+
+    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
+    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16);
+
     console.log(expedientPhases);
 
     return (
         <>
             <div>
-                <TitleCard name="Crear expediente" link="/expedientes" />
-                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
+                <TitleCard name="Editar expediente" link="/expedientes" />
+                {modalPhase && <PhaseEditor expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
@@ -122,7 +138,7 @@ const CrearExpediente = () => {
                                     name="title"
                                     id="title"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.title || ''} onChange={handleInputChange} required
+                                    value={expedient.title} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -135,7 +151,7 @@ const CrearExpediente = () => {
                                     name="number"
                                     id="number"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={8} maxLength={8} value={expedient.number || ''} onChange={handleInputChange} required
+                                    minLength={8} maxLength={8} value={expedient.number} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -148,7 +164,7 @@ const CrearExpediente = () => {
                                     name="description"
                                     id="description"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.description || ''} onChange={handleInputChange}
+                                    value={expedient.description} onChange={handleInputChange}
                                 />
                             </div>
 
@@ -161,7 +177,7 @@ const CrearExpediente = () => {
                                     name="budget"
                                     id="budget"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.budget || ''} onChange={handleInputChange} min={0} required
+                                    value={expedient.budget} onChange={handleInputChange} min={0} required
                                 />
                             </div>
 
@@ -174,7 +190,7 @@ const CrearExpediente = () => {
                                     name="site"
                                     id="site"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.site || ''} onChange={handleInputChange} required
+                                    value={expedient.site} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -188,7 +204,7 @@ const CrearExpediente = () => {
                                     name="postal_code"
                                     id="postal_code"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={5} maxLength={5} value={expedient.postal_code || ''} onChange={handleInputChange} required
+                                    minLength={5} maxLength={5} value={expedient.postal_code} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -201,7 +217,7 @@ const CrearExpediente = () => {
                                     name="start_date"
                                     id="start_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.start_date || ''} onChange={handleInputChange} required
+                                    value={expedient.start_date} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -214,7 +230,7 @@ const CrearExpediente = () => {
                                     name="end_date"
                                     id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.end_date || ''} onChange={handleInputChange} required
+                                    value={expedient.end_date} onChange={handleInputChange} required
                                 />
                             </div>
                         </div>
@@ -222,9 +238,9 @@ const CrearExpediente = () => {
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
                         <div className="flex space-x-2">
-                            <button type="button" onClick={() => phaseSelectorActivate("new_phase")} className="cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            <button type="button" onClick={() => phaseEditorActivate()} className="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 bg-blue-700 text-white rounded-full p-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                 </svg>
                             </button>
                             {expedientPhases.map(phase => {
@@ -234,11 +250,6 @@ const CrearExpediente = () => {
                                         onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                 );
                             })}
-                            <button type="button" onClick={() => phaseSelectorActivate("old_phase")} className="cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
-                                </svg>
-                            </button>
                         </div>
                     </div>
                     <input type="hidden" name="center_id" value={1} />
@@ -251,4 +262,4 @@ const CrearExpediente = () => {
     );
 };
 
-export default CrearExpediente;
+export default EditarExpediente;

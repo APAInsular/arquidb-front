@@ -4,9 +4,9 @@ export default function CrudManager({ url }) {
 
     const api = "api/"
     // Ver los datos 
-    const views = ({ setData, setLoading, setErrors }) => {
+    const views = async ({ setData, setLoading, setErrors }) => {
         setLoading(true);
-        axios
+        await axios
             .get(api + url)
             .then(res => { setData(res.data.data ?? res.data); })
             .catch(error => {
@@ -16,10 +16,10 @@ export default function CrudManager({ url }) {
     };
 
     // Crear los datos
-    const creates = ({ setErrors, setStatus, ...props }) => {
-        setErrors([]);
+    const creates = async ({ setErrors, setStatus, ...props }) => {
+        setErrors(null);
         setStatus(null);
-        return axios
+        return await axios
             .post(api + url, props.data)
             .then((res) => {
                 setStatus("success");
@@ -36,10 +36,10 @@ export default function CrudManager({ url }) {
 
     // Actualizar los datos
     const updates = async ({ setErrors, setStatus, ...props }) => {
-        setErrors([]);
+        setErrors(null);
         setStatus(null);
-        axios
-            .put(api + url, props.data)
+        await axios
+            .put(api + url + "/" + props.id, props.data)
             .then(res => res.data)
             .catch(error => {
                 setErrors(
@@ -49,9 +49,9 @@ export default function CrudManager({ url }) {
 
     // Borrar los datos
     const deletes = async ({ setErrors, setStatus, ElementId }) => {
-        setErrors([]);
+        setErrors(null);
         setStatus(true);
-        axios
+        await axios
             .delete(`${api}${url}/${ElementId}`,)
             .then(res => res.data)
             .catch(error => {
