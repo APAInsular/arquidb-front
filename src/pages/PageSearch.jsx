@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CrudManager from "../hooks/CrudManager";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Delete from "../components/modals/crud/Delete";
 import TitleCard from "../components/ui/TitleCard";
 
@@ -13,8 +13,9 @@ const PageSearch = () => {
     const client = searchParams.get('client') || '';
     const collegiate = searchParams.get('collegiate') || '';
     const date = searchParams.get('date') || '';
+    const number = searchParams.get('number') || '';
 
-    console.log(title, phase, client, collegiate, date)
+    console.log(number, title, phase, client, collegiate, date)
 
     const [expedientes, setExpedientes] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ const PageSearch = () => {
     const [deletes, setDeletes] = useState(false);
 
     const { views } = CrudManager({
-        url: `expedient?title=${title}&phase=${phase}&client=${client}&collegiate=${collegiate}&date=${date}&all=true`
+        url: `expedient?number=${number}&title=${title}&phase=${phase}&client=${client}&collegiate=${collegiate}&date=${date}&all=true`
     });
 
     useEffect(() => {
@@ -43,13 +44,16 @@ const PageSearch = () => {
                 <TitleCard name="Busqueda" link="/" />
                 <div className="flex-1 overflow-y-scroll rounded-lg">
                     <div className="text-center pb-2">
-                        <table className="table-fixed space-y-2 w-full mb-5">
+                        <table className=" space-y-2 w-full mb-5">
                             <thead className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
                                 <tr>
                                     <th className="border-e-1 p-2 border-gray-300">Número</th>
+                                    <th className="border-e-1 p-2 border-gray-300">Cliente</th>
+                                    <th className="border-e-1 p-2 border-gray-300">Colegiado</th>
                                     <th className="border-e-1 p-2 border-gray-300">Presupuesto</th>
                                     <th className="border-e-1 p-2 border-gray-300">Título</th>
                                     <th className="border-e-1 p-2 border-gray-300">Emplazamiento</th>
+                                    <th className="border-e-1 p-2 border-gray-300">Docs</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -58,9 +62,12 @@ const PageSearch = () => {
                                     return (
                                         <tr key={expediente.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll">
                                             <td className="py-1.5 px-4">{expediente.number}</td>
+                                            <td className="py-1.5 px-4">{expediente.people[0]?.clients ? expediente.people[0].name : "..."}</td>
+                                            <td className="py-1.5 px-4">{expediente.people[0]?.collegiate ? expediente.collegiate[0].name : "..."}</td>
                                             <td className="py-1.5 px-4">{expediente.budget}</td>
                                             <td className="py-1.5 px-4">{expediente.title}</td>
                                             <td className="py-1.5 px-4">{`${expediente.site}, (${expediente.postal_code})`}</td>
+                                            <td className="py-1.5 px-4">{`(${expediente.phases[0]?.documents.length})`}</td>
                                             <td className="py-1.5 px-4">
                                                 <div className="grid grid-cols-3 gap-2">
                                                     <Link to={`/expedientes/${expediente.id}`} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">

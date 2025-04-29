@@ -40,7 +40,7 @@ const Header = () => {
         return () => clearTimeout(timeout);
     }, [query]);
 
-    // forma para que se cierre si haces click fuera (buscado con )
+    // forma para que se cierre si haces click fuera
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
