@@ -1,15 +1,17 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
-import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
-import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
-import { usePhase } from "../../../store/contexts/PhaseContext";
-import { useExpedient } from "../../../store/contexts/ExpedientContenxt";
 import { useState, useCallback, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useExpedient } from "../../../store/contexts/ExpedientContext";
+import { usePhase } from "../../../store/contexts/PhaseContext";
+import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
+import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
+import WebLoader from "../../../routes/loaders/WebLoader";
 import axios from "../../../lib/axios";
+import TitleCard from "../../../components/ui/TitleCard";
 
 const EditarExpediente = () => {
     const params = useParams();
-    const { expedients } = useExpedient();
-    const { phases } = usePhase();
+    const { expedients, updateExpedient } = useExpedient();
+    const { phases, updatePhase, getPhaseTitles } = usePhase();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -21,7 +23,13 @@ const EditarExpediente = () => {
         if (expedients) setExpedient(expedients.find(e => e.id == params.id));
     }, [expedients]);
 
-    if (!expedient) return <h1>Cargando...</h1>
+    useEffect(() => {
+        if (phases) {
+            setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+        };
+    }, [phases, expedient]);
+
+    if (!expedient || !expedientPhases) return <WebLoader />;
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -56,8 +64,10 @@ const EditarExpediente = () => {
         }
     };
 
-    const phaseSelectorActivate = useCallback(() => {
-        if (!modalPhase) setModalPhase(true);
+    const phaseEditorActivate = useCallback(() => {
+        if (!modalPhase) {
+            setModalPhase(true);
+        }
     }, [modalPhase]);
 
     const documentSelectorActivate = useCallback((phase) => {
@@ -83,7 +93,17 @@ const EditarExpediente = () => {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
 
             await axios.get("/sanctum/csrf-cookie");
-            await axios.put(`/api/expedient/${params.id}`, newExpedient);
+            await updateExpedient(params.id, newExpedient);
+
+            console.log(params.id);
+
+            const newPhases = await getPhaseTitles({ expedientPhases, expedientId: params.id });
+
+            console.log(newPhases);
+
+            const updatePromises = newPhases.map(phase => updatePhase(phase.id, phase));
+            await Promise.all(updatePromises);
+
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
@@ -91,21 +111,18 @@ const EditarExpediente = () => {
         }
     };
 
-    if (!expedient.start_date || !expedient.end_date) return <h1>Cargando...</h1>
+    if (!expedient.start_date || !expedient.end_date) return <WebLoader />;
 
-    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 19);
-    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 19);
+    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
+    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16);
 
-    console.log(expedient);
+    console.log(expedientPhases);
 
     return (
         <>
             <div>
-                <div className="flex justify-between border-b p-2">
-                    <Link to="/expedientes" className="text-5xl">←</Link>
-                    <h3 className="text-5xl">Crear expediente</h3>
-                </div>
-                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
+                <TitleCard name="Editar expediente" link="/expedientes" />
+                {modalPhase && <PhaseEditor expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
@@ -221,16 +238,16 @@ const EditarExpediente = () => {
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
                         <div className="flex space-x-2">
-                            <button type="button" onClick={() => phaseSelectorActivate()} className="cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            <button type="button" onClick={() => phaseEditorActivate()} className="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 bg-blue-700 text-white rounded-full p-2">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                                 </svg>
                             </button>
                             {expedientPhases.map(phase => {
                                 return (
-                                    <button type="button" key={phase}
+                                    <button type="button" key={phase.phase}
                                         className="bg-blue-700 text-white rounded-full py-2 px-6 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
-                                        onClick={() => documentSelectorActivate(phase)}>{phase}</button>
+                                        onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                 );
                             })}
                         </div>
