@@ -38,7 +38,7 @@ function App() {
               {/* usuario */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/expedientes" element={<Expediente />} />
-              <Route path="/search/:search" element={<PageSearch />} />
+              <Route path="/search" element={<PageSearch />} />
               <Route path="/expedientes/:id" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />
               <Route path="/personas" element={<Persona />} />

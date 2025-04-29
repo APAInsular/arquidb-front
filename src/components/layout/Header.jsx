@@ -26,7 +26,7 @@ const Header = () => {
 
     const { user } = useAuth({ middleware: 'auth' });
 
-    const query = searchParams.get("filter") || "";
+    const query = searchParams.get("search") || "";
 
     const { views } = CrudManager({
         url: `expedient${query ? `?title=${query}` : ""}`
@@ -54,11 +54,11 @@ const Header = () => {
         };
     }, []);
 
-    console.log(expedientes)
+    // console.log(expedientes)
 
     const handleSearchChange = (event) => {
         setModalSearch(true);
-        setSearchParams(event.target.value ? { filter: event.target.value } : {});
+        setSearchParams(event.target.value ? { search: event.target.value } : {});
     };
 
     const handleClick = (cases) => {
@@ -92,7 +92,7 @@ const Header = () => {
                     </div>
                     <div className=" mx-2 ms-auto sm:ms-10 sm:me-auto sm:w-150 ">
                         {/* search */}
-                        <form ref={searchRef} className={`bg-[#cb415a] relative text-white/60 px-3 py-1 ${modalSearch ? "rounded-t-4xl" : "rounded-4xl"} flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]`} action="">
+                        <form action="/search" ref={searchRef} className={`bg-[#cb415a] relative text-white/60 px-3 py-1 ${modalSearch ? "rounded-t-4xl" : "rounded-4xl"} flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]`} >
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -101,7 +101,7 @@ const Header = () => {
                             <input onFocus={() => setModalFilter(false)}
                                 placeholder="Buscar en Arquidb"
                                 type="search"
-                                name="filter"
+                                name="search"
                                 value={query}
                                 onChange={handleSearchChange}
                                 className="hidden sm:flex outline-0 p-2 w-full text-white text-md" />
