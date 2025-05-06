@@ -80,9 +80,9 @@ const Colegiado = () => {
                 {/* tabla */}
                 <div className="flex-1 overflow-y-scroll rounded-lg">
                     <div className="text-center pb-2">
-                        <table className="table-fixed space-y-2 w-full mb-5">
+                        <table className=" space-y-2 w-full mb-5">
                             <thead>
-                                <tr className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
+                                <tr className="text-nowrap shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
                                     <th className="border-e-1 p-2 border-gray-300">#</th>
                                     <th className="flex flex-row justify-center space-x-2 border-e-1 p-2 border-gray-300 cursor-pointer hover:text-red-300 transition"
                                         onClick={() => setSortOrder(prev => (prev === "asc" ? "desc" : "asc"))}>
@@ -113,7 +113,7 @@ const Colegiado = () => {
                                         <td className="py-1.5 px-4">{datos.collegiate.birth_date.slice(0, 10).split("-").reverse().join("/")}</td>
                                         <td className="py-1.5 px-4">{datos.collegiate.nationality}</td>
                                         <td className="py-1.5 px-4">
-                                            <div className="grid grid-cols-3 gap-2">
+                                            <div className="action-boton grid grid-cols-3 gap-2">
                                                 <Link to={`/colegiados/${datos.id}/show`} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                                                         <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />

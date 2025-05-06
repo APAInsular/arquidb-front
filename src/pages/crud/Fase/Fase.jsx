@@ -49,7 +49,7 @@ const Fase = () => {
                 </div>
                 <div className="flex-1 overflow-y-scroll rounded-lg">
                     <div className="text-center pb-2">
-                        <table className="table-fixed space-y-2 w-full mb-5">
+                        <table className=" space-y-2 w-full mb-5">
                             <thead>
                                 <tr className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
                                     <th className="border-e-1 p-2 border-gray-300">#</th>

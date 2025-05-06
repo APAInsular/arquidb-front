@@ -31,16 +31,16 @@ const Expediente = () => {
                         <p>Añadir</p>
                     </button>
                 </div>
-                <div className="flex justify-center gap-x-10 mt-10 mb-5">
+                {/* <div className="flex justify-center gap-x-10 mt-10 mb-5">
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Persona</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fecha</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fase</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Otros</button>
-                </div>
+                </div> */}
 
-                <div className="flex-1 overflow-y-scroll rounded-lg">
+                <div className="flex-1 overflow-y-scroll rounded-lg mt-5">
                     <div className="text-center pb-2">
-                        <table className="table-fixed space-y-2 w-full mb-5">
+                        <table className=" space-y-2 w-full mb-5">
                             <thead className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
                                 <tr>
                                     <th className="border-e-1 p-2 border-gray-300">Título</th>

@@ -33,7 +33,7 @@ const Dashboard = () => {
                     </form>
                 </div>
                 <div className="text-center">
-                    <table className="table-fixed w-full mb-5">
+                    <table className=" w-full mb-5">
                         <thead className="bg-gray-200">
                             <tr>
                                 <th>Expediente</th>

@@ -25,6 +25,7 @@ import PageSearch from './pages/PageSearch';
 import Fase from './pages/crud/Fase/Fase';
 import CrearFase from './pages/crud/Fase/CrearFase';
 import EditarFase from './pages/crud/Fase/EditarFase';
+import Records from './pages/Records';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               {/* usuario */}
               <Route path="/profile" element={<Profile />} />
+              <Route path="/historial" element={<Records />} />
               <Route path="/search" element={<PageSearch />} />
               <Route path="/expedientes" element={<Expediente />} />
               <Route path="/expedientes/:id" element={<VerExpediente />} />
