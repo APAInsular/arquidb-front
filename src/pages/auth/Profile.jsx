@@ -65,7 +65,7 @@ const Profile = () => {
                             <p className="col-span-2 text-justify text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate nostrum dicta modi.</p>
                         </div>
                         <div className="text-end">
-                            <button className=" bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Añadir de Correo </button>
+                            <button className=" bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Añadir el Correo </button>
                         </div>
                     </div>
                 </div>

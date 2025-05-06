@@ -9,7 +9,9 @@ const Search = () => {
         phase: "",
         client: "",
         collegiate: "",
-        date: "",
+        dateFrom: "",
+        dateTo: "",
+        page: "",
     })
 
     const handleChange = (e) => {
@@ -61,17 +63,46 @@ const Search = () => {
                                 className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600"
                                 placeholder="Fases..."
                                 type="text" />
-                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Cantidad..." type="text" />
+                            <input
+                                name="page"
+                                value={formData.page}
+                                onChange={handleChange}
+                                className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600"
+                                placeholder="Cantidad..."
+                                type="number" />
                         </li>
                         <div className=" text-xs">Personas</div>
                         <li className="grid grid-cols-2 justify-between items-center gap-2">
-                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Cliente..." type="text" />
-                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Colegiado..." type="text" />
+                            <input
+                                name="client"
+                                value={formData.client}
+                                onChange={handleChange}
+                                className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600"
+                                placeholder="Cliente..."
+                                type="text" />
+                            <input
+                                name="collegiate"
+                                value={formData.collegiate}
+                                onChange={handleChange}
+                                className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600"
+                                placeholder="Colegiado..."
+                                type="text" />
                         </li>
                         <div className=" text-xs">Fecha Creación</div>
                         <li className="grid grid-cols-2 justify-between items-center gap-2">
-                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Desde..." type="date" />
-                            <input className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Desde..." type="date" />
+                            <input
+                                name="dateFrom"
+                                value={formData.dateFrom}
+                                onChange={handleChange}
+                                className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600"
+                                placeholder="Desde..."
+                                type="date" />
+                            <input
+                                name="dateTo"
+                                value={formData.dateTo}
+                                onChange={handleChange}
+                                className="bg-white/20 border-b-1 rounded-t-lg px-2 py-1.5 outline-none transition-all focus:border-red-600" placeholder="Desde..."
+                                type="date" />
                         </li>
                         <div className="text-xs">Fecha de Visado</div>
                         <li className="grid grid-cols-2 justify-between items-center gap-2">

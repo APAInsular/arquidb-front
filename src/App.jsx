@@ -22,6 +22,9 @@ import CrearCliente from './pages/crud/Cliente/CrearCliente';
 import ActualizarColegiado from './pages/crud/Colegiado/ActualizarColegiado';
 import ActualizarCliente from './pages/crud/Cliente/ActualizarCliente';
 import PageSearch from './pages/PageSearch';
+import Fase from './pages/crud/Fase/Fase';
+import CrearFase from './pages/crud/Fase/CrearFase';
+import EditarFase from './pages/crud/Fase/EditarFase';
 
 function App() {
 
@@ -38,8 +41,8 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               {/* usuario */}
               <Route path="/profile" element={<Profile />} />
-              <Route path="/expedientes" element={<Expediente />} />
               <Route path="/search" element={<PageSearch />} />
+              <Route path="/expedientes" element={<Expediente />} />
               <Route path="/expedientes/:id" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />
               <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
@@ -52,6 +55,9 @@ function App() {
               <Route path="/clientes/:id/show" element={<VerCliente />} />
               <Route path="/clientes/:id/actualizar" element={<ActualizarCliente />} />
               <Route path="/clientes/crear" element={<CrearCliente />} />
+              <Route path="/fases" element={<Fase />} />
+              <Route path="/fases/crear" element={<CrearFase />} />
+              <Route path="/fases/:id/editar" element={<EditarFase />} />
               <Route path="/usuarios" element={<Usuarios />} />
               <Route path="/usuarios/:id/show" element={<VerUsuario />} />
             </Route>
