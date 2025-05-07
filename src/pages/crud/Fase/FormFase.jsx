@@ -33,7 +33,6 @@ const FormFase = ({ fase, onSubmit, status, errors }) => {
 
     const handleSubmit = () => {
         onSubmit(formData);
-        // navigate("/colegiados");
 
     };
 

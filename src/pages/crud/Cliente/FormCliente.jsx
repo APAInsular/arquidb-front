@@ -7,7 +7,6 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
 
     console.log(errors)
     console.log(cliente)
-    const navigate = useNavigate();
     const person = cliente?.person;
     const client = cliente?.client?.[0];
     const email = cliente?.email;
@@ -63,7 +62,6 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
 
     const handleSubmit = () => {
         onSubmit(formData);
-        navigate("/clientes");
 
     };
 

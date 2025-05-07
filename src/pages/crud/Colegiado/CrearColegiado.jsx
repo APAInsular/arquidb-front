@@ -18,8 +18,8 @@ const CrearColegiado = () => {
             data: formData, setErrors, setStatus
         });
 
-        if (response?.success) {
-            navigate('/');
+        if (response) {
+            navigate('/colegiados');
         }
     };
 

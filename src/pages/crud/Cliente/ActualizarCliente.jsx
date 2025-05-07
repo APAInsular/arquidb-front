@@ -24,8 +24,8 @@ const ActualizarCliente = () => {
             data: formData, setErrors, setStatus
         });
 
-        if (response?.success) {
-            navigate('/');
+        if (response) {
+            navigate('/clientes');
         }
     };
 

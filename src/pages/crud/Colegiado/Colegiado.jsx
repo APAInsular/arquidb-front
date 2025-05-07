@@ -48,7 +48,7 @@ const Colegiado = () => {
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Colegiado"} onClose={() => setDeletes(false)} url={"collegiate"} />
+                <Delete DatoId={deletes} type={"Colegiado"} onClose={() => setDeletes(false)} url={"personCollegiate"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
@@ -108,10 +108,10 @@ const Colegiado = () => {
                                     <tr key={datos.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll">
                                         <td className="py-1.5 px-4">{datos.id}</td>
                                         <td className="py-1.5 px-4">{datos.name}</td>
-                                        <td className="py-1.5 px-4">{datos.first_surname + " " + datos.second_surname}</td>
+                                        <td className="py-1.5 px-4">{datos.first_surname + " " + datos?.second_surname}</td>
                                         <td className="py-1.5 px-4">{datos.identification_number}</td>
-                                        <td className="py-1.5 px-4">{datos.collegiate.birth_date.slice(0, 10).split("-").reverse().join("/")}</td>
-                                        <td className="py-1.5 px-4">{datos.collegiate.nationality}</td>
+                                        <td className="py-1.5 px-4">{datos?.collegiate?.birth_date?.slice(0, 10).split("-").reverse().join("/")}</td>
+                                        <td className="py-1.5 px-4">{datos?.collegiate.nationality}</td>
                                         <td className="py-1.5 px-4">
                                             <div className="action-boton grid grid-cols-3 gap-2">
                                                 <Link to={`/colegiados/${datos.id}/show`} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">

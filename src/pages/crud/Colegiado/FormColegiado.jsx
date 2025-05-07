@@ -7,7 +7,6 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
 
     console.log(errors)
     console.log(colegiado)
-    const navigate = useNavigate();
     const person = colegiado?.person;
     const collegiate = colegiado?.collegiate?.[0];
     const email = colegiado?.email;
@@ -78,7 +77,6 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
 
     const handleSubmit = () => {
         onSubmit(formData);
-        // navigate("/colegiados");
 
     };
 

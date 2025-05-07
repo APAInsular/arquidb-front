@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
 import { useEffect, useState } from "react";
 import FormColegiado from "./FormColegiado";
@@ -25,7 +25,7 @@ const ActualizarColegiado = () => {
         });
 
         if (response) {
-             ('/');
+            navigate('/colegiados');
         }
     };
 
