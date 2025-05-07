@@ -1,12 +1,17 @@
 import { useState } from "react";
 import CrudManager from "../../../hooks/CrudManager";
+import { useNavigate } from "react-router-dom";
 
 const Delete = ({ DatoId, onClose, type, url }) => {
 
+    const name = type.toLowerCase() + "s";
+
+    console.log(name)
     const { deletes } = CrudManager({ url: `${url}` });
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    // const navigate = useNavigate();
 
     const handleDelete = async () => {
         setLoading(true);
@@ -19,6 +24,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
         } finally {
             setTimeout(() => {
                 onClose();
+                // navigate(`/${name}`);
             }, 500);
             setLoading(false);
         }

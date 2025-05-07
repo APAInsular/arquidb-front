@@ -23,6 +23,7 @@ const Colegiado = () => {
         people({ setData: setPeoples, setLoading, setErrors: setError });
     }, []);
 
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 

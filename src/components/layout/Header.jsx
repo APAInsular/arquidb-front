@@ -100,7 +100,7 @@ const Header = () => {
                                 placeholder="Buscar en Arquidb"
                                 type="search"
                                 name="search"
-                                value={query}
+                                value={modalFilter ? '' : query}
                                 onChange={handleSearchChange}
                                 className="hidden sm:flex outline-0 p-2 w-full text-white text-md" />
                             {/* filtro Search */}

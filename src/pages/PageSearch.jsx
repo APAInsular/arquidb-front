@@ -8,6 +8,7 @@ const PageSearch = () => {
 
     const [searchParams] = useSearchParams();
 
+    const SearchTitle = searchParams.get('search') || '';
     const title = searchParams.get('title') || '';
     const phase = searchParams.get('phase') || '';
     const client = searchParams.get('client') || '';
@@ -17,7 +18,7 @@ const PageSearch = () => {
     const dateTo = searchParams.get('dateTo') || '';
     const page = searchParams.get('page') || '';
 
-    console.log(number, title, phase, client, collegiate, dateFrom, dateTo)
+    console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
 
     const [expedientes, setExpedientes] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -27,7 +28,7 @@ const PageSearch = () => {
     const { views } = CrudManager({
         url: `expedient?
         number=${number}
-        &title=${title}
+        &title=${title ? title : SearchTitle}
         &phase=${phase}
         &client=${client}&collegiate=${collegiate}
         &dateFrom=${dateFrom}&dateTo=${dateTo}
