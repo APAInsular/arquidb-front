@@ -1,24 +1,28 @@
 import { Link } from "react-router-dom";
 import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Delete from "../../../components/modals/crud/Delete";
 import CrudManager from "../../../hooks/CrudManager";
+import DefaultSearch from "../../../components/ui/DefaultSearch";
 
 const Usuarios = () => {
-
-    const { views } = CrudManager({ url: `users` });
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
 
-    useEffect(() => {
+    const buscador = useCallback((query = '') => {
+        const { views } = CrudManager({ url: `users${query ? '?name=' + query : ''}` });
         views({ setData: setUsers, setLoading, setErrors: setError });
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    useEffect(() => {
+        buscador();
+    }, [buscador]);
+
+    // if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
     const admin = users.filter((item) => item.role === "Admin");
@@ -33,7 +37,11 @@ const Usuarios = () => {
                 {/* titulo */}
                 <TitleCard name="Usuarios" link="/" />
                 {/* añadir algo */}
-                <div className="w-full flex justify-end">
+                <div className="w-full flex justify-between">
+                    <DefaultSearch
+                        title={'Usuario'}
+                        Buscador={buscador}
+                    />
                     <button className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />

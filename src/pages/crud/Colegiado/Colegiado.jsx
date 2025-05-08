@@ -1,44 +1,33 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Delete from "../../../components/modals/crud/Delete";
 import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
 import CrudManager from "../../../hooks/CrudManager";
+import DefaultSearch from "../../../components/ui/DefaultSearch";
 
 const Colegiado = () => {
 
-    const { views } = CrudManager({ url: `collegiate` });
-    const { views: people } = CrudManager({ url: `person` });
-
     const [collegiates, setCollegiate] = useState([]);
-    const [peoples, setPeoples] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
 
-    const [sortOrder, setSortOrder] = useState("asc");
-
-    useEffect(() => {
+    const buscador = useCallback((query = '') => {
+        const { views } = CrudManager({ url: `personCollegiate${query ? '?name=' + query : ''}` });
         views({ setData: setCollegiate, setLoading, setErrors: setError });
-        people({ setData: setPeoples, setLoading, setErrors: setError });
     }, []);
 
+    useEffect(() => {   
+        buscador();
+    }, [buscador]);
 
-    if (loading) return <p>Loading...</p>;
+    const [sortOrder, setSortOrder] = useState("asc");
+
+    // if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
-
-    const colegiados = peoples
-        .filter(person => collegiates.some(collegiate => collegiate.person_id === person.id))
-        .map(person => {
-            const collegiate = collegiates.find(collegiate => collegiate.person_id === person.id);
-            return {
-                ...person,
-                collegiate: collegiate
-            };
-        });
-
-    const filterColegiados = [...colegiados].sort((a, b) => {
+    const filterColegiados = [...collegiates].sort((a, b) => {
         if (sortOrder === "asc") {
             return a.name.localeCompare(b.name);
         } else {
@@ -55,7 +44,11 @@ const Colegiado = () => {
                 {/* titulo */}
                 <TitleCard name={"Colegiados"} />
                 {/* añadir algo */}
-                <div className="w-full flex justify-end">
+                <div className="w-full flex justify-between">
+                    <DefaultSearch
+                        title={'Colegiado'}
+                        Buscador={buscador}
+                    />
                     <Link to={"/colegiados/crear"} className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
@@ -67,7 +60,7 @@ const Colegiado = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={colegiados.length}
+                        value={collegiates.length}
                     />
                     {/* <StatsCard
                         title={"Total Admin (Solo usuarios Admin)"}
@@ -111,8 +104,8 @@ const Colegiado = () => {
                                         <td className="py-1.5 px-4">{datos.name}</td>
                                         <td className="py-1.5 px-4">{datos.first_surname + " " + datos?.second_surname}</td>
                                         <td className="py-1.5 px-4">{datos.identification_number}</td>
-                                        <td className="py-1.5 px-4">{datos?.collegiate?.birth_date?.slice(0, 10).split("-").reverse().join("/")}</td>
-                                        <td className="py-1.5 px-4">{datos?.collegiate.nationality}</td>
+                                        <td className="py-1.5 px-4">{datos?.collegiates?.birth_date?.slice(0, 10).split("-").reverse().join("/")}</td>
+                                        <td className="py-1.5 px-4">{datos?.collegiates.nationality}</td>
                                         <td className="py-1.5 px-4">
                                             <div className="action-boton grid grid-cols-3 gap-2">
                                                 <Link to={`/colegiados/${datos.id}/show`} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
