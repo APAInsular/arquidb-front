@@ -43,7 +43,8 @@ function App() {
               {/* usuario */}
               <Route path="/profile" element={<Profile />} />
               <Route path="/historial" element={<Records />} />
-              <Route path="/search" element={<PageSearch />} />
+              {/* posible eliminacion  */}
+              {/* <Route path="/search" element={<PageSearch />} /> */}
               <Route path="/expedientes" element={<Expediente />} />
               <Route path="/expedientes/:id" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />

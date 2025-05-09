@@ -25,7 +25,7 @@ const CrearColegiado = () => {
 
     return (
         <div className="h-full flex flex-col gap-4">
-            <TitleCard name={"Crear Colegiado"} />
+            <TitleCard name={"Colegiados"} action={"Crear"} />
             <FormColegiado
                 onSubmit={handleSubmit}
                 status={status}

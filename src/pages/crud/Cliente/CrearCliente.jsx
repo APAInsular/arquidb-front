@@ -25,7 +25,7 @@ const CrearCliente = () => {
 
     return (
         <div className="h-full flex flex-col gap-4">
-            <TitleCard name={"Crear Cliente"} />
+            <TitleCard name={"Cliente"} action={"Crear"} />
             <FormCliente
                 onSubmit={handleSubmit}
                 status={status}

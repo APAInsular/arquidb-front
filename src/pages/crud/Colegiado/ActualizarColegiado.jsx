@@ -38,7 +38,7 @@ const ActualizarColegiado = () => {
 
     return (
         <div className="h-full flex flex-col gap-4">
-            <TitleCard name={"Actualizar Colegiado"} />
+            <TitleCard name={"Colegiados"} action={"Editar"} />
 
             {loading ? (
                 <WebLoader />

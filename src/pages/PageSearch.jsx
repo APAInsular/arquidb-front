@@ -1,3 +1,8 @@
+// 
+// POSIBLE ELIMINACION 
+// DE LA PAGINA 
+// CAMBIAMOS DE /SEARCH A / PARA MAYOR FACILIDAD GENERAL
+// 
 import { useEffect, useState } from "react";
 import CrudManager from "../hooks/CrudManager";
 import { Link, useSearchParams } from "react-router-dom";
