@@ -26,6 +26,7 @@ import Fase from './pages/crud/Fase/Fase';
 import CrearFase from './pages/crud/Fase/CrearFase';
 import EditarFase from './pages/crud/Fase/EditarFase';
 import Records from './pages/Records';
+import CrearUsuario from './pages/admin/usuarios/CrearUsuario';
 
 function App() {
 
@@ -63,6 +64,7 @@ function App() {
               <Route path="/fases/:id/editar" element={<EditarFase />} />
               <Route path="/usuarios" element={<Usuarios />} />
               <Route path="/usuarios/:id/show" element={<VerUsuario />} />
+              <Route path="/usuarios/crear" element={<CrearUsuario />} />
             </Route>
             <Route path="/login" element={<Login />} />
           </Routes>

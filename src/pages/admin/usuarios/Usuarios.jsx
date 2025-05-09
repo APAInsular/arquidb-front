@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import Delete from "../../../components/modals/crud/Delete";
 import CrudManager from "../../../hooks/CrudManager";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
+import Avatar from "../../../components/ui/Avatar";
 
 const Usuarios = () => {
 
@@ -43,12 +44,12 @@ const Usuarios = () => {
                         title={'Usuario'}
                         Buscador={buscador}
                     />
-                    <button className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
+                    <Link to={'/usuarios/crear'} className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
                         </svg>
                         <p>Añadir</p>
-                    </button>
+                    </Link>
                 </div>
                 {/* card  */}
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 justify-start gap-2 my-2">
@@ -80,6 +81,7 @@ const Usuarios = () => {
                                 <thead>
                                     <tr className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100 text-sm ">
                                         <th className="border-e-1 p-2 border-gray-300">#</th>
+                                        <th className="border-e-1 p-2 border-gray-300"></th>
                                         <th className="border-e-1 p-2 border-gray-300">Nombre</th>
                                         <th className="border-e-1 p-2 border-gray-300">Correo</th>
                                         <th className="border-e-1 p-2 border-gray-300">Rol</th>
@@ -90,6 +92,9 @@ const Usuarios = () => {
                                     {users.map((user) => (
                                         <tr key={user.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll">
                                             <td className="py-1.5 px-4">{user.id}</td>
+                                            <td className="py-1.5 flex justify-center">
+                                                <Avatar name={user?.name?.at(0)} size={38} text={"text-white"} />
+                                            </td>
                                             <td className="py-1.5 px-4">{user.name}</td>
                                             <td className="py-1.5 px-4">{user.email}</td>
                                             <td className="py-1.5 px-4">***</td>
