@@ -76,7 +76,7 @@ const Colegiado = () => {
                     <div className="text-center pb-2">
                         <table className=" space-y-2 w-full mb-5">
                             <thead>
-                                <tr className="text-nowrap shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
+                                <tr className="text-nowrap shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100 text-sm ">
                                     <th className="border-e-1 p-2 border-gray-300">#</th>
                                     <th className="flex flex-row justify-center space-x-2 border-e-1 p-2 border-gray-300 cursor-pointer hover:text-red-300 transition"
                                         onClick={() => setSortOrder(prev => (prev === "asc" ? "desc" : "asc"))}>

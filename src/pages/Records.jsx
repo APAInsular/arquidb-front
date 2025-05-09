@@ -27,7 +27,7 @@ const Records = () => {
                     {records.length >= 1 ? (
                         <div className="text-center pb-2">
                             <table className=" space-y-2 w-full mb-5">
-                                <thead className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
+                                <thead className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100 text-sm ">
                                     <tr>
                                         <th className="border-e-1 p-2 border-gray-300">#</th>
                                         <th className="border-e-1 p-2 border-gray-300">Usuario</th>

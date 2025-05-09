@@ -31,7 +31,7 @@ const PhaseContext = ({ children }) => {
     }
 
     if (loading) return <WebLoader />;
-    if (error) return <p>Error: {error}</p>;
+    // if (error) return <p>Error: {error}</p>;
 
     return (
         <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles }}>

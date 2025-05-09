@@ -69,7 +69,7 @@ const Usuarios = () => {
                     <div className="text-center pb-2">
                         <table className=" space-y-2 w-full mb-5">
                             <thead>
-                                <tr className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
+                                <tr className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100 text-sm ">
                                     <th className="border-e-1 p-2 border-gray-300">#</th>
                                     <th className="border-e-1 p-2 border-gray-300">Nombre</th>
                                     <th className="border-e-1 p-2 border-gray-300">Correo</th>
