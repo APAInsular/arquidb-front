@@ -38,12 +38,19 @@ export default function CrudManager({ url }) {
     const updates = async ({ setErrors, setStatus, ...props }) => {
         setErrors(null);
         setStatus(null);
-        await axios
-            .put(api + url + "/" + props.id, props.data)
+
+        const endpoint = props.id ? `${api}${url}/${props.id}` : `${api}${url}`;
+
+        return axios
+            .put(endpoint, props.data)
             .then(res => res.data)
             .catch(error => {
-                setErrors(
-                    Object.values(error.response.data.errors).flat());
+                if (error.response && error.response.data && error.response.data.errors) {
+                    setErrors(Object.values(error.response.data.errors).flat());
+                } else {
+                    setErrors(['Ocurrió un error al actualizar.']);
+                }
+                return null;
             });
     };
 

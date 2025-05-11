@@ -27,7 +27,7 @@ const ExpedientContext = ({ children }) => {
     }
 
     if (loading) return <WebLoader />;
-    if (error) return <p>Error: {error}</p>;
+    // if (error) return <p>Error: {error}</p>;
 
     return (
         <ArquidbContext.Provider value={{ expedients, createExpedient, updateExpedient }}>

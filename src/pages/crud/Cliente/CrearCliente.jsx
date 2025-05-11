@@ -18,14 +18,14 @@ const CrearCliente = () => {
             data: formData, setErrors, setStatus
         });
 
-        if (response?.success) {
-            navigate('/');
+        if (response) {
+            navigate('/clientes');
         }
     };
 
     return (
         <div className="h-full flex flex-col gap-4">
-            <TitleCard name={"Crear Cliente"} />
+            <TitleCard name={"Cliente"} action={"Crear"} />
             <FormCliente
                 onSubmit={handleSubmit}
                 status={status}

@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 const Aside = () => {
     return (
         <>
-            <aside className="h-full flex-shrink-0 text-white">
+            <aside className="h-full flex-shrink-0 hidden sm:flex text-white">
                 <div className="p-2 flex flex-col items-center justify-between h-full">
                     <Navbar />
                     <div className="mt-auto bg-red-200/20 text-white/70 size-11 rounded-4xl flex justify-center items-center">

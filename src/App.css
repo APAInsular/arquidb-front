@@ -16,6 +16,12 @@
   }
 } */
 
+/* .action-boton>a,
+.action-boton>button {
+  width: 90px;
+  height: 32px;
+} */
+
 *::-webkit-scrollbar {
   width: 10px;
   background-color: #d0000000;
@@ -49,7 +55,7 @@
 /* layout  */
 
 .layout {
-  background: radial-gradient(#c23636, #932236);
+  background: #932236;
 }
 
 /* Navbar */
@@ -57,6 +63,10 @@
 .active {
   background: #4b0c0c;
   color: rgb(255, 255, 255);
+}
+
+.active>div {
+  background: #4b0c0c;
 }
 
 .navbar {

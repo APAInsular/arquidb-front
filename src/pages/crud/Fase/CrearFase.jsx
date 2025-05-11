@@ -1,12 +1,11 @@
+import { useNavigate } from "react-router-dom";
+import CrudManager from "../../../hooks/CrudManager";
 import { useState } from "react";
 import TitleCard from "../../../components/ui/TitleCard";
-import CrudManager from "../../../hooks/CrudManager";
-import { useNavigate } from "react-router-dom";
-import FormColegiado from "./FormColegiado";
+import FormFase from "./FormFase";
 
-const CrearColegiado = () => {
-
-    const { creates } = CrudManager({ url: `personCollegiate` });
+const CrearFase = () => {
+    const { creates } = CrudManager({ url: `phase` });
 
     const [status, setStatus] = useState(null);
     const [errors, setErrors] = useState([]);
@@ -18,15 +17,15 @@ const CrearColegiado = () => {
             data: formData, setErrors, setStatus
         });
 
-        if (response) {
-            navigate('/colegiados');
+        if (response?.success) {
+            navigate('/');
         }
     };
 
     return (
         <div className="h-full flex flex-col gap-4">
-            <TitleCard name={"Colegiados"} action={"Crear"} />
-            <FormColegiado
+            <TitleCard name={"Crear Fase"} />
+            <FormFase
                 onSubmit={handleSubmit}
                 status={status}
                 errors={errors}
@@ -35,4 +34,4 @@ const CrearColegiado = () => {
     );
 };
 
-export default CrearColegiado;
+export default CrearFase;
