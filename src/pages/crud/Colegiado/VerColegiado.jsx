@@ -25,7 +25,7 @@ const VerColegiado = () => {
     return (
         <>
             <div className="h-full flex flex-col">
-                <TitleCard name={"Show"} />
+                <TitleCard name={"Colegiados"} action={"Ver"} />
                 <div className="grid grid-cols-1 xl:grid-cols-4 relative h-full overflow-y-scroll gap-2 mt-5">
                     <div className=" flex justify-center items-center flex-col space-y-3">
                         <div className="flex flex-col justify-center items-center">

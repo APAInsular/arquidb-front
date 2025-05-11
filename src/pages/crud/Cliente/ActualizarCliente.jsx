@@ -24,8 +24,8 @@ const ActualizarCliente = () => {
             data: formData, setErrors, setStatus
         });
 
-        if (response?.success) {
-            navigate('/');
+        if (response) {
+            navigate('/clientes');
         }
     };
 
@@ -38,7 +38,7 @@ const ActualizarCliente = () => {
 
     return (
         <div className="h-full flex flex-col gap-4">
-            <TitleCard name={"Actualizar Cliente"} />
+            <TitleCard name={"Clientes"} action={"Editar"} />
 
             {loading ? (
                 <WebLoader />

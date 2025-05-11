@@ -121,7 +121,7 @@ const EditarExpediente = () => {
     return (
         <>
             <div>
-                <TitleCard name="Editar expediente" link="/expedientes" />
+                <TitleCard name={"Expedientes"} action={"Editar"} />
                 {modalPhase && <PhaseEditor expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>

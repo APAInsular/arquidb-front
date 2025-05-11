@@ -1,9 +1,23 @@
+import { useEffect, useState } from "react";
 import Avatar from "../../components/ui/Avatar";
 import { useAuth } from "../../hooks/auth";
+import CrudManager from "../../hooks/CrudManager";
 
 const Profile = () => {
 
     const { user } = useAuth({ middleware: 'auth' });
+
+    const { views } = CrudManager({ url: `centers/${user?.center_id}` });
+
+    const [center, setCenter] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        views({ setData: setCenter, setLoading, setErrors: setError });
+    }, []);
+
+    console.log(center)
 
     return (
         <>
@@ -65,7 +79,7 @@ const Profile = () => {
                             <p className="col-span-2 text-justify text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate nostrum dicta modi.</p>
                         </div>
                         <div className="text-end">
-                            <button className=" bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Añadir de Correo </button>
+                            <button className=" bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Añadir el Correo </button>
                         </div>
                     </div>
                 </div>
@@ -102,6 +116,25 @@ const Profile = () => {
                         <div className="grid grid-cols-3 w-full text-md">
                             <div>Contraseña</div>
                             <div className="text-xl font-medium text-center">****</div>
+                            <div className="flex justify-end">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                </svg>
+
+                            </div>
+                        </div>
+                        <div className="flex items-center my-4">
+                            <div className="flex-1 border-t border-gray-400/30"></div>
+                            <div className="flex-1 border-t border-gray-400/30"></div>
+                        </div>
+                        <div className="grid grid-cols-3 w-full text-md">
+                            <div>Centro</div>
+                            <div className="text-xl font-medium flex justify-center items-center">{loading ?
+                                <svg className="size-5 animate-spin text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                : center?.name}</div>
                             <div className="flex justify-end">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />

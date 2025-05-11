@@ -17,16 +17,9 @@ const Expediente = () => {
         }
     }, [expedients]);
 
-    const deleteActivate = (id) => {
-        if (!modalDelete) {
-            setModalDelete(true);
-            setDeleteId(id);
-        }
-    }
-
     return (
         <>
-            {modalDelete && <Delete userId={deleteId} type="Expediente" onClose={() => setModalDelete(false)} />}
+            {modalDelete && <Delete userId={deleteId} type="Expediente" onClose={() => setModalDelete(false)} url={"expedient"} />}
             <div className="flex flex-col h-full">
                 <TitleCard name="Expedientes" link="/" />
                 <div className="w-full flex justify-end">
@@ -38,17 +31,17 @@ const Expediente = () => {
                         <p>Añadir</p>
                     </button>
                 </div>
-                <div className="flex justify-center gap-x-10 mt-10 mb-5">
+                {/* <div className="flex justify-center gap-x-10 mt-10 mb-5">
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Persona</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fecha</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Fase</button>
                     <button type="button" className="bg-red-700 text-white py-2 px-6 rounded-full">Otros</button>
-                </div>
+                </div> */}
 
-                <div className="flex-1 overflow-y-scroll rounded-lg">
+                <div className="flex-1 overflow-y-scroll rounded-lg mt-5">
                     <div className="text-center pb-2">
-                        <table className="table-fixed space-y-2 w-full mb-5">
-                            <thead className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100">
+                        <table className="border-1 border-[#a3273e] space-y-2 w-full mb-5">
+                            <thead className=" shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100 text-sm ">
                                 <tr>
                                     <th className="border-e-1 p-2 border-gray-300">Título</th>
                                     <th className="border-e-1 p-2 border-gray-300">Número</th>
