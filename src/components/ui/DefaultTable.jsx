@@ -1,62 +1,106 @@
 
 // src/components/DataTable.jsx
+import { useEffect, useState } from 'react';
 import Actions from '../modals/crud/Actions';
 import Avatar from './Avatar';
+import CheckSelect from '../modals/crud/CheckSelect';
 
 const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId }) => {
+
+    const [checked, setChecked] = useState([]);
+
+    const handleChecked = (id) => {
+        setChecked(prev =>
+            prev.includes(id)
+                ? prev.filter(item => item !== id)
+                : [...prev, id]
+        );
+    };
+
+    const handleSelectAll = () => {
+        if (checked.length === data.length) {
+            setChecked([]);
+        } else {
+            setChecked(data.map(row => row.id));
+        }
+    };
+
+    useEffect(() => {
+        setChecked([]);
+    }, [data]);
+
+    console.log(checked)
+
     return (
-        <div className="flex-1 overflow-y-scroll rounded-sm">
-            <div className="pb-2">
-                <table className="space-y-2 w-full mb-5">
-                    <thead>
-                        <tr className="shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100 text-sm font-mono uppercase">
-                            <th className="p-2 h-full">
-                                <div className="flex items-center justify-center">
-                                    <input
-                                        type="checkbox"
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 rounded-sm focus:ring-2 focus:ring-blue-500"
-                                    />
-                                </div>
-                            </th>
+        <>
+            {checked.length >= 1 &&
+                <CheckSelect datos={checked} total={checked.length} setDeletes={setDeletes} />
+            }
 
-                            {columns.map((col) => (
-                                <th key={col.key} className="p-2 text-center">{col.label}</th>
-                            ))}
-
-                            <th className="p-2"></th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {data.map((row) => (
-                            <tr
-                                key={row.id}
-                                className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8 mt-2 cursor-pointer transition-all text-nowrap"
-                            >
-                                <td className="py-1.5 px-4">
+            < div className="flex-1 overflow-y-scroll rounded-sm" >
+                <div className="pb-2">
+                    <table className="space-y-2 w-full mb-5">
+                        <thead>
+                            <tr className="shadow-2xl sticky top-0 bg-[#a3273e] text-gray-100 text-sm font-mono uppercase">
+                                <th className="p-2 h-full">
                                     <div className="flex items-center justify-center">
                                         <input
                                             type="checkbox"
-                                            className="w-4 h-4 text-blue-600 bg-gray-100 rounded-sm focus:ring-2 focus:ring-blue-500"
+                                            checked={checked.length === data.length && data.length > 0}
+                                            onChange={handleSelectAll}
+                                            className="cursor-pointer w-4 h-4 rounded-sm focus:ring-2 focus:ring-red-500"
+                                            style={{ accentColor: '#dc2626' }}
                                         />
                                     </div>
-                                </td>
+                                </th>
 
                                 {columns.map((col) => (
-                                    <td key={col.key} className="py-1.5 px-4">
-                                        {col.render ? col.render(row) : row[col.key]}
-                                    </td>
+                                    <th key={col.key} className="p-2 text-center text-white">{col.label}</th>
                                 ))}
 
-                                <td className="py-1.5 px-4">
-                                    <Actions tabla={'usuarios'} datos={row} setDeletes={setDeletes} openId={openId} setOpenId={setOpenId} />
-                                </td>
+                                <th className="p-2"></th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                        </thead>
+
+                        <tbody>
+                            {data.map((row) => (
+                                <tr
+                                    key={row.id}
+                                    className={
+                                        `mt-2 cursor-pointer transition-all text-nowrap 
+                                    ${checked.includes(row.id)
+                                            ? 'bg-[#bb2b46]/70 text-white even:bg-[#bb2b46]/50 border-s-5 border-red-900 even:border-red-500'
+                                            : 'hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8 border-s-5 border-transparent'}`
+                                    }
+                                >
+                                    <td className="py-1.5 px-4">
+                                        <div className="flex items-center justify-center">
+                                            <input
+                                                checked={checked.includes(row.id)}
+                                                onChange={() => handleChecked(row.id)}
+                                                type="checkbox"
+                                                className="cursor-pointer w-4 h-4 rounded-sm focus:ring-2 focus:ring-red-500"
+                                                style={{ accentColor: '#dc2626' }}
+                                            />
+                                        </div>
+                                    </td>
+
+                                    {columns.map((col) => (
+                                        <td key={col.key} className="py-1.5 px-4">
+                                            {col.render ? col.render(row) : row[col.key]}
+                                        </td>
+                                    ))}
+
+                                    <td className="py-1.5 px-4">
+                                        <Actions tabla={'usuarios'} datos={row} setDeletes={setDeletes} openId={openId} setOpenId={setOpenId} />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div >
+        </>
     );
 }
 

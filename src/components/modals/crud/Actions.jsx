@@ -13,17 +13,14 @@ function Actions({ tabla, datos, setDeletes, openId, setOpenId }) {
 
     return (
         <div className="relative">
-            {/* Botón de 3 puntitos */}
             <div
-                className="flex justify-center items-center hover:bg-red-200/40 rounded-2xl cursor-pointer"
+                className="flex justify-center items-center text-black/40 hover:bg-red-200/40 rounded-2xl cursor-pointer"
                 onClick={toggleMenu}
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                 </svg>
             </div>
-
-            {/* Modal / Menú de acciones */}
             {isOpen && (
                 <div className="absolute z-50 right-0 mt-1 w-52 bg-white border border-gray-200 rounded-lg shadow-lg py-2">
                     <div className="absolute bg-white p-2 right-5.5 top-[-5px] rotate-45"></div>

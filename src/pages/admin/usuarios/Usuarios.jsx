@@ -32,9 +32,8 @@ const Usuarios = () => {
 
     if (error) return <p>Error: {error}</p>;
 
-    const admin = users.filter((item) => item.roles === "Admin");
-    const visator = users.filter((item) => item.roles === "visor");
-    console.log(users.filter((item) => item.roles === "visor"))
+    const visator = users.filter(item => item.roles.some(role => role.name === "visor"));
+    const admin = users.filter(item => item.roles.some(role => role.name === "superAdmin"));
 
     const userColumns = [
         {
@@ -54,11 +53,14 @@ const Usuarios = () => {
             label: 'Usuario Rol',
             render: (user) =>
                 user.roles?.[0] ? (
-                    <div className="bg-yellow-500/20 rounded-sm text-center text-yellow-700 font-medium">
+                    <div className=" uppercase text-xs bg-yellow-200 rounded-full flex w-min px-2 py-0.5 items-center text-yellow-600 font-medium">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 me-2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+                        </svg>
                         {user.roles[0].name}
                     </div>
                 ) : (
-                    <div className="bg-gray-500/10 rounded-sm text-center text-gray-700 font-medium">Ninguno</div>
+                    <div className="bg-gray-200 text-xs uppercase py-0.5 rounded-full w-min px-2 text-center text-gray-600 font-medium">Ninguno</div>
                 ),
         },
     ];
@@ -82,12 +84,14 @@ const Usuarios = () => {
                         title={'Usuario'}
                         Buscador={buscador}
                     />
-                    <Link to={'/usuarios/crear'} className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-sm">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                            <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
-                        </svg>
-                        <p>Añadir</p>
-                    </Link>
+                    <div className="">
+                        <Link to={'/usuarios/crear'} className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-900 font-medium bg-red-200 w-min mt-2 p-1 rounded-full shadow-2xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
+                                <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
+                            </svg>
+                            <p>Añadir usuario</p>
+                        </Link>
+                    </div>
                 </div>
                 {/* card  */}
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
@@ -104,7 +108,7 @@ const Usuarios = () => {
                         value={visator.length}
                     />
                 </div>
-                <div>
+                <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
                 </div>
                 {/* tabla */}
