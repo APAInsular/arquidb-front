@@ -19,7 +19,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
     const [formData, setFormData] = useState({
         name: user?.name || "",
         email: user?.email || "",
-        phone: user?.phone || "",
+        password: "",
         center_id: user?.center_id || 1,
     });
 
@@ -33,7 +33,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
         setFormData({
             name: user?.name || "",
             email: user?.email || "",
-            phone: user?.phone || "",
+            password: "",
             center_id: user?.center_id || 1,
         });
     }, [user]);
@@ -61,13 +61,16 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
 
     };
 
+    console.log("Error", errors)
+
     return (
         <>
             {/* {open && (
                 <Success />
             )} */}
-            <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-5">
+            <div className="space-y-6 flex flex-col justify-between h-full">
+
+                <div>
                     <div>
                         <InputForm
                             type="text"
@@ -77,7 +80,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                             onChange={handleChange}
                             className=""
                         />
-                        {errors && errors.name && <p className="text-red-500">{errors.name}</p>}
+                        {errors && errors?.name && <p className="text-red-500">{errors?.name}</p>}
                     </div>
 
                     <div>
@@ -89,44 +92,44 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                             onChange={handleChange}
                             className=""
                         />
-                        {errors && errors.email && <p className="text-red-500">{errors.email}</p>}
+                        {errors && errors?.email && <p className="text-red-500">{errors?.email}</p>}
                     </div>
 
+                    <div>
+                        <InputForm
+                            type="password"
+                            name="password"
+                            placeholder="Contraseña"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className=""
+                        />
+                        {errors && errors?.password && <p className="text-red-500">{errors?.password}</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor={"name"} className="block text-md font-medium text-gray-700 mb-1">
+                            Centros
+                        </label>
+                        {loading ?
+                            <div>Cargando...</div>
+                            :
+                            <select className="w-full border-b-2 border-gray-500/70 py-3 focus:border-b-red-700 outline-none" name="centros" id="centros">
+                                {center.length >= 1 ? center.map(datos => (
+                                    <option key={datos?.id} value={datos?.id}>{datos?.name}</option>)) : ""}
+                            </select>
+                        }
+                    </div>
                 </div>
 
-                <div>
-                    <InputForm
-                        type="number"
-                        name="phone"
-                        placeholder="Telefonos"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        className=""
-                    />
-                    {errors && errors.phone && <p className="text-red-500">{errors.phone}</p>}
-                </div>
-
-                <div>
-                    <label htmlFor={"name"} className="block text-md font-medium text-gray-700 mb-1">
-                        Centros
-                    </label>
-                    {loading ?
-                        <div>Cargando...</div>
-                        :
-                        <select className="w-full border-b-1 border-gray-400 py-3 focus:border-b-red-700 outline-none" name="centros" id="centros">
-                            {center.length >= 1 ? center.map(datos => (
-                                <option key={datos?.id} value={datos?.id}>{datos?.name}</option>)) : ""}
-                        </select>
-                    }
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <button onClick={() => handleSubmit()} type="submit" className="rounded-none px-4 w-full py-2 bg-red-900 text-white font-medium">
-                        Enviar
+                <div className="flex items-center gap-4 mt-auto mb-1">
+                    <button onClick={() => handleSubmit()} type="submit" className="cursor-pointer rounded-md px-4 w-full py-2 bg-red-900 text-white font-medium">
+                        {status ? "Cargando..." : "Enviar"}
+                        {/* Enviar */}
                     </button>
                 </div>
 
-                {status && <p className="text-green-500">{status}</p>}
+                {status == "success" ? <p className="text-green-500">{status}</p> : <p className="text-red-500">{status}</p>}
             </div>
         </>
     );

@@ -19,7 +19,7 @@ const CrearUsuario = () => {
         });
 
         if (response) {
-            navigate('/colegiados');
+            navigate('/usuarios');
         }
     };
 
@@ -27,7 +27,7 @@ const CrearUsuario = () => {
         <>
             <div className="">
                 <div className="">
-                    <TitleCard name={"Usuario"} action={"Crear"} />
+                    <TitleCard name={"Usuarios"} action={"Crear"} />
                     <div className="p-4 sm:p-8 bg-white rounded-b-xl shadow">
                         <div className="w-full">
                             <div className="sm:flex sm:items-center">

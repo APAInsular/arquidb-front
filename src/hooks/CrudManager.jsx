@@ -30,6 +30,7 @@ export default function CrudManager({ url }) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
                 setStatus("error");
+                setErrors(error)
                 throw error;
             });
     };
