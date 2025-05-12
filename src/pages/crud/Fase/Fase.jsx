@@ -42,7 +42,7 @@ const Fase = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Fases (Cualquier Fase)"}
-                        value={phases.length}
+                        value={phases?.length}
                     />
                 </div>
                 {loading ? (
@@ -66,7 +66,7 @@ const Fase = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="">
-                                    {phases.map((datos) => (
+                                    {phases && phases.map((datos) => (
                                         <tr key={datos.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll">
                                             <td className="py-1.5 px-4">{datos.id}</td>
                                             <td className="py-1.5 px-4">{datos.phase}</td>
