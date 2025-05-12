@@ -5,7 +5,7 @@ import Actions from '../modals/crud/Actions';
 import Avatar from './Avatar';
 import CheckSelect from '../modals/crud/CheckSelect';
 
-const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId }) => {
+const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla }) => {
 
     const [checked, setChecked] = useState([]);
 
@@ -92,7 +92,7 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId }) => {
                                     ))}
 
                                     <td className="py-1.5 px-4">
-                                        <Actions tabla={'usuarios'} datos={row} setDeletes={setDeletes} openId={openId} setOpenId={setOpenId} />
+                                        <Actions tabla={tabla} datos={row} setDeletes={setDeletes} openId={openId} setOpenId={setOpenId} />
                                     </td>
                                 </tr>
                             ))}

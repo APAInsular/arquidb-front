@@ -54,11 +54,11 @@ function App() {
               <Route path="/personas" element={<Persona />} />
               <Route path="/colegiados" element={<Colegiado />} />
               <Route path="/colegiados/:id/show" element={<VerColegiado />} />
-              <Route path="/colegiados/:id/actualizar" element={<ActualizarColegiado />} />
+              <Route path="/colegiados/:id/editar" element={<ActualizarColegiado />} />
               <Route path="/colegiados/crear" element={<CrearColegiado />} />
               <Route path="/clientes" element={<Cliente />} />
               <Route path="/clientes/:id/show" element={<VerCliente />} />
-              <Route path="/clientes/:id/actualizar" element={<ActualizarCliente />} />
+              <Route path="/clientes/:id/editar" element={<ActualizarCliente />} />
               <Route path="/clientes/crear" element={<CrearCliente />} />
               <Route path="/fases" element={<Fase />} />
               <Route path="/fases/crear" element={<CrearFase />} />

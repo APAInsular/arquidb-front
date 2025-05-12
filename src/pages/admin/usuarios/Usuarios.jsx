@@ -126,6 +126,7 @@ const Usuarios = () => {
                         setDeletes={setDeletes}
                         openId={openId}
                         setOpenId={setOpenId}
+                        tabla={'usuarios'}
                     />
                 )}
             </div>
