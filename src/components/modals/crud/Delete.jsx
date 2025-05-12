@@ -33,7 +33,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
 
     return (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/80 bg-opacity-50">
-            <div className="bg-white p-5 rounded-lg shadow-2xl mx-2 w-full max-w-md border border-gray-300">
+            <div className="bg-white modal-appear p-5 rounded-lg shadow-2xl mx-2 w-full max-w-md border border-gray-300">
                 <div className="flex justify-end">
                     <button onClick={() => onClose(true)} className="text-gray-400 cursor-pointer hover:text-gray-900">✕</button>
                 </div>

@@ -5,7 +5,7 @@ const CheckSelect = ({ datos, total, setDeletes }) => {
     return (
         <>
             <div className="fixed bottom-0 right-[30%] me-5 z-50 mb-5 flex justify-center items-center">
-                <div className="bg-gray-800 text-white p-4 rounded-full shadow-2xl mx-2 w-full">
+                <div className="bg-gray-800 modal-appear text-white p-4 rounded-full shadow-2xl mx-2 w-full">
                     <div className="flex flex-row justify-between items-center space-x-2.5">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 cursor-pointer hover:bg-gray-600 rounded-full">
