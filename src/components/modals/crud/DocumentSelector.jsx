@@ -2,12 +2,20 @@ import { useState } from "react";
 import Default from "../Default";
 import UpdateFile from "./UpdateFile";
 
-const DocumentSelector = ({ phase, setModalDocument }) => {
+const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpedientDocuments }) => {
     const [file, setFile] = useState(false);
+    const [phaseDocuments, setPhaseDocuments] = useState([]);
+
+    const handleClick = () => {
+        setExpedientDocuments([...expedientDocuments, ...phaseDocuments]);
+        setModalDocument(false);
+    }
+
+    console.log([...phaseDocuments.entries()]);
 
     return (
         <>
-            {file && <UpdateFile onClose={() => setFile(false)} />}
+            {file && <UpdateFile onClose={() => setFile(false)} phaseDocuments={phaseDocuments} setPhaseDocuments={setPhaseDocuments} />}
             <Default className="text-center w-1/3">
                 <div className="bg-white text-blue-500 p-2">
                     <div className="mb-10 text-black p-2">
@@ -17,7 +25,14 @@ const DocumentSelector = ({ phase, setModalDocument }) => {
                         </div>
                     </div>
                     <button type="button" onClick={() => setFile(true)} className="w-full bg-gray-300 rounded-lg mb-10 text-8xl">+</button>
-                    <button type="button" className="bg-blue-600 text-white rounded-full py-2 px-6 w-full">Enviar</button>
+                    {phaseDocuments.map((document, index) => {
+                        return (
+                            <div key={index} className="bg-blue-400 text-white rounded-full p-2 my-5">
+                                <p>{document.name}</p>
+                            </div>
+                        );
+                    })}
+                    <button type="button" onClick={() => handleClick()} className="bg-blue-600 text-white rounded-full py-2 px-6 w-full hover:bg-blue-700 focus:ring-2 focus:ring-blue-400">Enviar</button>
                 </div>
             </Default>
         </>

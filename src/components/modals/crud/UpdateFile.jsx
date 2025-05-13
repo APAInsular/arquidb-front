@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "../../../lib/axios";
 
-const UpdateFile = ({ onClose }) => {
+const UpdateFile = ({ onClose, phaseDocuments, setPhaseDocuments }) => {
     const [activeButton, setActiveButton] = useState(1); // Establecer un valor inicial
 
     const buttons = [
@@ -32,21 +32,32 @@ const UpdateFile = ({ onClose }) => {
         setError(null);
         setSuccess(false);
 
-        const formData = new FormData(e.target);
+        const formData = new FormData();
+        formData.append('file', file);
 
-        // Convertir FormData a un objeto plano
-        const newDocument = Object.fromEntries(formData.entries());
-
-        console.log(newDocument);
+        console.log('Archivo seleccionado:', file);
+        console.log([...formData.entries()]);
 
         try {
-            // Reemplaza la URL con la de tu backend Laravel
-            const response = await axios.post('api/upload', newDocument);
+            // formData.append('name', file.name);
+            const newDocument = {
+                data: formData,
+                name: file.name,
+                // phase_id: 5
+            };
 
-            setSuccess(true);
-            setFileUrl(response.data.url);
+            console.log(newDocument);
+
+            // const response = await axios.post('api/upload', formData);
+
+            if (!phaseDocuments.some(document => document.name == newDocument.name)) {
+                setPhaseDocuments([...phaseDocuments, newDocument]);
+                setSuccess(true);
+            }
+
+            // setFileUrl(response.data.url);
         } catch (err) {
-            setError(err.response?.data?.message || 'Error al subir el archivo');
+            //setError(err.response?.data?.message || 'Error al subir el archivo');
         } finally {
             setUploading(false);
         }
@@ -111,7 +122,7 @@ const UpdateFile = ({ onClose }) => {
                                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                                     <button
                                         type="submit"
-                                        disabled={uploading || !file}
+                                        disabled={uploading || !file || success}
                                         className="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 flex-1"
                                     >
                                         {uploading ? 'Subiendo...' : 'Subir Archivo'}
@@ -130,14 +141,14 @@ const UpdateFile = ({ onClose }) => {
                                 {success && (
                                     <div className="success-message">
                                         <p>¡Archivo subido exitosamente!</p>
-                                        {fileUrl && (
+                                        {/* {fileUrl && (
                                             <p>
                                                 URL del archivo:
                                                 <a href={fileUrl} target="_blank" rel="noopener noreferrer">
                                                     {fileUrl}
                                                 </a>
                                             </p>
-                                        )}
+                                        )} */}
                                     </div>
                                 )}
                             </div>

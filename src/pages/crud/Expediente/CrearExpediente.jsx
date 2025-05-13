@@ -12,6 +12,7 @@ const CrearExpediente = () => {
     const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
+    const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
     const navigate = useNavigate();
     const { createExpedient } = useExpedient();
@@ -101,13 +102,14 @@ const CrearExpediente = () => {
     };
 
     console.log(expedientPhases);
+    console.log(expedientDocuments);
 
     return (
         <>
             <div>
                 <TitleCard name={"Expedientes"} action={"Crear"} />
                 {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
-                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
+                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} expedientDocuments={expedientDocuments} setExpedientDocuments={setExpedientDocuments} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
