@@ -48,7 +48,7 @@ function App() {
               {/* posible eliminacion  */}
               {/* <Route path="/search" element={<PageSearch />} /> */}
               <Route path="/expedientes" element={<Expediente />} />
-              <Route path="/expedientes/:id" element={<VerExpediente />} />
+              <Route path="/expedientes/:id/show" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />
               <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
               <Route path="/personas" element={<Persona />} />

@@ -5,7 +5,7 @@ const DataSearch = ({ datos, query }) => {
     return (
         <div className={`absolute z-20 top-10 left-0 w-full bg-[#a81d37] text-white/70 pt-3  rounded-b-xl mt-2 shadow-2xl space-y-3`}>
             {datos.length >= 1 ? datos.map(data => (
-                <Link to={`/expedientes/${data.id}`} key={data.id}>
+                <Link to={`/expedientes/${data.id}/show`} key={data.id}>
                     <div className="flex flex-row items-center space-x-5 border-b-1 border-red-300/20 pb-2 hover:bg-red-900 px-2 py-1 transition-all">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">

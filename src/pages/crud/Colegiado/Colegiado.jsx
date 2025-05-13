@@ -119,6 +119,9 @@ const Colegiado = () => {
                         openId={openId}
                         setOpenId={setOpenId}
                         tabla={'colegiados'}
+                        someText="name"
+                        someNumber="id"
+                        someDate="created_at"
                     />)}
             </div >
         </>

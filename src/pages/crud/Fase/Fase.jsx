@@ -41,7 +41,13 @@ const Fase = () => {
                     {phase.id}
                 </div>
         },
-        { key: 'phase', label: 'Fase' },
+        {
+            key: 'phase', label: 'Fase',
+            render: (phase) =>
+                <div className="text-center">
+                    {phase.phase}
+                </div>
+        },
         { key: 'fullTitle', label: 'Título' },
         {
             key: 'documents',
@@ -105,6 +111,9 @@ const Fase = () => {
                         openId={openId}
                         setOpenId={setOpenId}
                         tabla={'fases'}
+                        someText="name"
+                        someNumber="phase"
+                        someDate="created_at"
                     />)}
             </div>
         </>
