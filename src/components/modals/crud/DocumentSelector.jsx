@@ -15,7 +15,7 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
 
     return (
         <>
-            {file && <UpdateFile onClose={() => setFile(false)} phaseDocuments={phaseDocuments} setPhaseDocuments={setPhaseDocuments} />}
+            {file && <UpdateFile onClose={() => setFile(false)} phase={phase} phaseDocuments={phaseDocuments} setPhaseDocuments={setPhaseDocuments} />}
             <Default className="text-center w-1/3">
                 <div className="bg-white text-blue-500 p-2">
                     <div className="mb-10 text-black p-2">

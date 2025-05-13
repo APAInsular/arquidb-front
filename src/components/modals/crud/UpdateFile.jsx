@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "../../../lib/axios";
 
-const UpdateFile = ({ onClose, phaseDocuments, setPhaseDocuments }) => {
+const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
     const [activeButton, setActiveButton] = useState(1); // Establecer un valor inicial
 
     const buttons = [
@@ -43,7 +43,7 @@ const UpdateFile = ({ onClose, phaseDocuments, setPhaseDocuments }) => {
             const newDocument = {
                 data: formData,
                 name: file.name,
-                // phase_id: 5
+                phase: phase
             };
 
             console.log(newDocument);

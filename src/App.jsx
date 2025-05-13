@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/auth/Login';
 import ExpedientContext from './store/contexts/ExpedientContext';
 import PhaseContext from './store/contexts/PhaseContext';
+import DocumentContext from './store/contexts/DocumentContext';
 import Expediente from './pages/crud/Expediente/Expediente';
 import VerExpediente from './pages/crud/Expediente/VerExpediente';
 import CrearExpediente from './pages/crud/Expediente/CrearExpediente';
@@ -34,38 +35,40 @@ function App() {
     <>
       <ExpedientContext>
         <PhaseContext>
-          {/* rutas de la pagina */}
-          <Routes>
-            {/* El contenedor general con el header y aside */}
-            <Route path="/" element={<Layout />} >
-              {/* Paginas */}
-              <Route path="/" element={<Dashboard />} />
-              {/* usuario */}
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/historial" element={<Records />} />
-              {/* posible eliminacion  */}
-              {/* <Route path="/search" element={<PageSearch />} /> */}
-              <Route path="/expedientes" element={<Expediente />} />
-              <Route path="/expedientes/:id" element={<VerExpediente />} />
-              <Route path="/expedientes/crear" element={<CrearExpediente />} />
-              <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
-              <Route path="/personas" element={<Persona />} />
-              <Route path="/colegiados" element={<Colegiado />} />
-              <Route path="/colegiados/:id/show" element={<VerColegiado />} />
-              <Route path="/colegiados/:id/actualizar" element={<ActualizarColegiado />} />
-              <Route path="/colegiados/crear" element={<CrearColegiado />} />
-              <Route path="/clientes" element={<Cliente />} />
-              <Route path="/clientes/:id/show" element={<VerCliente />} />
-              <Route path="/clientes/:id/actualizar" element={<ActualizarCliente />} />
-              <Route path="/clientes/crear" element={<CrearCliente />} />
-              <Route path="/fases" element={<Fase />} />
-              <Route path="/fases/crear" element={<CrearFase />} />
-              <Route path="/fases/:id/editar" element={<EditarFase />} />
-              <Route path="/usuarios" element={<Usuarios />} />
-              <Route path="/usuarios/:id/show" element={<VerUsuario />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-          </Routes>
+          <DocumentContext>
+            {/* rutas de la pagina */}
+            <Routes>
+              {/* El contenedor general con el header y aside */}
+              <Route path="/" element={<Layout />} >
+                {/* Paginas */}
+                <Route path="/" element={<Dashboard />} />
+                {/* usuario */}
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/historial" element={<Records />} />
+                {/* posible eliminacion  */}
+                {/* <Route path="/search" element={<PageSearch />} /> */}
+                <Route path="/expedientes" element={<Expediente />} />
+                <Route path="/expedientes/:id" element={<VerExpediente />} />
+                <Route path="/expedientes/crear" element={<CrearExpediente />} />
+                <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
+                <Route path="/personas" element={<Persona />} />
+                <Route path="/colegiados" element={<Colegiado />} />
+                <Route path="/colegiados/:id/show" element={<VerColegiado />} />
+                <Route path="/colegiados/:id/actualizar" element={<ActualizarColegiado />} />
+                <Route path="/colegiados/crear" element={<CrearColegiado />} />
+                <Route path="/clientes" element={<Cliente />} />
+                <Route path="/clientes/:id/show" element={<VerCliente />} />
+                <Route path="/clientes/:id/actualizar" element={<ActualizarCliente />} />
+                <Route path="/clientes/crear" element={<CrearCliente />} />
+                <Route path="/fases" element={<Fase />} />
+                <Route path="/fases/crear" element={<CrearFase />} />
+                <Route path="/fases/:id/editar" element={<EditarFase />} />
+                <Route path="/usuarios" element={<Usuarios />} />
+                <Route path="/usuarios/:id/show" element={<VerUsuario />} />
+              </Route>
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </DocumentContext>
         </PhaseContext>
       </ExpedientContext>
     </>
