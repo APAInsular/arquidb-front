@@ -3,6 +3,7 @@ import axios from '../lib/axios'
 export default function CrudManager({ url }) {
 
     const api = "api/"
+    
     // Ver los datos 
     const views = async ({ setData, setLoading, setErrors, setPages }) => {
         setLoading(true);
@@ -10,7 +11,7 @@ export default function CrudManager({ url }) {
             .get(api + url)
             .then(res => {
                 setData(res.data.data ?? res.data);
-                setPages(res.data.last_page);
+                setPages(res.data.data.last_page ?? res.data.last_page);
             })
             .catch(error => {
                 if (error.response && error.response.data.errors) {
