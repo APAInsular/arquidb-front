@@ -25,7 +25,7 @@ const TitleCard = ({ name, action, icon }) => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                             </svg>
                         </div>
-                        <button onClick={() => handleclick(0)} className=" p-0 m-0 cursor-pointer hover:text-gray-400 transition-all">
+                        <button onClick={() => handleclick(0)} className=" p-0 m-0 font-medium cursor-pointer hover:text-gray-400 transition-all">
                             {action}
                         </button>
                     </>

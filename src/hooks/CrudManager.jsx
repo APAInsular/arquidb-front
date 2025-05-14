@@ -3,14 +3,21 @@ import axios from '../lib/axios'
 export default function CrudManager({ url }) {
 
     const api = "api/"
+    
     // Ver los datos 
-    const views = async ({ setData, setLoading, setErrors }) => {
+    const views = async ({ setData, setLoading, setErrors, setPages }) => {
         setLoading(true);
         await axios
             .get(api + url)
-            .then(res => { setData(res.data.data ?? res.data); })
+            .then(res => {
+                setData(res.data.data ?? res.data);
+                setPages(res.data.data.last_page ?? res.data.last_page);
+            })
             .catch(error => {
-                setErrors(Object.values(error.response?.data?.errors ?? {}).flat());
+                if (error.response && error.response.data.errors) {
+                    setErrors(Object.values(error.response.data.errors).flat());
+                }
+                throw error;
             })
             .finally(() => { setLoading(false); });
     };
@@ -30,6 +37,7 @@ export default function CrudManager({ url }) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
                 setStatus("error");
+                setErrors(error)
                 throw error;
             });
     };
