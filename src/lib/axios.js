@@ -5,10 +5,10 @@ const getToken = () => localStorage.getItem("auth_token");
 
 const axios = Axios.create({
   baseURL: import.meta.env.VITE_APP_BACKEND_URL,
-  withCredentials: true,
+  // withCredentials: true,
   headers: {
     "Accept": "application/json",
-    // Authorization: `Bearer ${getToken()}`
+    Authorization: `Bearer ${getToken()}`
   },
 });
 
