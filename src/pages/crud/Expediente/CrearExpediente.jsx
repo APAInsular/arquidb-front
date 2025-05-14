@@ -3,19 +3,23 @@ import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
+import { useDocument } from "../../../store/contexts/DocumentContext";
 import { useState, useCallback } from "react";
 import axios from "../../../lib/axios";
 import TitleCard from "../../../components/ui/TitleCard";
+import { format } from "date-fns";
 
 const CrearExpediente = () => {
     const [modalPhase, setModalPhase] = useState(false);
     const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
+    const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
     const navigate = useNavigate();
     const { createExpedient } = useExpedient();
-    const { createPhase, getPhaseTitles } = usePhase();
+    const { phases, createPhase, getPhaseTitles } = usePhase();
+    const { createDocument, uploadDocument } = useDocument();
 
     const [expedient, setExpedient] = useState({});
 
@@ -90,24 +94,54 @@ const CrearExpediente = () => {
 
             console.log(newPhases);
 
-            const createPromises = newPhases.map(phase => createPhase(phase));
+            const createPromises = newPhases.map(async phase => {
+                const formattedPhase = {
+                    ...phase,
+                    record_date: format(new Date(phase.record_date), 'yyyy-MM-dd HH:mm:ss')
+                };
+                await createPhase(formattedPhase);
+            });
             await Promise.all(createPromises);
+
+            const uploadPromises = expedientDocuments.map(async document => {
+                const uploadResponse = await uploadDocument(document.data);
+                const phases = await axios.get('api/phase').then(res => res.data);
+
+                const phase = phases.find(phase => phase.phase === document.phase && phase.expedient_id === response.data.id);
+                console.log(phases);
+                if (!phase) {
+                    console.error(`Fase no encontrada: ${document.phase}`);
+                    return;
+                }
+                document = {
+                    ...document,
+                    name: uploadResponse.filename,
+                    phase_id: phase.id
+                };
+                delete document.data;
+                delete document.phase;
+
+                await createDocument(document);
+            });
+            await Promise.all(uploadPromises);
 
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
-            console.error("Error creando el evento:", error);
+            console.error("Error creando el expediente:", error);
         }
     };
 
     console.log(expedientPhases);
+    console.log(expedientDocuments);
+    console.log(phases);
 
     return (
         <>
             <div>
                 <TitleCard name={"Expedientes"} action={"Crear"} />
                 {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
-                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
+                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} expedientDocuments={expedientDocuments} setExpedientDocuments={setExpedientDocuments} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
@@ -241,7 +275,7 @@ const CrearExpediente = () => {
                             </button>
                         </div>
                     </div>
-                    <input type="hidden" name="center_id" value={1} />
+                    <input type="hidden" name="center_id" value={2} />
                     <div className="text-center">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>

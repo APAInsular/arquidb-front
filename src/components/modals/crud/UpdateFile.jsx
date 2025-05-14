@@ -1,6 +1,7 @@
 import { useState } from "react";
+import axios from "../../../lib/axios";
 
-const UpdateFile = ({ onClose }) => {
+const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
     const [activeButton, setActiveButton] = useState(1); // Establecer un valor inicial
 
     const buttons = [
@@ -8,6 +9,59 @@ const UpdateFile = ({ onClose }) => {
         { id: 2, label: 'Subir un archivo' },
         { id: 3, label: 'Google Drive' },
     ];
+
+    const [file, setFile] = useState(null);
+    const [uploading, setUploading] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
+    const [fileUrl, setFileUrl] = useState('');
+
+    const handleFileChange = (e) => {
+        setFile(e.target.files[0]);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!file) {
+            setError('Por favor selecciona un archivo');
+            return;
+        }
+
+        setUploading(true);
+        setError(null);
+        setSuccess(false);
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        console.log('Archivo seleccionado:', file);
+        console.log([...formData.entries()]);
+
+        try {
+            // formData.append('name', file.name);
+            const newDocument = {
+                data: formData,
+                name: file.name,
+                phase: phase
+            };
+
+            console.log(newDocument);
+
+            // const response = await axios.post('api/upload', formData);
+
+            if (!phaseDocuments.some(document => document.name == newDocument.name)) {
+                setPhaseDocuments([...phaseDocuments, newDocument]);
+                setSuccess(true);
+            }
+
+            // setFileUrl(response.data.url);
+        } catch (err) {
+            //setError(err.response?.data?.message || 'Error al subir el archivo');
+        } finally {
+            setUploading(false);
+        }
+    };
 
     return (
         <div
@@ -50,36 +104,56 @@ const UpdateFile = ({ onClose }) => {
                     </div>
 
                     {/* Sección derecha */}
-                    <div className="flex-1 bg-white p-4 rounded-lg text-red-700">
-                        <div className="flex flex-col space-y-4">
-                            <button
-                                type="button"
-                                className="bg-red-700 text-white px-4 py-3 rounded-lg hover:bg-red-800 transition-colors"
-                            >
-                                Seleccionar archivo
-                            </button>
+                    <form onSubmit={handleSubmit} className="flex-1 m-0 p-0">
+                        <div className="bg-white p-4 rounded-lg text-red-700">
+                            <div className="flex flex-col space-y-4">
+                                <input
+                                    type="file"
+                                    name="file"
+                                    onChange={handleFileChange}
+                                    disabled={uploading}
+                                    className="bg-red-700 text-white px-4 py-3 rounded-lg hover:bg-red-800 transition-colors"
+                                />
 
-                            <div className="border-2 border-dashed border-red-700 rounded-lg p-4 text-center">
-                                <p>Arrastrar y soltar archivos aquí</p>
-                            </div>
+                                <div className="border-2 border-dashed border-red-700 rounded-lg p-4 text-center">
+                                    <p>Arrastrar y soltar archivos aquí</p>
+                                </div>
 
-                            <div className="flex flex-col sm:flex-row justify-center gap-4">
-                                <button
-                                    type="button"
-                                    className="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 flex-1"
-                                >
-                                    Subir archivo
-                                </button>
-                                <button
-                                    type="button"
-                                    className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 flex-1"
-                                    onClick={() => onClose(true)}
-                                >
-                                    Cancelar
-                                </button>
+                                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                                    <button
+                                        type="submit"
+                                        disabled={uploading || !file || success}
+                                        className="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 flex-1"
+                                    >
+                                        {uploading ? 'Subiendo...' : 'Subir Archivo'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 flex-1"
+                                        onClick={() => onClose(true)}
+                                    >
+                                        Cancelar
+                                    </button>
+                                </div>
+
+
+                                {error && <div className="error-message">{error}</div>}
+                                {success && (
+                                    <div className="success-message">
+                                        <p>¡Archivo subido exitosamente!</p>
+                                        {/* {fileUrl && (
+                                            <p>
+                                                URL del archivo:
+                                                <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+                                                    {fileUrl}
+                                                </a>
+                                            </p>
+                                        )} */}
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
