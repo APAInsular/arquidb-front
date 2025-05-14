@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Default from "../Default";
 import UpdateFile from "./UpdateFile";
 
@@ -6,12 +6,18 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
     const [file, setFile] = useState(false);
     const [phaseDocuments, setPhaseDocuments] = useState([]);
 
+    // useEffect(() => {
+    //     // Falta filtrar en EditarExpediente
+    //     const documentFilter = expedientDocuments.filter(document => document.phase === phase);
+    //     if (documentFilter.length > 0) setPhaseDocuments([...phaseDocuments, ...documentFilter]);
+    // }, [expedientDocuments]);
+
     const handleClick = () => {
         setExpedientDocuments([...expedientDocuments, ...phaseDocuments]);
         setModalDocument(false);
     }
 
-    console.log([...phaseDocuments.entries()]);
+    console.log(phaseDocuments);
 
     return (
         <>
