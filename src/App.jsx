@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/auth/Login';
 import ExpedientContext from './store/contexts/ExpedientContext';
 import PhaseContext from './store/contexts/PhaseContext';
+import DocumentContext from './store/contexts/DocumentContext';
 import Expediente from './pages/crud/Expediente/Expediente';
 import VerExpediente from './pages/crud/Expediente/VerExpediente';
 import CrearExpediente from './pages/crud/Expediente/CrearExpediente';
@@ -36,6 +37,7 @@ function App() {
     <>
       <ExpedientContext>
         <PhaseContext>
+          <DocumentContext>
           {/* rutas de la pagina */}
           <Routes>
             {/* El contenedor general con el header y aside */}
@@ -69,7 +71,8 @@ function App() {
               <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
             </Route>
             <Route path="/login" element={<Login />} />
-          </Routes>
+           </Routes>
+          </DocumentContext>
         </PhaseContext>
       </ExpedientContext>
     </>

@@ -17,6 +17,7 @@ const EditarExpediente = () => {
     const [modalPhase, setModalPhase] = useState(false);
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
+    const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
 
     useEffect(() => {
@@ -117,13 +118,14 @@ const EditarExpediente = () => {
     expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16);
 
     console.log(expedientPhases);
+    console.log(expedientDocuments);
 
     return (
         <>
             <div>
                 <TitleCard name={"Expedientes"} action={"Editar"} />
                 {modalPhase && <PhaseEditor expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
-                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} />}
+                {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} expedientDocuments={expedientDocuments} setExpedientDocuments={setExpedientDocuments} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
