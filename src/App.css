@@ -1,7 +1,62 @@
+/* All */
+
+/* .animate-text {
+  animation: text 20s infinite;
+}
+
+@keyframes text {
+
+  0%,
+  100% {
+    transform: translateX(0px);
+  }
+
+  50% {
+    transform: translateX(-200%);
+  }
+} */
+
+/* .action-boton>a,
+.action-boton>button {
+  width: 90px;
+  height: 32px;
+} */
+
+*::-webkit-scrollbar {
+  width: 10px;
+  background-color: #d0000000;
+  position: relative;
+  display: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #00000014;
+  height: 10px;
+}
+
+/* modal */
+
+.modal-appear {
+  animation: modal 0.7s;
+}
+
+@keyframes modal {
+
+  0% {
+    transform: scale(0.95);
+    filter: blur(3px);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
 /* layout  */
 
 .layout {
-  background: radial-gradient(#c23636 , #932236);
+  background: #932236;
+  /* background-color: rgb(255, 255, 255); */
 }
 
 /* Navbar */
@@ -9,6 +64,10 @@
 .active {
   background: #4b0c0c;
   color: rgb(255, 255, 255);
+}
+
+.active>div {
+  background: #4b0c0c;
 }
 
 .navbar {

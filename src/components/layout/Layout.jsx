@@ -5,11 +5,11 @@ const Layout = ({ children }) => {
     return (
         <>
 
-            <div class="w-screen h-screen overflow-hidden flex flex-col layout">
+            <div className="w-screen h-screen overflow-hidden flex flex-col layout">
                 <Header />
-                <div class="flex flex-1">
+                <div className="flex flex-1 overflow-hidden">
                     <Aside />
-                    <div className=" flex-1 bg-gray-100 p-4 rounded-[13px] me-2.5 mb-2.5">
+                    <div className=" flex-1 bg-gray-100 p-4 pb-1 rounded-t-[13px] sm:rounded-[13px] overflow-hidden relative sm:me-2.5 sm:mb-2.5">
                     <Outlet />
                         {children}
                     </div>

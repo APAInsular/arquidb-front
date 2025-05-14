@@ -1,12 +1,148 @@
+import { useEffect, useState } from "react";
+import CrudManager from "../hooks/CrudManager";
+import { Link, useSearchParams } from "react-router-dom";
+import Delete from "../components/modals/crud/Delete";
+import TitleCard from "../components/ui/TitleCard";
+import DefaultTable from "../components/ui/DefaultTable";
+import Paginate from "../components/ui/Paginate";
+import StatsCard from "../components/ui/StatsCard";
 
 const Dashboard = () => {
+
+    const [searchParams] = useSearchParams();
+
+    const SearchTitle = searchParams.get('search') || '';
+    const title = searchParams.get('title') || '';
+    const phase = searchParams.get('phase') || '';
+    const client = searchParams.get('client') || '';
+    const collegiate = searchParams.get('collegiate') || '';
+    const number = searchParams.get('number') || '';
+    const dateFrom = searchParams.get('dateFrom') || '';
+    const dateTo = searchParams.get('dateTo') || '';
+    const page = searchParams.get('page') || '';
+
+    console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
+
+    const [pages, setPages] = useState(1);
+    const [totalPages, setTotalPages] = useState([]);
+    const [expedientes, setExpedientes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [deletes, setDeletes] = useState(false);
+    const [openId, setOpenId] = useState(null);
+
+    const { views } = CrudManager({
+        url: `expedient?
+        number=${number}
+        &title=${title ? title : SearchTitle}
+        &phase=${phase}
+        &client=${client}&collegiate=${collegiate}
+        &dateFrom=${dateFrom}&dateTo=${dateTo}
+        ${page ? `&per_page=${page}` : `&all=true`}&page=${pages}`
+    });
+
+    useEffect(() => {
+        views({ setData: setExpedientes, setLoading, setError, setPages: setTotalPages });
+    }, [pages]);
+
+    if (error) return <p>Error: {error}</p>;
+
+    const expedientesColumns = [
+        {
+            key: 'number',
+            label: 'Número',
+            render: (expediente) => (
+                <div className="text-center">
+                    {expediente.number}
+                </div>)
+        },
+        {
+            key: 'cliente',
+            label: 'Cliente',
+            render: (expediente) => expediente.people[0]?.clients ? expediente.people[0].name : "..."
+        },
+        {
+            key: 'colegiado',
+            label: 'Colegiado',
+            render: (expediente) => expediente.people[0]?.collegiate ? expediente.collegiate[0]?.name : "..."
+        },
+        {
+            key: 'budget',
+            label: 'Presupuesto',
+        },
+        {
+            key: 'title',
+            label: 'Título',
+        },
+        {
+            key: 'site',
+            label: 'Emplazamiento',
+            render: (expediente) => `${expediente.site}, (${expediente.postal_code})`
+        },
+        {
+            key: 'documents',
+            label: 'Docs',
+            render: (expediente) => (
+                <div className="text-center">
+                    {Array.isArray(expediente.phases) && expediente.phases.length > 0
+                        ? expediente.phases[0].documents?.length || 0
+                        : 0}
+                </div>
+            )
+        }
+    ];
+
+    const formattedExpedientes = expedientes.map(expediente => ({
+        ...expediente,
+        fullTitle: `${expediente.title} (${expediente.budget}€) - ${expediente.site}, ${expediente.postal_code}`,
+    }));
+
     return (
         <>
-            <div>
-
+            {deletes && (
+                <Delete DatoId={deletes} type={"Expediente"} onClose={() => setDeletes(false)} url={"expedient"} />
+            )}
+            <div className="flex flex-col h-full">
+                <TitleCard name="Home" />
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                    <StatsCard
+                        title={"Total Expedientes (Cualquier Expediente)"}
+                        value={expedientes?.length}
+                    />
+                    <StatsCard
+                        title={"Total Clientes (Cualquier Cliente)"}
+                        value={expedientes?.people?.[0]?.clients.length}
+                    />
+                    <StatsCard
+                        title={"Total Colegiados (Cualquier Colegiado)"}
+                        value={expedientes?.people?.[0]?.collegiate.length}
+                    />
+                </div>
+                <div className="">
+                    <Paginate page={pages} setPage={setPages} totalPages={totalPages} />
+                </div>
+                {loading ? (
+                    <div className="flex justify-center mt-2 items-center ">
+                        <svg className="size-10 animate-spin text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                ) : (
+                    <DefaultTable
+                        columns={expedientesColumns}
+                        data={formattedExpedientes}
+                        setDeletes={setDeletes}
+                        openId={openId}
+                        setOpenId={setOpenId}
+                        tabla={'expedientes'}
+                        someText="title"
+                        someNumber="id"
+                        someDate="created_at"
+                    />)}
             </div>
         </>
     )
-}
+};
 
 export default Dashboard;
