@@ -26,6 +26,8 @@ import Fase from './pages/crud/Fase/Fase';
 import CrearFase from './pages/crud/Fase/CrearFase';
 import EditarFase from './pages/crud/Fase/EditarFase';
 import Records from './pages/Records';
+import CrearUsuario from './pages/admin/usuarios/CrearUsuario';
+import ActualizarUsuario from './pages/admin/usuarios/ActualizarUsuario';
 
 function App() {
 
@@ -46,23 +48,25 @@ function App() {
               {/* posible eliminacion  */}
               {/* <Route path="/search" element={<PageSearch />} /> */}
               <Route path="/expedientes" element={<Expediente />} />
-              <Route path="/expedientes/:id" element={<VerExpediente />} />
+              <Route path="/expedientes/:id/show" element={<VerExpediente />} />
               <Route path="/expedientes/crear" element={<CrearExpediente />} />
               <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
               <Route path="/personas" element={<Persona />} />
               <Route path="/colegiados" element={<Colegiado />} />
               <Route path="/colegiados/:id/show" element={<VerColegiado />} />
-              <Route path="/colegiados/:id/actualizar" element={<ActualizarColegiado />} />
+              <Route path="/colegiados/:id/editar" element={<ActualizarColegiado />} />
               <Route path="/colegiados/crear" element={<CrearColegiado />} />
               <Route path="/clientes" element={<Cliente />} />
               <Route path="/clientes/:id/show" element={<VerCliente />} />
-              <Route path="/clientes/:id/actualizar" element={<ActualizarCliente />} />
+              <Route path="/clientes/:id/editar" element={<ActualizarCliente />} />
               <Route path="/clientes/crear" element={<CrearCliente />} />
               <Route path="/fases" element={<Fase />} />
               <Route path="/fases/crear" element={<CrearFase />} />
               <Route path="/fases/:id/editar" element={<EditarFase />} />
               <Route path="/usuarios" element={<Usuarios />} />
               <Route path="/usuarios/:id/show" element={<VerUsuario />} />
+              <Route path="/usuarios/crear" element={<CrearUsuario />} />
+              <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
             </Route>
             <Route path="/login" element={<Login />} />
           </Routes>
