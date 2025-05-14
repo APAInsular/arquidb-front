@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Avatar from "../../components/ui/Avatar";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../hooks/Auth";
 import CrudManager from "../../hooks/CrudManager";
 
 const Profile = () => {

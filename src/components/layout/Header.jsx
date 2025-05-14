@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import ProfileUser from "../modals/profile/ProfileUser";
 import Notification from "../modals/profile/Notification";
 import Search from "../modals/filters/Search";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../hooks/Auth";
 import CrudManager from "../../hooks/CrudManager";
 import { Link, NavLink, useSearchParams } from "react-router-dom";
 import DataSearch from "../modals/filters/DataSearch"
