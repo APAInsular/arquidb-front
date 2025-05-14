@@ -105,7 +105,7 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla, ...
                 <CheckSelect datos={checked} total={checked.length} setDeletes={setDeletes} />
             }
 
-            <div className="flex flex-row rounded-md mb-2 w-min shadow shadow-gray-300" role="group">
+            <div className=" flex flex-row rounded-md mb-2 w-min shadow shadow-gray-300" role="group">
                 <button
                     onClick={() => handleFilter({ action: 'TEXT' })}
                     type="button"

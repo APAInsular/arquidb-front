@@ -33,7 +33,7 @@ const VerUsuario = () => {
                 <h2>{user?.name}</h2>
                 <h2>{user.email}</h2>
                 <h2>{user.center?.name}</h2>
-                <h2>{user?.roles?.[0].name}</h2>
+                <h2>{user?.roles?.[0]?.name}</h2>
             </div>
         </div>
     )

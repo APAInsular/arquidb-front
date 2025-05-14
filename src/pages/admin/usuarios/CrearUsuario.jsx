@@ -25,34 +25,18 @@ const CrearUsuario = () => {
 
     return (
         <>
-            <div className="">
-                <div className="">
-                    <TitleCard name={"Usuarios"} action={"Crear"} />
-                    <div className="p-4 sm:p-8 bg-white rounded-b-xl shadow">
-                        <div className="w-full">
-                            <div className="sm:flex sm:items-center">
-                                <div className="sm:flex-auto text-2xl">
-                                    <h1 className=" font-semibold leading-6 text-gray-900">Usuario</h1>
-                                    <p className="mt-2 text-lg text-gray-700">Añadir nuevo usuario</p>
-                                </div>
-                            </div>
 
-                            <div className="">
-                                <div className="mt-8 overflow-x-auto">
-                                    <div className="py-2 align-middle">
-                                        <FormUsuarios
-                                            onSubmit={handleUpdate}
-                                            status={status}
-                                            errors={errors}
-                                        />
+            <div className="h-full flex flex-col gap-4">
+                <TitleCard name={"Usuarios"} action={"Crear"} />
 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <FormUsuarios
+                    onSubmit={handleUpdate}
+                    status={status}
+                    errors={errors}
+                />
+
             </div>
+
         </>
     );
 };
