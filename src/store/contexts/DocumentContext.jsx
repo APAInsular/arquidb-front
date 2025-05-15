@@ -19,8 +19,34 @@ const DocumentContext = ({ children }) => {
         views({ setData: setDocuments, setLoading, setErrors: setError });
     }, []);
 
-    const createDocument = async (data) => {
-        return await creates({ setErrors: setError, setStatus, data });
+    const createDocument = async (data, expedientId) => {
+        try {
+            const uploadResponse = await uploadDocument(data.data);
+
+            const response = await axios.get('api/phase?all=true');
+            console.log('Respuesta completa:', response);
+            console.log('Datos recibidos:', response.data);
+            const createdPhases = response.data;
+
+            const phase = createdPhases.find(phase => phase.phase === data.phase && phase.expedient_id === expedientId);
+            if (!phase) {
+                console.error(`Fase no encontrada: ${data.phase}`);
+                return;
+            }
+
+            data = {
+                ...data,
+                name: uploadResponse.url,
+                phase_id: phase.id
+            };
+            delete data.data;
+            delete data.phase;
+
+            return await creates({ setErrors: setError, setStatus, data });
+        } catch (error) {
+            console.error('Error detallado:', error);
+            throw error;
+        }
     }
 
     const updateDocument = async (id, data) => {
