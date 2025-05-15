@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../hooks/Auth";
+import { NavLink } from "react-router-dom";
 
 const Login = () => {
 
@@ -15,7 +16,7 @@ const Login = () => {
 
     const submitForm = async event => {
         event.preventDefault()
-        login({ email, password, setErrors, setStatus })
+        login({ email, password, setErrors: setErrors, setStatus: setStatus })
 
     }
 
@@ -42,7 +43,7 @@ const Login = () => {
                     </div>
                 </div>
                 {/* login  */}
-                <div className="bg-[#932236]  text-white p-10 xl:px-25 flex flex-col justify-center items-center">
+                <div className="bg-[#932236] text-white p-10 xl:px-25 flex flex-col justify-center items-center">
                     {/*info  */}
 
                     <div>
@@ -62,6 +63,12 @@ const Login = () => {
                                 {/* <label className="absolute text-white/70 px-2" htmlFor="password">Contraseña</label> */}
                                 <input type="password" name="password" className="w-full bg-white/10 py-3 px-2 outline-none hover:bg-white/40 transition-all" placeholder="Contraseña" value={password} onChange={e => setPassword(e.target.value)} />
                             </div>
+                            <NavLink
+                                to="/forgot-password"
+                                className="underline text-sm text-white-600 hover:text-gray-900"
+                            >
+                                ¿Olvidaste tu contraseña?
+                            </NavLink>
                             <div>
                                 <button type="submit" className="bg-[#4c131d] cursor-pointer hover-shadow text-white/90 font-medium p-2.5 w-full rounded-4xl mt-6 flex justify-center items-center">
                                     {status ?
