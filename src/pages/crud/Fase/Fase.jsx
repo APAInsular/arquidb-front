@@ -76,7 +76,7 @@ const Fase = () => {
                 {/* poco necesario  */}
                 <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
-                        title={'Colegiados'}
+                        title={'Fases'}
                         Buscador={buscador}
                     />
                     <Link
