@@ -31,6 +31,7 @@ import CrearUsuario from './pages/admin/usuarios/CrearUsuario';
 import ActualizarUsuario from './pages/admin/usuarios/ActualizarUsuario';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import VerFase from './pages/crud/Fase/VerFase';
+import AdminRoute from './components/admin/AdminRoute';
 
 function App() {
 
@@ -68,10 +69,12 @@ function App() {
                 <Route path="/fases/crear" element={<CrearFase />} />
                 <Route path="/fases/:id/editar" element={<EditarFase />} />
                 <Route path="/fases/:id/show" element={<VerFase />} />
-                <Route path="/usuarios" element={<Usuarios />} />
-                <Route path="/usuarios/:id/show" element={<VerUsuario />} />
-                <Route path="/usuarios/crear" element={<CrearUsuario />} />
-                <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
+                <Route element={<AdminRoute />}>
+                  <Route path="/usuarios" element={<Usuarios />} />
+                  <Route path="/usuarios/:id/show" element={<VerUsuario />} />
+                  <Route path="/usuarios/crear" element={<CrearUsuario />} />
+                  <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
+                </Route>
               </Route>
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
