@@ -34,35 +34,34 @@ const EditarExpediente = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        let satisfy = false;
 
         switch (name) {
             case "number":
-                // Validación mejorada para el formato XX-XXXXX
-                if (value.length <= 8) {
-                    const isValid = (
-                        (value.length < 3 && /^\d*$/.test(value)) ||
-                        (value.length === 3 && /^\d{2}-?$/.test(value)) ||
-                        (value.length > 3 && /^\d{2}-\d*$/.test(value))
-                    );
-                    if (isValid) {
-                        setExpedient(prev => ({ ...prev, [name]: value }));
-                    }
+                if (/^\d{0,10}$/.test(value)) {
+                    satisfy = true;
                 }
                 break;
             case "postal_code":
-                if (/^\d*$/.test(value) && value.length <= 5) {
-                    setExpedient(prev => ({ ...prev, [name]: value }));
+                if (/^\d{0,5}$/.test(value)) {
+                    satisfy = true;
                 }
                 break;
             case "budget":
-                if (/^\d*$/.test(value) && (value === '' || parseInt(value) >= 0)) {
-                    setExpedient(prev => ({ ...prev, [name]: value }));
+                if (/^\d{0,9}(\.\d{0,2})?$/.test(value)) {
+                    // Opcional: evitar múltiples puntos decimales
+                    const decimalParts = value.split('.');
+                    if (decimalParts.length <= 2) {
+                        satisfy = true;
+                    }
                 }
                 break;
             default:
-                setExpedient(prev => ({ ...prev, [name]: value }));
+                satisfy = true;
                 break;
         }
+
+        if (satisfy) setExpedient(prev => ({ ...prev, [name]: value }));
     };
 
     const phaseEditorActivate = useCallback(() => {
@@ -153,7 +152,7 @@ const EditarExpediente = () => {
                                     name="number"
                                     id="number"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={8} maxLength={8} value={expedient.number} onChange={handleInputChange} required
+                                    minLength={10} maxLength={10} value={expedient.number} onChange={handleInputChange} required
                                 />
                             </div>
 

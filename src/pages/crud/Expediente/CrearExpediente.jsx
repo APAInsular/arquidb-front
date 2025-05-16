@@ -29,7 +29,6 @@ const CrearExpediente = () => {
 
         switch (name) {
             case "number":
-                // Validación mejorada para el formato XX-XXXXX
                 if (/^\d{0,10}$/.test(value)) {
                     satisfy = true;
                 }
