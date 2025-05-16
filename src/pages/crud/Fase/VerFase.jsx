@@ -70,7 +70,7 @@ const VerFase = () => {
             <TitleCard name={"Fases"} action={"Ver"} />
             <div className="mt-4 h-full overflow-y-scroll">
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-14">
-                    <div className="bg-gradient-to-r from-gray-50 to-gray-300 p-6 sm:p-8 border-b border-gray-200">
+                    <div className=" bg-gray-100 p-6 sm:p-8 border-b border-gray-200">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                             <div>
                                 <div className="flex items-center gap-4">

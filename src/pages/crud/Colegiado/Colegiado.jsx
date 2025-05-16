@@ -63,7 +63,7 @@ const Colegiado = () => {
         fullSurname: `${datos.first_surname} ${datos.second_surname || ''}`,
     }));
 
-    console.log(collegiates)
+    console.log("aaaaa"+collegiates)
 
 
     return (

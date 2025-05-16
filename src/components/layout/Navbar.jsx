@@ -27,7 +27,7 @@ const Navbar = () => {
                         name={"Expediente"}
                     />
                 </li>
-                {user.roles.map(u => u.name) == "superAdmin" && (
+                {user?.roles.map(u => u.name) == "superAdmin" && (
                     <li>
                         <BotonNavbar
                             navegate={"/usuarios"}

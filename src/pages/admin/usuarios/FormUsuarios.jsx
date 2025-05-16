@@ -65,6 +65,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         value={formData.name}
                         onChange={handleChange}
                         className="w-full"
+                        required
                     />
                     {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                 </div>
@@ -77,6 +78,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         value={formData.email}
                         onChange={handleChange}
                         className="w-full"
+                        required
                     />
                     {errors?.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                 </div>
@@ -89,6 +91,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         value={formData.password}
                         onChange={handleChange}
                         className="w-full"
+                        required
                     />
                     {errors?.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
@@ -106,6 +109,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                             value={formData.center_id}
                             onChange={handleCenterChange}
                             className="w-full border-b-2 border-gray-500/70 py-3 focus:border-b-red-700 outline-none"
+                            required
                         >
                             <option value="">...</option>
                             {centers.map(center => (

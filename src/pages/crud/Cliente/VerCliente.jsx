@@ -47,12 +47,14 @@ const VerCliente = () => {
     const address = clients?.address || {};
     const agent = clients?.client?.[0]?.agent || "-";
 
+    console.log(clients)
+
     return (
         <>
             {/* Main Card */}
             <TitleCard name={"Clientes"} action={"Ver"} />
             <div className="h-full overflow-y-scroll">
-                <div className=" mt-5 rounded-t-lg bg-gradient-to-r from-gray-50 to-gray-300  p-6 sm:p-14">
+                <div className=" mt-5 rounded-t-lg  p-6 sm:p-14">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                         <div className="relative">
                             <div className="text-gray-600 bg-gray-200 rounded-xl p-2">
@@ -68,10 +70,10 @@ const VerCliente = () => {
                         </div>
                         <div className="flex-1">
                             <h2 className="text-2xl font-bold text-black">
-                                {person.name} {person.first_surname} {person.second_surname}
+                                {person?.name} {person?.first_surname} {person?.second_surname}
                             </h2>
                             <p className="text-gray-900 mt-1">
-                                {person.identification_type} / {person.identification_number}
+                                {person?.identification_type} / {person?.identification_number}
                             </p>
                             <div className="mt-3 flex flex-wrap gap-2">
                                 <span className=" shadow inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
@@ -89,7 +91,7 @@ const VerCliente = () => {
                 {/* Profile Header */}
 
                 {/* Content Grid */}
-                <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x-2 divide-gray-200">
+                <div className="bg-white grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x-2 divide-gray-200">
                     {/* Personal Info Section */}
                     <div className="p-6 sm:p-8" >
                         <div className="flex items-center gap-3 mb-6">
@@ -103,35 +105,35 @@ const VerCliente = () => {
                             <div className="grid grid-cols-3 gap-4">
                                 <div className="col-span-1">
                                     <p className="text-sm text-gray-500">Tipo ID</p>
-                                    <p className="font-medium">{person.identification_type}</p>
+                                    <p className="font-medium">{person?.identification_type}</p>
                                 </div>
                                 <div className="col-span-2">
                                     <p className="text-sm text-gray-500">Número ID</p>
-                                    <p className="font-medium">{person.identification_number}</p>
+                                    <p className="font-medium">{person?.identification_number}</p>
                                 </div>
                             </div>
 
                             <div>
                                 <p className="text-sm text-gray-500">Nombre completo</p>
                                 <p className="font-medium">
-                                    {person.name} {person.first_surname} {person.second_surname}
+                                    {person?.name} {person?.first_surname} {person?.second_surname}
                                 </p>
                             </div>
 
-                            {person.observations && (
+                            {person?.observations && (
                                 <div>
                                     <div className="flex items-center gap-2 text-sm text-gray-500">
                                         <Info className="w-4 h-4" />
                                         <span>Observaciones</span>
                                     </div>
-                                    <p className="mt-1 text-gray-700">{person.observations}</p>
+                                    <p className="mt-1 text-gray-700">{person?.observations}</p>
                                 </div>
                             )}
                         </div>
                     </div>
 
                     {/* Contact Section */}
-                    <div className="p-6 sm:p-8">
+                    <div className=" p-6 sm:p-8">
                         <div className="flex items-center gap-3 mb-6">
                             <div className="p-2 rounded-lg bg-green-200 text-green-700">
                                 <Phone className="w-5 h-5" />
@@ -141,20 +143,26 @@ const VerCliente = () => {
 
                         <div className="space-y-4">
                             {clients?.email && (
-                                <div className="flex items-start gap-3">
-                                    <div className="mt-0.5">
-                                        <Mail className="w-5 h-5 text-gray-400" />
+                                <>
+                                    <div className="flex items-start gap-3">
+                                        <div className="mt-0.5">
+                                            <Mail className="w-5 h-5 text-gray-400" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-500">Correo electrónico</p>
+                                            <div className="flex flex-col">
+                                                {clients?.email.map(client =>
+                                                    <a key={client.email.id}
+                                                        href={`mailto:${client?.email}`}
+                                                        className="font-medium text-blue-600 hover:text-blue-800"
+                                                    >
+                                                        {client?.email}
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p className="text-sm text-gray-500">Correo electrónico</p>
-                                        <a
-                                            href={`mailto:${clients.email}`}
-                                            className="font-medium text-blue-600 hover:text-blue-800"
-                                        >
-                                            {clients.email}
-                                        </a>
-                                    </div>
-                                </div>
+                                </>
                             )}
 
                             {clients?.phone && (
@@ -164,12 +172,16 @@ const VerCliente = () => {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Teléfono</p>
-                                        <a
-                                            href={`tel:${clients.phone}`}
-                                            className="font-medium text-blue-600 hover:text-blue-800"
-                                        >
-                                            {clients.phone}
-                                        </a>
+                                        <div className="flex flex-col">
+                                            {clients?.phone.map(client =>
+                                                <a key={client.phone.id}
+                                                    href={`tel:${client?.phone}`}
+                                                    className="font-medium text-blue-600 hover:text-blue-800"
+                                                >
+                                                    {client?.phone}
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             )}
@@ -178,55 +190,60 @@ const VerCliente = () => {
                 </div>
 
                 {/* Address Section */}
-                <div className="p-6 sm:p-8 border-t-2 border-gray-200 mb-6">
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="p-2 rounded-lg bg-indigo-200 text-indigo-700">
-                            <MapPin className="w-5 h-5" />
+                {clients?.address && (
+                    <div className="bg-white p-6 sm:p-8 border-t-2 border-gray-200 mb-6">
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="p-2 rounded-lg bg-indigo-200 text-indigo-700">
+                                <MapPin className="w-5 h-5" />
+                            </div>
+                            <h3 className="text-lg font-semibold text-gray-800">Dirección</h3>
                         </div>
-                        <h3 className="text-lg font-semibold text-gray-800">Dirección</h3>
-                    </div>
 
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div>
-                            <p className="text-sm text-gray-500">País</p>
-                            <p className="font-medium">{address.country || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Provincia</p>
-                            <p className="font-medium">{address.province || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Municipio</p>
-                            <p className="font-medium">{address.municipality || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Localidad</p>
-                            <p className="font-medium">{address.locality || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Calle</p>
-                            <p className="font-medium">{address.street || '-'}</p>
-                        </div>
-                        <div>
-                            <p className="text-sm text-gray-500">Código Postal</p>
-                            <p className="font-medium">{address.postal_code || '-'}</p>
-                        </div>
-                    </div>
+                        {clients?.address.map(add =>
+                            <div key={add.address?.id}>
+                                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div>
+                                        <p className="text-sm text-gray-500">País</p>
+                                        <p className="font-medium">{add?.country || '-'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Provincia</p>
+                                        <p className="font-medium">{add?.province || '-'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Municipio</p>
+                                        <p className="font-medium">{add?.municipality || '-'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Localidad</p>
+                                        <p className="font-medium">{add?.locality || '-'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Calle</p>
+                                        <p className="font-medium">{add?.street || '-'}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Código Postal</p>
+                                        <p className="font-medium">{add?.postal_code || '-'}</p>
+                                    </div>
+                                </div>
 
-                    {address.street && (
-                        <div className="mt-6">
-                            <a
-                                href={`https://www.google.com/maps/search/?api=1&query=${address.street}+${address.number}+${address.postal_code}+${address.locality}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                <Navigation className="w-4 h-4 mr-2" />
-                                Ver en mapa
-                            </a>
-                        </div>
-                    )}
-                </div>
+                                {add?.street && (
+                                    <div className="mt-6 mb-10">
+                                        <a
+                                            href={`https://www.google.com/maps/search/?api=1&query=${add?.street}+${add?.number}+${add?.postal_code}+${add?.locality}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        >
+                                            <Navigation className="w-4 h-4 mr-2" />
+                                            Ver en mapa
+                                        </a>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>)}
             </div>
         </>
     );
