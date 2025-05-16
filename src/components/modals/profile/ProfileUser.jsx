@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Default from "../Default";
-import { useAuth } from "../../../hooks/auth";
+import { useAuth } from "../../../hooks/Auth";
 
 const ProfileUser = ({ user }) => {
 
