@@ -127,6 +127,9 @@ const Usuarios = () => {
                         openId={openId}
                         setOpenId={setOpenId}
                         tabla={'usuarios'}
+                        someText="name"
+                        someNumber="id"
+                        someDate="created_at"
                     />
                 )}
             </div>
