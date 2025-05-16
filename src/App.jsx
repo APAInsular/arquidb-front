@@ -30,6 +30,7 @@ import Records from './pages/Records';
 import CrearUsuario from './pages/admin/usuarios/CrearUsuario';
 import ActualizarUsuario from './pages/admin/usuarios/ActualizarUsuario';
 import ForgotPassword from './pages/auth/ForgotPassword';
+import VerFase from './pages/crud/Fase/VerFase';
 
 function App() {
 
@@ -54,7 +55,7 @@ function App() {
                 <Route path="/expedientes/:id/show" element={<VerExpediente />} />
                 <Route path="/expedientes/crear" element={<CrearExpediente />} />
                 <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
-                <Route path="/personas" element={<Persona />} />
+                {/* <Route path="/personas" element={<Persona />} /> */}
                 <Route path="/colegiados" element={<Colegiado />} />
                 <Route path="/colegiados/:id/show" element={<VerColegiado />} />
                 <Route path="/colegiados/:id/editar" element={<ActualizarColegiado />} />
@@ -66,6 +67,7 @@ function App() {
                 <Route path="/fases" element={<Fase />} />
                 <Route path="/fases/crear" element={<CrearFase />} />
                 <Route path="/fases/:id/editar" element={<EditarFase />} />
+                <Route path="/fases/:id/show" element={<VerFase />} />
                 <Route path="/usuarios" element={<Usuarios />} />
                 <Route path="/usuarios/:id/show" element={<VerUsuario />} />
                 <Route path="/usuarios/crear" element={<CrearUsuario />} />
