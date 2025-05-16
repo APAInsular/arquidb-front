@@ -96,6 +96,10 @@ const Fase = () => {
                         title={"Total Fases (Cualquier Fase)"}
                         value={phases?.length}
                     />
+                    <StatsCard
+                        title={"Total Documentos (Cualquier Documento)"}
+                        value={phases?.documents?.length}
+                    />
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
