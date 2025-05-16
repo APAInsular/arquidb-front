@@ -41,10 +41,12 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     const login = async ({ setErrors, setStatus, ...props }) => {
         setErrors([])
         setStatus(null)
+        console.log(props)
         axios
             .post('/api/login', props)
             .then((response) => {
                 setStatus(response)
+                console.log(response)
                 setToken(response.data.token);
                 mutate();
                 window.location.pathname = '/'
