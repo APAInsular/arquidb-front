@@ -74,7 +74,7 @@ const Fase = () => {
                 {/* titulo */}
                 <TitleCard name={"Fases"} />
                 {/* poco necesario  */}
-                <div className="w-full flex justify-between">
+                <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
                         title={'Colegiados'}
                         Buscador={buscador}

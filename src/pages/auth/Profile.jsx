@@ -145,7 +145,7 @@ const Profile = () => {
                     <div className="bg-white p-3 py-4 w-full shadow-2xs rounded-xl border-1 border-gray-200">
                         <div className="grid grid-cols-3 w-full text-md">
                             <div>Rol</div>
-                            <div className="text-xl font-medium text-center">{user.roles[0]?.name}</div>
+                            <div className="text-xl font-medium text-center">{user?.roles[0]?.name}</div>
                             <div className="flex justify-end items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />

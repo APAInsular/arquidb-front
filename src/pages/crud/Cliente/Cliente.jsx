@@ -62,7 +62,7 @@ const Cliente = () => {
                 {/* titulo */}
                 <TitleCard name={"Clientes"} />
                 {/* añadir algo */}
-                <div className="w-full flex justify-between">
+                <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
                         title={'Cliente'}
                         Buscador={buscador}

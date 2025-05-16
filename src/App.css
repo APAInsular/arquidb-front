@@ -25,6 +25,7 @@
 *::-webkit-scrollbar {
   width: 5px;
   height: 5px;
+  overflow: hidden;
   background-color: #d0000000;
   position: absolute;
   /* display: none; */
@@ -33,6 +34,7 @@
 *::-webkit-scrollbar-thumb {
   background-color: #0000002b;
   border-radius: 20px;
+  overflow: hidden;
 }
 
 /* modal */
