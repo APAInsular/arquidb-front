@@ -21,7 +21,7 @@ const Layout = ({ children }) => {
                 <Header onClicks={handleHideAside} />
                 <div className="flex flex-1 overflow-hidden">
                     <Aside ref={asideRef} />
-                    <div className=" flex-1 bg-gray-100 p-4 pb-1 rounded-t-[13px] sm:rounded-[13px] overflow-hidden relative sm:me-2.5 sm:ms-2.5 sm:mb-2.5">
+                    <div className=" flex-1 bg-gray-100 ps-1 pt-1 sm:p-4 pb-1 rounded-t-[13px] sm:rounded-[13px] overflow-hidden relative sm:me-2.5 sm:ms-2.5 sm:mb-2.5">
                         <Outlet />
                         {children}
                     </div>

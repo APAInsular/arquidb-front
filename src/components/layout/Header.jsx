@@ -89,11 +89,8 @@ const Header = ({ onClicks }) => {
                         <img src={Logo} className=" brightness-120 rounded-md" alt="COACFUE" width={50} height={50} />
                     </div>
                     <div onClick={onClicks}
-                        className="ms-4 text-white cursor-pointer hover:bg-white/10 hover:rounded-xl transition-all rounded-md p-1 border-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-8">
-                            <path fillRule="evenodd" d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75H12a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z"
-                                clipRule="evenodd" />
-                        </svg>
+                        className="ms-6 rounded-full p-1 text-white cursor-pointer hover:bg-white/10 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-sidebar"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M9 4l0 16" /></svg>
                     </div>
                     <div className=" mx-2 ms-auto sm:ms-10 sm:me-auto sm:w-150 ">
                         {/* search */}
