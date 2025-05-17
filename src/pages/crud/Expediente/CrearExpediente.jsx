@@ -1,18 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
+import { useAuth } from "../../../hooks/auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
 import { useState, useCallback } from "react";
 import axios from "../../../lib/axios";
-import TitleCard from "../../../components/ui/TitleCard";
 import { format } from "date-fns";
+import TitleCard from "../../../components/ui/TitleCard";
+import WebLoader from "../../../routes/loaders/WebLoader";
 
 const CrearExpediente = () => {
+    const { user } = useAuth({ middleware: 'auth' });
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
-    const { createDocument, uploadDocument } = useDocument();
+    const { createDocument } = useDocument();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -81,7 +84,7 @@ const CrearExpediente = () => {
         console.log(newExpedient);
 
         try {
-            if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
+            if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
             if (expedients.find(e => e.number === newExpedient.number)) return alert("El número de expediente seleccionado ya existe");
 
             await axios.get("/sanctum/csrf-cookie");
@@ -114,9 +117,11 @@ const CrearExpediente = () => {
         }
     };
 
+    if (!user) return <WebLoader />
+
     console.log(expedientPhases);
     console.log(expedientDocuments);
-    console.log(phases);
+    console.log(user);
 
     return (
         <>
@@ -258,7 +263,7 @@ const CrearExpediente = () => {
                             </button>
                         </div>
                     </div>
-                    <input type="hidden" name="center_id" value={1} />
+                    <input type="hidden" name="center_id" value={user.center_id} />
                     <div className="text-center">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>

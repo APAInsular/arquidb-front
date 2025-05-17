@@ -24,8 +24,6 @@ const DocumentContext = ({ children }) => {
             const uploadResponse = await uploadDocument(data.data);
 
             const response = await axios.get('api/phase?all=true');
-            console.log('Respuesta completa:', response);
-            console.log('Datos recibidos:', response.data);
             const createdPhases = response.data;
 
             const phase = createdPhases.find(phase => phase.phase === data.phase && phase.expedient_id === expedientId);

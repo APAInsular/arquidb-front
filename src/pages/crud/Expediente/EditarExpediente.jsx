@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../../hooks/auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
@@ -10,6 +11,7 @@ import TitleCard from "../../../components/ui/TitleCard";
 
 const EditarExpediente = () => {
     const params = useParams();
+    const { user } = useAuth({ middleware: 'auth' });
     const { expedients, updateExpedient } = useExpedient();
     const { phases, updatePhase, getPhaseTitles } = usePhase();
     const navigate = useNavigate();
@@ -91,7 +93,7 @@ const EditarExpediente = () => {
         console.log(newExpedient);
 
         try {
-            if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
+            if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
             if (oldExpedient.number != newExpedient.number && expedients.find(e => e.number === newExpedient.number)) {
                 return alert("El número de expediente seleccionado ya existe");
             }
@@ -115,13 +117,14 @@ const EditarExpediente = () => {
         }
     };
 
-    if (!expedient.start_date || !expedient.end_date) return <WebLoader />;
+    if (!user || !expedient.start_date || !expedient.end_date) return <WebLoader />;
 
     expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
     expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16);
 
     console.log(expedientPhases);
     console.log(expedientDocuments);
+    console.log(user);
 
     return (
         <>
@@ -258,7 +261,7 @@ const EditarExpediente = () => {
                             })}
                         </div>
                     </div>
-                    <input type="hidden" name="center_id" value={1} />
+                    <input type="hidden" name="center_id" value={user.center_id} />
                     <div className="text-center">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>
