@@ -10,18 +10,17 @@ import TitleCard from "../../../components/ui/TitleCard";
 import { format } from "date-fns";
 
 const CrearExpediente = () => {
+    const { expedients, createExpedient } = useExpedient();
+    const { phases, createPhase, getPhaseTitles } = usePhase();
+    const { createDocument, uploadDocument } = useDocument();
+    const navigate = useNavigate();
+    const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
     const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-    const navigate = useNavigate();
-    const { createExpedient } = useExpedient();
-    const { phases, createPhase, getPhaseTitles } = usePhase();
-    const { createDocument, uploadDocument } = useDocument();
-
-    const [expedient, setExpedient] = useState({});
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -83,6 +82,7 @@ const CrearExpediente = () => {
 
         try {
             if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
+            if (expedients.find(e => e.number === newExpedient.number)) return alert("El número de expediente seleccionado ya existe");
 
             await axios.get("/sanctum/csrf-cookie");
             const response = await createExpedient(newExpedient);
@@ -127,11 +127,12 @@ const CrearExpediente = () => {
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
+                        <p className="mb-5 text-gray-400">El * indica los campos obligatorios</p>
                         <div className="grid grid-cols-12 gap-4 p-4">
                             {/* Cada div ocupa 4 columnas (12/3 = 4 columnas por elemento) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                                    Nombre Proyecto
+                                    <strong>*</strong> Nombre Proyecto
                                 </label>
                                 <input
                                     type="text"
@@ -144,7 +145,7 @@ const CrearExpediente = () => {
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="number" className="block text-sm font-medium text-gray-700">
-                                    Número
+                                    <strong>*</strong> Número
                                 </label>
                                 <input
                                     type="text"
@@ -170,20 +171,20 @@ const CrearExpediente = () => {
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="budget" className="block text-sm font-medium text-gray-700">
-                                    Presupuesto
+                                    <strong>*</strong> Presupuesto
                                 </label>
                                 <input
                                     type="number"
                                     name="budget"
                                     id="budget"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.budget || ''} onChange={handleInputChange} min={0} required
+                                    value={expedient.budget || ''} onChange={handleInputChange} min={0} step="0.01" required
                                 />
                             </div>
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="site" className="block text-sm font-medium text-gray-700">
-                                    Emplazamiento
+                                    <strong>*</strong> Emplazamiento
                                 </label>
                                 <input
                                     type="text"
@@ -197,7 +198,7 @@ const CrearExpediente = () => {
                             {/* Ejemplos adicionales (puedes agregar más campos) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
-                                    Código Postal
+                                    <strong>*</strong> Código Postal
                                 </label>
                                 <input
                                     type="text"
@@ -210,7 +211,7 @@ const CrearExpediente = () => {
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">
-                                    Fecha Inicial
+                                    <strong>*</strong> Fecha Inicial
                                 </label>
                                 <input
                                     type="datetime-local"
@@ -230,7 +231,7 @@ const CrearExpediente = () => {
                                     name="end_date"
                                     id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.end_date || ''} onChange={handleInputChange} required
+                                    value={expedient.end_date || ''} onChange={handleInputChange}
                                 />
                             </div>
                         </div>
