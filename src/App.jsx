@@ -33,6 +33,7 @@ import ForgotPassword from './pages/auth/ForgotPassword';
 import VerFase from './pages/crud/Fase/VerFase';
 import AdminRoute from './components/admin/AdminRoute';
 import PasswordReset from './pages/auth/PasswordReset';
+import NotFound from './pages/NotFound';
 
 function App() {
 
@@ -80,6 +81,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/password-reset/:token" element={<PasswordReset />} />
+              <Route path="/*" element={<NotFound />} />
             </Routes>
           </DocumentContext>
         </PhaseContext>
