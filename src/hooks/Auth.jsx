@@ -60,7 +60,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setErrors([])
         setStatus(null)
         axios
-            .post('/forgot-password', { email })
+            .post('/api/forgot-password', { email })
             .then(response => setStatus(response.data.status))
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -72,7 +72,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         setErrors([])
         setStatus(null)
         axios
-            .post('/reset-password', { token: params.token, ...props })
+            .post('/api/reset-password', { token: params.token, ...props })
             .then(response => navigate(`/login?reset=${btoa(response.data.status)}`))
             .catch(error => {
                 if (error.response.status !== 422) throw error
