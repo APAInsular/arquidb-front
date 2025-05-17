@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../../hooks/auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
+import { useDocument } from "../../../store/contexts/DocumentContext";
 import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import WebLoader from "../../../routes/loaders/WebLoader";
@@ -14,6 +15,7 @@ const EditarExpediente = () => {
     const { user } = useAuth({ middleware: 'auth' });
     const { expedients, updateExpedient } = useExpedient();
     const { phases, updatePhase, getPhaseTitles } = usePhase();
+    const { documents } = useDocument();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);

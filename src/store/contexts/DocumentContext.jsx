@@ -47,19 +47,19 @@ const DocumentContext = ({ children }) => {
         }
     }
 
-    const updateDocument = async (id, data) => {
-        await updates({ setErrors: setError, setStatus, id, data });
-    }
-
     const uploadDocument = async (data) => {
         return await axios.post('api/upload', data).then(res => res.data);
+    }
+
+    const eraseDocument = async (data) => {
+        await axios.post('api/erase', data).then(res => res.data);
     }
 
     if (loading) return <WebLoader />;
     // if (error) return <p>Error: {error}</p>;
 
     return (
-        <ArquidbContext.Provider value={{ documents, createDocument, updateDocument, uploadDocument }}>
+        <ArquidbContext.Provider value={{ documents, createDocument, uploadDocument, eraseDocument }}>
             {children}
         </ArquidbContext.Provider>
     );
