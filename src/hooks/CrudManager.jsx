@@ -7,16 +7,11 @@ export default function CrudManager({ url }) {
     // Ver los datos 
     const views = async ({ setData, setLoading, setErrors, setPages }) => {
         setLoading(true);
-        if (setPages) {
-            setPages(null);
-        }
         await axios
             .get(api + url)
             .then(res => {
                 setData(res.data.data ?? res.data);
-                if (setPages && response.data.data?.last_page) {
-                    setPages(response.data.data.last_page);
-                }
+                setPages(res.data.data.last_page ?? res.data.last_page);
             })
             .catch(error => {
                 if (error.response && error.response.data.errors) {

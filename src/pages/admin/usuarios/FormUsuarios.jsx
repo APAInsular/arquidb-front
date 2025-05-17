@@ -5,6 +5,7 @@ import CrudManager from "../../../hooks/CrudManager";
 const FormUsuarios = ({ user, onSubmit, status, errors }) => {
 
     const { views } = CrudManager({ url: `centers` });
+    // const { views: roles } = CrudManager({ url: `centers` });
 
     const [centers, setCenters] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -15,6 +16,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
         email: user?.email || "",
         password: "",
         center_id: user?.center_id || "",
+        role: user?.roles?.[0]?.name || ""
     });
 
     useEffect(() => {
@@ -27,7 +29,8 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                 ...prev,
                 name: user.name || "",
                 email: user.email || "",
-                center_id: user.center_id || ""
+                center_id: user.center_id || "",
+                role: user?.roles?.[0]?.name || ""
             }));
         }
     }, [user]);
@@ -120,6 +123,18 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         </select>
                     )}
                     {errors?.center_id && <p className="text-red-500 text-sm mt-1">{errors.center_id}</p>}
+                </div>
+
+                <div className="mb-4">
+                    <InputForm
+                        type="text"
+                        name="role"
+                        placeholder="rol"
+                        value={formData.role}
+                        onChange={handleChange}
+                        className="w-full"
+                    />
+                    {errors?.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
             </div>
 

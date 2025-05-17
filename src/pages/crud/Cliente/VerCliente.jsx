@@ -58,10 +58,10 @@ const VerCliente = () => {
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                         <div className="relative">
                             <div className="text-gray-600 bg-gray-200 rounded-xl p-2">
-                                <UserCircle className="w-20 h-20 " />
+                                <UserCircle className="w-30 h-30 " />
                             </div>
-                            <span className="absolute -bottom-0 -right-0 bg-gray-600 rounded-full p-1 shadow-sm">
-                                <div className="w-6 h-6 rounded-full bg-green-400 flex items-center justify-center">
+                            <span className="absolute -bottom-[-5px] -right-[-5px] bg-gray-600 rounded-full p-1 shadow-sm">
+                                <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center">
                                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>
@@ -69,10 +69,10 @@ const VerCliente = () => {
                             </span>
                         </div>
                         <div className="flex-1">
-                            <h2 className="text-2xl font-bold text-black">
+                            <h2 className="text-5xl font-bold text-black">
                                 {person?.name} {person?.first_surname} {person?.second_surname}
                             </h2>
-                            <p className="text-gray-900 mt-1">
+                            <p className="text-gray-900 mt-1 text-xl">
                                 {person?.identification_type} / {person?.identification_number}
                             </p>
                             <div className="mt-3 flex flex-wrap gap-2">
