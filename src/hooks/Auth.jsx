@@ -27,6 +27,41 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         }
     )
 
+    const updateUser = async ({ setErrors, setStatus, ...props }) => {
+        setErrors(null);
+        setStatus(true);
+        console.log(props)
+        axios
+            .put('/api/user', props)
+            .then((response) => {
+                setStatus(false)
+                console.log("res", response)
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                setErrors(Object.values(error.response.data.errors).flat())
+                setStatus(false);
+            })
+    }
+
+    const deleteUser = async ({ setErrors, setStatus, ...password }) => {
+        setErrors(null);
+        setStatus(true);
+        axios
+            .delete('/api/user', { data: password })
+            .then((response) => {
+                console.log("res", response);
+                setStatus(false);
+                removeToken()
+                window.location.pathname = '/login'
+            })
+            .catch(error => {
+                setErrors(
+                    Object.values(error.response.data.errors).flat());
+                setStatus(false);
+            });
+    }
+
     const register = async ({ setErrors, ...props }) => {
         setErrors([])
         axios
@@ -40,7 +75,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const login = async ({ setErrors, setStatus, ...props }) => {
         setErrors([])
-        setStatus(null)
+        setStatus(true)
         console.log(props)
         axios
             .post('/api/login', props)
@@ -53,6 +88,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 if (error.response.status !== 422) throw error
                 setErrors(Object.values(error.response.data.errors).flat())
+                setStatus(false)
             })
     }
 
@@ -102,6 +138,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     return {
         user,
+        updateUser,
+        deleteUser,
         register,
         login,
         forgotPassword,

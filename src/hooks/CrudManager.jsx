@@ -25,7 +25,7 @@ export default function CrudManager({ url }) {
     // Crear los datos
     const creates = async ({ setErrors, setStatus, ...props }) => {
         setErrors(null);
-        setStatus(null);
+        setStatus(true);
         return await axios
             .post(api + url, props.data)
             .then((res) => {
@@ -36,7 +36,7 @@ export default function CrudManager({ url }) {
                 if (error.response && error.response.data.errors) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
-                setStatus("error");
+                setStatus(false);
                 setErrors(error)
                 throw error;
             });
@@ -45,7 +45,7 @@ export default function CrudManager({ url }) {
     // Actualizar los datos
     const updates = async ({ setErrors, setStatus, ...props }) => {
         setErrors(null);
-        setStatus(null);
+        setStatus(true);
 
         const endpoint = props.id ? `${api}${url}/${props.id}` : `${api}${url}`;
 
@@ -58,6 +58,7 @@ export default function CrudManager({ url }) {
                 } else {
                     setErrors(['Ocurrió un error al actualizar.']);
                 }
+                setStatus(false);
                 return null;
             });
     };
@@ -72,6 +73,7 @@ export default function CrudManager({ url }) {
             .catch(error => {
                 setErrors(
                     Object.values(error.response.data.errors).flat());
+                setStatus(false);
             });
     };
 
