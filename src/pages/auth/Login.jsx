@@ -30,7 +30,7 @@ const Login = () => {
                 {/* imagen / algo */}
                 <div className=" hidden md:block relative">
                     <div className="bg-[url(https://www.iq-arquitec.com/projects-img/iq-arquitec-4-1.jpg)] h-full ">
-                        <div className="w-full h-full space-y-6 bg-[#932236]/40 text-white  flex justify-center items-center flex-col px-10 overflow-hidden">
+                        <div className="w-full h-full space-y-6 bg-[#932236]/40 text-white flex justify-center items-center flex-col px-10 overflow-hidden">
                             <div className=" uppercase text-7xl lg:text-8xl xl:text-9xl font-bold">
                                 Bienvenido a coaf
                             </div>
