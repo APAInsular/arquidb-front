@@ -56,7 +56,7 @@ const VerUsuario = () => {
             <TitleCard name={"Usuarios"} action={"Ver"} />
             <div className="h-full overflow-y-scroll mt-4 pb-10">
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div className="bg-gradient-to-r from-gray-50 to-black/20 p-6 sm:p-8">
+                    <div className="bg-gray-100 p-6 sm:p-8">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                             <div className="relative">
                                 <div className="w-24 h-24 rounded-full bg-gray-600 flex items-center justify-center text-white text-4xl font-bold">
@@ -77,18 +77,18 @@ const VerUsuario = () => {
                                 <p className="text-gray-600 mt-1">
                                     {user.email}
                                 </p>
-                                <div className="mt-3 flex flex-wrap gap-2">
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                            </div>
+                        </div>
+                                <div className="mt-4 flex flex-wrap gap-2">
+                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-medium bg-purple-100 text-purple-800">
                                         {user?.roles?.[0]?.name || 'Sin rol asignado'}
                                     </span>
                                     {user.created_at && (
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600">
                                             Registrado el {formatDate(user.created_at)}
                                         </span>
                                     )}
                                 </div>
-                            </div>
-                        </div>
                     </div>
                     <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
                         <div className="p-6 sm:p-8">

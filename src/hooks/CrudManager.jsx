@@ -53,13 +53,12 @@ export default function CrudManager({ url }) {
             .put(endpoint, props.data)
             .then(res => res.data)
             .catch(error => {
-                if (error.response && error.response.data && error.response.data.errors) {
+                if (error.response && error.response.data.errors ) {
                     setErrors(Object.values(error.response.data.errors).flat());
-                } else {
-                    setErrors(['Ocurrió un error al actualizar.']);
                 }
+                setErrors(error)
                 setStatus(false);
-                return null;
+               throw error;
             });
     };
 

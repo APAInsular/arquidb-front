@@ -57,8 +57,10 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
         onSubmit(formData);
     };
 
+    console.log(errors)
+
     return (
-        <form onSubmit={handleSubmit} className="space-y-6 flex flex-col justify-between h-full">
+        <form onSubmit={handleSubmit} className="overflow-y-scroll space-y-6 flex flex-col justify-between h-full">
             <div>
                 <div className="mb-4">
                     <InputForm
@@ -67,10 +69,10 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         placeholder="Nombre"
                         value={formData.name}
                         onChange={handleChange}
-                        className="w-full"
+                        className={`w-full ${errors?.response?.data?.errors?.name ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                    {errors?.response?.data?.errors?.name && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.name}</p>}
                 </div>
 
                 <div className="mb-4">
@@ -80,10 +82,10 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         placeholder="Correo Electrónico"
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full"
+                        className={`w-full ${errors?.response?.data?.errors?.email ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                    {errors?.response?.data?.errors?.email && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.email}</p>}
                 </div>
 
                 <div className="mb-4">
@@ -93,10 +95,10 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         placeholder="Contraseña"
                         value={formData.password}
                         onChange={handleChange}
-                        className="w-full"
+                        className={`w-full ${errors?.response?.data?.errors?.password ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                    {errors?.response?.data?.errors?.password && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.password}</p>}
                 </div>
 
                 <div className="mb-4">
@@ -122,7 +124,6 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                             ))}
                         </select>
                     )}
-                    {errors?.center_id && <p className="text-red-500 text-sm mt-1">{errors.center_id}</p>}
                 </div>
 
                 <div className="mb-4">
@@ -132,19 +133,19 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         placeholder="rol"
                         value={formData.role}
                         onChange={handleChange}
-                        className="w-full"
+                        className={`w-full ${errors?.response?.data?.errors?.role ? " border-red-400" : ""}`}
                     />
-                    {errors?.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+                    {errors?.response?.data?.errors?.role && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.role}</p>}
                 </div>
             </div>
 
             <div className="flex items-center gap-4 mt-auto mb-1">
                 <button
                     type="submit"
-                    disabled={status === "loading"}
+                    disabled={status}
                     className="cursor-pointer rounded-md px-4 w-full py-2 bg-red-900 text-white font-medium hover:bg-red-800 transition-colors disabled:opacity-70"
                 >
-                    {status === "loading" ? "Cargando..." : "Enviar"}
+                    {status ? "Cargando..." : "Enviar"}
                 </button>
             </div>
 
