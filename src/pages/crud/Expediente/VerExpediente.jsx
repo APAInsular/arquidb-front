@@ -3,14 +3,17 @@ import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
+import WebLoader from "../../../routes/loaders/WebLoader";
 
 const VerExpediente = () => {
-    const [expedient, setExpedient] = useState({});
-    const [expedientPhases, setExpedientPhases] = useState([]);
-    const [phaseSelected, setPhaseSelected] = useState(null);
     const params = useParams();
     const { expedients } = useExpedient();
     const { phases } = usePhase();
+    const [expedient, setExpedient] = useState({});
+    const [expedientPhases, setExpedientPhases] = useState([]);
+    const [phaseSelected, setPhaseSelected] = useState(null);
+    const [clients, setClients] = useState([]);
+    const [collegiates, setCollegiates] = useState([]);
 
     useEffect(() => {
         if (expedients) {
@@ -22,6 +25,25 @@ const VerExpediente = () => {
         if (phases) {
             setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
         }
+
+        if (Array.isArray(expedient?.people)) {
+            const foundClients = expedient.people
+                .filter(p => p.client)
+                .map(p => {
+                    const { collegiates, ...clientData } = p;
+                    return { ...clientData };
+                });
+
+            const foundCollegiates = expedient.people
+                .filter(p => p.collegiates)
+                .map(p => {
+                    const { client, ...collegiatesData } = p;
+                    return { ...collegiatesData };
+                });
+
+            setClients(foundClients);
+            setCollegiates(foundCollegiates);
+        }
     }, [expedient]);
 
     useEffect(() => {
@@ -30,7 +52,10 @@ const VerExpediente = () => {
         }
     }, [expedientPhases]);
 
-    if (!expedient || !expedientPhases) return <h1>Cargando...</h1>
+    if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />
+    console.log(expedient);
+    console.log(clients);
+    console.log(collegiates);
 
     return (
         <>
@@ -49,24 +74,36 @@ const VerExpediente = () => {
                             </svg>
                         </Link>
                         <div className="text-center flex flex-col lg:flex-row space-y-12 lg:space-y-0 justify-between items-center p-10">
-                            <div className="flex flex-col">
-                                <h4 className="text-2xl">Colegiado</h4>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-24 self-center">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                </svg>
-                                <h3 className="text-3xl">(Nombre Colegiado)</h3>
+                            <div className="flex flex-col space-y-12">
+                                {collegiates.map(collegiate => {
+                                    return (
+                                        <div className="flex flex-col" key={collegiate.id}>
+                                            <h4 className="text-2xl">Colegiado</h4>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-24 self-center">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                            </svg>
+                                            <h3 className="text-3xl">{collegiate.name} {collegiate.first_surname}</h3>
+                                        </div>
+                                    );
+                                })}
                             </div>
                             <div className="flex">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-12 self-center">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                                 </svg>
                             </div>
-                            <div className="flex flex-col">
-                                <h4 className="text-2xl">Cliente</h4>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-24 self-center">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                </svg>
-                                <h3 className="text-3xl">(Nombre Cliente)</h3>
+                            <div className="flex flex-col space-y-12">
+                                {clients.map(client => {
+                                    return (
+                                        <div className="flex flex-col" key={client.id}>
+                                            <h4 className="text-2xl">Cliente</h4>
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-24 self-center">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                            </svg>
+                                            <h3 className="text-3xl">{client.name} {client.first_surname}</h3>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
                     </div>
