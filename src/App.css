@@ -38,7 +38,7 @@
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: #0000002b;
+  background-color: #0000000c;
   border-radius: 20px;
   overflow: hidden;
 }

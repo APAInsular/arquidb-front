@@ -34,6 +34,7 @@ import VerFase from './pages/crud/Fase/VerFase';
 import AdminRoute from './components/admin/AdminRoute';
 import PasswordReset from './pages/auth/PasswordReset';
 import NotFound from './pages/NotFound';
+import WebLoader from './routes/loaders/WebLoader';
 
 function App() {
 
