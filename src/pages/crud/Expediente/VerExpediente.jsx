@@ -181,7 +181,7 @@ const VerExpediente = () => {
                             <div className="flex justify-center space-x-4">
                                 {expedientPhases.map(phase => {
                                     return (
-                                        <div className="flex flex-col" key={phase.phase}>
+                                        <div className="flex flex-col" key={phase.phase} onClick={() => setPhaseSelected(phase)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 self-center">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                                             </svg>
@@ -199,22 +199,24 @@ const VerExpediente = () => {
                                             <strong>{phaseSelected.phase}</strong>
                                         </div>
                                         <div>
-                                            <p>Fecha de Inicio</p>
-                                            <strong>Info</strong>
-                                        </div>
-                                        <div>
-                                            <p>Fecha de creación</p>
-                                            <strong>{format(new Date(phaseSelected.created_at), "dd 'de' MMM, yyyy")}</strong>
+                                            <p>Fecha de Registro</p>
+                                            <strong>{format(new Date(phaseSelected.record_date), "dd 'de' MMM, yyyy")}</strong>
                                         </div>
                                     </div>
                                     <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
                                         <div>
                                             <p>Estado</p>
-                                            <strong>Info</strong>
+                                            {phaseSelected.state == 'signed' ? (
+                                                <strong>Visado</strong>
+                                            ) : (
+                                                <strong>Sin visar</strong>
+                                            )}
                                         </div>
                                         <div>
-                                            <p>Visado</p>
-                                            <strong>Info</strong>
+                                            <p>Fecha de Visado</p>
+                                            {phaseSelected.state == 'signed' && (
+                                                <strong>{format(new Date(phaseSelected.sign_date), "dd 'de' MMM, yyyy")}</strong>
+                                            )}
                                         </div>
                                     </div>
                                     <div className="col-span-12 lg:col-span-2">
@@ -239,7 +241,7 @@ const VerExpediente = () => {
                                                         <img
                                                             src={document.name}
                                                             alt={`Documento ${document.id}`}
-                                                            className="w-full h-auto rounded shadow"
+                                                            className="w-full h-[200px] object-cover rounded shadow"
                                                         />
                                                     </Link>
                                                 </div>
