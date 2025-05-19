@@ -112,6 +112,7 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
                                     name="file"
                                     onChange={handleFileChange}
                                     disabled={uploading}
+                                    multiple
                                     className="bg-red-700 text-white px-4 py-3 rounded-lg hover:bg-red-800 transition-colors"
                                 />
 
