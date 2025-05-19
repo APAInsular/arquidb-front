@@ -1,7 +1,9 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../../../hooks/auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
+import { useDocument } from "../../../store/contexts/DocumentContext";
 import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import WebLoader from "../../../routes/loaders/WebLoader";
@@ -10,8 +12,10 @@ import TitleCard from "../../../components/ui/TitleCard";
 
 const EditarExpediente = () => {
     const params = useParams();
+    const { user } = useAuth({ middleware: 'auth' });
     const { expedients, updateExpedient } = useExpedient();
     const { phases, updatePhase, getPhaseTitles } = usePhase();
+    const { documents } = useDocument();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -34,35 +38,34 @@ const EditarExpediente = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        let satisfy = false;
 
         switch (name) {
             case "number":
-                // Validación mejorada para el formato XX-XXXXX
-                if (value.length <= 8) {
-                    const isValid = (
-                        (value.length < 3 && /^\d*$/.test(value)) ||
-                        (value.length === 3 && /^\d{2}-?$/.test(value)) ||
-                        (value.length > 3 && /^\d{2}-\d*$/.test(value))
-                    );
-                    if (isValid) {
-                        setExpedient(prev => ({ ...prev, [name]: value }));
-                    }
+                if (/^\d{0,10}$/.test(value)) {
+                    satisfy = true;
                 }
                 break;
             case "postal_code":
-                if (/^\d*$/.test(value) && value.length <= 5) {
-                    setExpedient(prev => ({ ...prev, [name]: value }));
+                if (/^\d{0,5}$/.test(value)) {
+                    satisfy = true;
                 }
                 break;
             case "budget":
-                if (/^\d*$/.test(value) && (value === '' || parseInt(value) >= 0)) {
-                    setExpedient(prev => ({ ...prev, [name]: value }));
+                if (/^\d{0,9}(\.\d{0,2})?$/.test(value)) {
+                    // Opcional: evitar múltiples puntos decimales
+                    const decimalParts = value.split('.');
+                    if (decimalParts.length <= 2) {
+                        satisfy = true;
+                    }
                 }
                 break;
             default:
-                setExpedient(prev => ({ ...prev, [name]: value }));
+                satisfy = true;
                 break;
         }
+
+        if (satisfy) setExpedient(prev => ({ ...prev, [name]: value }));
     };
 
     const phaseEditorActivate = useCallback(() => {
@@ -88,10 +91,14 @@ const EditarExpediente = () => {
         const newExpedient = Object.fromEntries(formData.entries());
         newExpedient.budget = parseFloat(newExpedient.budget);
 
+        const oldExpedient = expedients.find(e => e.id == params.id);
         console.log(newExpedient);
 
         try {
-            if (newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
+            if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
+            if (oldExpedient.number != newExpedient.number && expedients.find(e => e.number === newExpedient.number)) {
+                return alert("El número de expediente seleccionado ya existe");
+            }
 
             await axios.get("/sanctum/csrf-cookie");
             await updateExpedient(params.id, newExpedient);
@@ -112,13 +119,14 @@ const EditarExpediente = () => {
         }
     };
 
-    if (!expedient.start_date || !expedient.end_date) return <WebLoader />;
+    if (!user || !expedient.start_date || !expedient.end_date) return <WebLoader />;
 
     expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
     expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16);
 
     console.log(expedientPhases);
     console.log(expedientDocuments);
+    console.log(user);
 
     return (
         <>
@@ -129,11 +137,12 @@ const EditarExpediente = () => {
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400">Datos Generales</h4>
+                        <p className="mb-5 text-gray-400">El * indica los campos obligatorios</p>
                         <div className="grid grid-cols-12 gap-4 p-4">
                             {/* Cada div ocupa 4 columnas (12/3 = 4 columnas por elemento) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                                    Nombre Proyecto
+                                    <strong>*</strong> Nombre Proyecto
                                 </label>
                                 <input
                                     type="text"
@@ -146,14 +155,14 @@ const EditarExpediente = () => {
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="number" className="block text-sm font-medium text-gray-700">
-                                    Número
+                                    <strong>*</strong> Número
                                 </label>
                                 <input
                                     type="text"
                                     name="number"
                                     id="number"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    minLength={8} maxLength={8} value={expedient.number} onChange={handleInputChange} required
+                                    minLength={10} maxLength={10} value={expedient.number} onChange={handleInputChange} required
                                 />
                             </div>
 
@@ -172,20 +181,20 @@ const EditarExpediente = () => {
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="budget" className="block text-sm font-medium text-gray-700">
-                                    Presupuesto
+                                    <strong>*</strong> Presupuesto
                                 </label>
                                 <input
                                     type="number"
                                     name="budget"
                                     id="budget"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.budget} onChange={handleInputChange} min={0} required
+                                    value={expedient.budget} onChange={handleInputChange} min={0} step="0.01" required
                                 />
                             </div>
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="site" className="block text-sm font-medium text-gray-700">
-                                    Emplazamiento
+                                    <strong>*</strong> Emplazamiento
                                 </label>
                                 <input
                                     type="text"
@@ -199,7 +208,7 @@ const EditarExpediente = () => {
                             {/* Ejemplos adicionales (puedes agregar más campos) */}
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="postal_code" className="block text-sm font-medium text-gray-700">
-                                    Código Postal
+                                    <strong>*</strong> Código Postal
                                 </label>
                                 <input
                                     type="text"
@@ -212,7 +221,7 @@ const EditarExpediente = () => {
 
                             <div className="col-span-12 sm:col-span-6 lg:col-span-4 space-y-2">
                                 <label htmlFor="start_date" className="block text-sm font-medium text-gray-700">
-                                    Fecha Inicial
+                                    <strong>*</strong> Fecha Inicial
                                 </label>
                                 <input
                                     type="datetime-local"
@@ -232,7 +241,7 @@ const EditarExpediente = () => {
                                     name="end_date"
                                     id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
-                                    value={expedient.end_date} onChange={handleInputChange} required
+                                    value={expedient.end_date} onChange={handleInputChange}
                                 />
                             </div>
                         </div>
@@ -254,7 +263,7 @@ const EditarExpediente = () => {
                             })}
                         </div>
                     </div>
-                    <input type="hidden" name="center_id" value={1} />
+                    <input type="hidden" name="center_id" value={user.center_id} />
                     <div className="text-center">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>
