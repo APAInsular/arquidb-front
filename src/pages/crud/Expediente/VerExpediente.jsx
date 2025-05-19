@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
+import { useDocument } from "../../../store/contexts/DocumentContext";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import WebLoader from "../../../routes/loaders/WebLoader";
@@ -9,8 +10,10 @@ const VerExpediente = () => {
     const params = useParams();
     const { expedients } = useExpedient();
     const { phases } = usePhase();
+    const { documents } = useDocument();
     const [expedient, setExpedient] = useState({});
     const [expedientPhases, setExpedientPhases] = useState([]);
+    const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [phaseSelected, setPhaseSelected] = useState(null);
     const [clients, setClients] = useState([]);
     const [collegiates, setCollegiates] = useState([]);
@@ -50,12 +53,24 @@ const VerExpediente = () => {
         if (expedientPhases[0]) {
             setPhaseSelected(expedientPhases[0]);
         }
+
+        if (expedientPhases.length && documents) {
+            const groupedDocs = expedientPhases.reduce((acc, phase) => {
+                const phaseDocs = documents.filter(doc => doc.phase_id === phase.id);
+                if (phaseDocs.length) {
+                    acc.push({ phase, documents: phaseDocs });
+                }
+                return acc;
+            }, []);
+            setExpedientDocuments(groupedDocs);
+        }
     }, [expedientPhases]);
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />
     console.log(expedient);
     console.log(clients);
     console.log(collegiates);
+    console.log(expedientDocuments);
 
     return (
         <>
@@ -160,7 +175,7 @@ const VerExpediente = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gray-200 rounded-lg p-2">
+                    <div className="bg-gray-200 rounded-lg p-2 mb-4">
                         <div className="border-t">
                             <strong>Fases</strong>
                             <div className="flex justify-center space-x-4">
@@ -208,6 +223,31 @@ const VerExpediente = () => {
                                     </div>
                                 </div>
                             )}
+                        </div>
+                    </div>
+                    <div className="bg-gray-200 rounded-lg p-2">
+                        <div className="border-t">
+                            <strong>Documentos</strong>
+                            <div>
+                                {expedientDocuments.map(({ phase, documents }) => (
+                                    <div key={phase.id} className="mb-6">
+                                        <p className="mb-2">Fase {phase.phase}</p>
+                                        <div className="grid grid-cols-12 gap-4">
+                                            {documents.map(document => (
+                                                <div key={document.id} className="col-span-12 md:col-span-6 lg:col-span-3">
+                                                    <Link to={document.name}>
+                                                        <img
+                                                            src={document.name}
+                                                            alt={`Documento ${document.id}`}
+                                                            className="w-full h-auto rounded shadow"
+                                                        />
+                                                    </Link>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </div>
