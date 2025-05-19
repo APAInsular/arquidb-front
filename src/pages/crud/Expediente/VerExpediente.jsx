@@ -238,11 +238,7 @@ const VerExpediente = () => {
                                             {documents.map(document => (
                                                 <div key={document.id} className="col-span-12 md:col-span-6 lg:col-span-3">
                                                     <Link to={document.name}>
-                                                        <img
-                                                            src={document.name}
-                                                            alt={`Documento ${document.id}`}
-                                                            className="w-full h-[200px] object-cover rounded shadow"
-                                                        />
+                                                        <p>Documento {document.id}</p>
                                                     </Link>
                                                 </div>
                                             ))}

@@ -47,7 +47,7 @@ const PhaseEditor = ({ expedientPhases, setExpedientPhases, setModalPhase }) => 
                     <div className="p-2">
                         <h4 className="text-2xl">¿Está seguro/a de su elección?</h4>
                         <div className="flex justify-center space-x-10 mt-5 p-2">
-                            <button type="submit" className="bg-red-700 text-white py-2 px-4 rounded-lg">Crear</button>
+                            <button type="submit" className="bg-red-700 text-white py-2 px-4 rounded-lg">Editar</button>
                             <button type="button" className="bg-gray-200 py-2 px-4 rounded-lg" onClick={() => setModalPhase(false)}>Cancelar</button>
                         </div>
                     </div>
