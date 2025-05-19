@@ -4,8 +4,8 @@ import { forwardRef } from "react";
 const Aside = forwardRef((props, ref) => {
     return (
         <>
-            <aside ref={ref} className={`sm:relative sm:bg-[#932236] absolute z-40 aside-web sm:h-full flex-shrink-0 hidden sm:flex text-white`}>
-                <div className="p-2 flex flex-col items-center justify-between h-full">
+            <aside ref={ref} className={`sm:relative absolute z-40 aside-web sm:h-full flex-shrink-0 hidden sm:flex text-white`}>
+                <div className="p-2 pe-0 flex flex-col items-center justify-between h-full">
                     <Navbar />
                     <div className="sm:mt-auto mt-2 sm:bg-red-200/20 bg-gray-800 text-white/70 size-11 rounded-4xl flex justify-center items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7">

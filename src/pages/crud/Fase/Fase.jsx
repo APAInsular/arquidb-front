@@ -74,9 +74,9 @@ const Fase = () => {
                 {/* titulo */}
                 <TitleCard name={"Fases"} />
                 {/* poco necesario  */}
-                <div className="w-full flex justify-between">
+                <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
-                        title={'Colegiados'}
+                        title={'Fases'}
                         Buscador={buscador}
                     />
                     <Link
@@ -95,6 +95,10 @@ const Fase = () => {
                     <StatsCard
                         title={"Total Fases (Cualquier Fase)"}
                         value={phases?.length}
+                    />
+                    <StatsCard
+                        title={"Total Documentos (Cualquier Documento)"}
+                        value={phases?.documents?.length}
                     />
                 </div>
                 <div className="">

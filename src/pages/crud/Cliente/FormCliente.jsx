@@ -100,12 +100,27 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                             <p>Datos Generales</p>
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                            <InputForm type="text" name="name" placeholder="Nombre" value={formData.name} onChange={handleChange} />
-                            <InputForm type="text" name="first_surname" placeholder="Apellido" value={formData.first_surname} onChange={handleChange} />
-                            <InputForm type="text" name="second_surname" placeholder="Segundo Apellido" value={formData.second_surname} onChange={handleChange} />
-                            <InputForm type="text" name="client.agent" placeholder="Agente" value={formData.client?.agent} onChange={handleChange} />
-                            <InputForm type="text" name="identification_type" placeholder="Tipo De Documento" value={formData.identification_type} onChange={handleChange} />
-                            <InputForm type="number" name="identification_number" placeholder="Número Del Documento" value={formData.identification_number} onChange={handleChange} />
+                            <InputForm
+                                type="text" name="name" required
+                                placeholder="Nombre" value={formData.name} onChange={handleChange} />
+
+                            <InputForm
+                                type="text" name="first_surname" required
+                                placeholder="Apellido" value={formData.first_surname} onChange={handleChange} />
+
+                            <InputForm
+                                type="text" name="second_surname"
+                                placeholder="Segundo Apellido" value={formData.second_surname} onChange={handleChange} />
+
+                            <InputForm
+                                type="text" name="client.agent"
+                                placeholder="Agente" value={formData.client?.agent} onChange={handleChange} />
+
+                            <InputForm type="text" name="identification_type" placeholder="Tipo De Documento" value={formData.identification_type} onChange={handleChange} required />
+
+                            <InputForm
+                                type="number" name="identification_number"
+                                placeholder="Número Del Documento" value={formData.identification_number} onChange={handleChange} required />
                         </div>
                         <label className="block text-md font-medium text-gray-700 mb-1">Observaciones</label>
                         <textarea
@@ -134,6 +149,7 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                             placeholder={`Teléfono ${i + 1}`}
                                             value={p.phone}
                                             onChange={(e) => handleArrayChange(e, i, "phone")}
+                                            required
                                         />
                                         {formData.phone.length > 1 && (
                                             <div className="flex justify-end items-center">
@@ -163,6 +179,7 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                             placeholder={`Correo ${i + 1}`}
                                             value={e.email}
                                             onChange={(e) => handleArrayChange(e, i, "email")}
+                                            required
                                         />
                                         {formData.email.length > 1 && (
                                             <div className="flex justify-end items-center">
@@ -189,13 +206,40 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                             {formData.address.map((addr, i) => (
                                 <div key={i} className="mb-4 mx-1 p-3 shadow shadow-gray-300 rounded-md bg-gray-50">
                                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                                        <InputForm type="text" name="country" placeholder="País" value={addr.country} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="province" placeholder="Provincia" value={addr.province} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="municipality" placeholder="Municipio" value={addr.municipality} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="locality" placeholder="Localidad" value={addr.locality} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="street" placeholder="Calle" value={addr.street} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="number" placeholder="Número" value={addr.number} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="postal_code" placeholder="Código Postal" value={addr.postal_code} onChange={(e) => handleArrayChange(e, i, "address")} />
+                                        <InputForm
+                                            type="text" name="country"
+                                            placeholder="País" value={addr.country}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm
+                                            type="text" name="province"
+                                            placeholder="Provincia" value={addr.province}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm
+                                            type="text" name="municipality"
+                                            placeholder="Municipio" value={addr.municipality}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm
+                                            type="text" name="locality"
+                                            placeholder="Localidad" value={addr.locality}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm
+                                            type="text" name="street"
+                                            placeholder="Calle" value={addr.street}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} required />
+
+                                        <InputForm
+                                            type="text" name="number"
+                                            placeholder="Número" value={addr.number}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} required />
+
+                                        <InputForm
+                                            type="text" name="postal_code"
+                                            placeholder="Código Postal" value={addr.postal_code}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} required />
                                     </div>
                                     {formData.address.length > 1 && (
                                         <button onClick={() => removeField("address", i)} className=" mt-2 text-sm text-red-500 hover:underline font-medium cursor-pointer">Eliminar</button>

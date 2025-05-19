@@ -40,7 +40,6 @@ const Header = ({ onClicks }) => {
         return () => clearTimeout(timeout);
     }, [query]);
 
-    // forma para que se cierre si haces click fuera
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
@@ -90,11 +89,11 @@ const Header = ({ onClicks }) => {
                     </div>
                     <div onClick={onClicks}
                         className="ms-6 rounded-full p-1 text-white cursor-pointer hover:bg-white/10 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-layout-sidebar"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M9 4l0 16" /></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-layout-sidebar"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M9 4l0 16" /></svg>
                     </div>
                     <div className=" mx-2 ms-auto sm:ms-10 sm:me-auto sm:w-150 ">
                         {/* search */}
-                        <form action="/" ref={searchRef} className={`bg-[#cb415a] relative text-white/60 px-3 py-1 ${modalSearch ? "rounded-t-4xl" : "rounded-4xl"} flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]`} >
+                        <form action="/" ref={searchRef} className={`bg-[#b83345] inset-shadow-2xs inset-shadow-white/18 relative text-white/60 px-3 py-1 ${modalSearch ? "rounded-t-4xl" : "rounded-4xl"} flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]`} >
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />

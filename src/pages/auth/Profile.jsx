@@ -2,10 +2,15 @@ import { useEffect, useState } from "react";
 import Avatar from "../../components/ui/Avatar";
 import { useAuth } from "../../hooks/Auth";
 import CrudManager from "../../hooks/CrudManager";
+import { User, Trash } from "lucide-react";
+import DeleteUser from "../../components/modals/profile/DeleteUser";
 
 const Profile = () => {
 
+    const [open, setOpen] = useState(false);
+
     const { user } = useAuth({ middleware: 'auth' });
+    // const { deleteUser } = useAuth({ middleware: 'auth' });
 
     const { views } = CrudManager({ url: `centers/${user?.center_id}` });
 
@@ -13,16 +18,35 @@ const Profile = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const { updateUser } = useAuth({ middleware: 'auth' });
+
+    const [status, setStatu] = useState(false);
+    const [email, setEmail] = useState(user?.email)
+    const [name, setName] = useState(user?.name)
+
+    const submitForm = event => {
+        event.preventDefault()
+        updateUser({
+            name,
+            email,
+            setErrors: setError,
+            setStatus: setStatu,
+        })
+    }
+
     useEffect(() => {
         views({ setData: setCenter, setLoading, setErrors: setError });
     }, []);
 
     return (
         <>
-            <div className="h-full overflow-y-scroll xl:px-20">
+            {open &&
+                <DeleteUser onClose={() => setOpen(false)} />
+            }
+            <div className="h-full overflow-y-scroll">
                 {/* imagen y banner */}
                 <div className="relative flex flex-col justify-center items-center">
-                    <div className=" items-end relative w-full bg-gradient-to-l from-gray-300 to-gray-400 h-[180px] rounded-2xl rounded-b-none"></div>
+                    <div className=" items-end relative w-full bg-gradient-to-l from-gray-200 to-gray-400 h-[180px] rounded-xl rounded-b-none"></div>
                     <div className="absolute border-7 border-gray-100 rounded-full">
                         <Avatar name={user?.name.at(0).toUpperCase()} foto="" size={120} text={"text-white text-5xl"} />
                     </div>
@@ -67,111 +91,139 @@ const Profile = () => {
                         </div>
                     </div>
                     <div className="bg-red-900 px-5 shadow-2xl p-2 py-4 rounded-xl">
-                        <p className="text-2xl font-medium text-start pb-4 border-b-1 border-red-200/30">Añadir el Correo </p>
+                        <p className="text-2xl font-medium text-start pb-4 border-b-1 border-red-200/30">Borrar Usuario </p>
                         <div className="grid grid-cols-3 items-center my-7">
                             <div className="flex justify-center">
                                 <div className="bg-red-300 rounded-full p-2">
-                                    <p className="size-14 flex items-center justify-center text-5xl text-red-900">@</p>
+                                    <p className="size-14 flex items-center justify-center text-5xl text-red-900">
+                                        <Trash className="w-10 h-10" />
+                                    </p>
                                 </div>
                             </div>
                             <p className="col-span-2 text-justify text-sm">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptate nostrum dicta modi.</p>
                         </div>
                         <div className="text-end">
-                            <button className=" bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Añadir el Correo </button>
+                            <button onClick={() => setOpen(true)} className=" cursor-pointer hover:bg-red-100 bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Borrar Usuario </button>
                         </div>
                     </div>
                 </div>
-                <div className="mt-10 space-y-5.5">
-                    <div className="bg-white p-3 py-4 w-full shadow-2xs rounded-xl border-1 border-gray-200">
-                        <div className="grid grid-cols-3 w-full text-md">
-                            <div>Nombre</div>
-                            <div className="text-xl font-medium text-center">{user?.name}</div>
-                            <div className="flex justify-end items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
 
-                            </div>
-                        </div>
-                        <div className="flex items-center my-4">
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                        </div>
-                        <div className="grid grid-cols-3 w-full text-md">
-                            <div>Correo</div>
-                            <div className="text-xl font-medium text-center">{user?.email}</div>
-                            <div className="flex justify-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
+                <div className="flex items-center gap-3 mb-6 mt-10">
+                    <div className="p-2 rounded-lg bg-red-200 text-red-600">
+                        <User className="w-10 h-10" />
+                    </div>
+                    <h3 className="text-3xl font-semibold text-gray-800 ">Información Del Usuario</h3>
+                </div>
 
-                            </div>
-                        </div>
-                        <div className="flex items-center my-4">
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                        </div>
-                        <div className="grid grid-cols-3 w-full text-md">
-                            <div>Contraseña</div>
-                            <div className="text-xl font-medium text-center">****</div>
-                            <div className="flex justify-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
+                <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-5 items-center justify-center">
+                    <form onSubmit={submitForm} className="h-full flex flex-col justify-between">
 
-                            </div>
+                        <div className=" mb-2 text-lg">
+                            {status ?
+                                <input
+                                    value={name}
+                                    disabled
+                                    className={`${status ? "cursor-not-allowed" : "cursor-pointer"} bg-white w-full text-gray-500 block mt-1 border-s-5 p-2 shadow shadow-gray-300 rounded-md border-gray-400`} />
+                                :
+                                <input
+                                    id="name"
+                                    type="text"
+                                    value={name}
+                                    onChange={e => setName(e.target.value)}
+                                    required
+                                    className={`bg-white w-full block mt-1 border-s-5 p-2 shadow shadow-gray-300 rounded-md border-gray-400
+      focus:border-red-600 focus:ring-opacity-50 outline-red-200`}
+                                />}
                         </div>
-                        <div className="flex items-center my-4">
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                            <div className="flex-1 border-t border-gray-400/30"></div>
+
+                        <div className=" mb-auto text-lg">
+                            {status ?
+                                <input
+                                    value={email}
+                                    disabled
+                                    className={`${status ? "cursor-not-allowed" : "cursor-pointer"} w-full bg-white text-gray-500 block mt-1 border-s-5 p-2 shadow shadow-gray-300 rounded-md border-gray-400`} />
+                                :
+                                <input
+                                    id="email"
+                                    type="email"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    required
+                                    className={`w-full block bg-white mt-1 border-s-5 p-2 shadow shadow-gray-300 rounded-md border-gray-400
+      focus:border-red-600 focus:ring-opacity-50 outline-red-200`}
+                                />}
                         </div>
-                        <div className="grid grid-cols-3 w-full text-md">
-                            <div>Centro</div>
-                            <div className="text-xl font-medium flex justify-center items-center">{loading ?
-                                <svg className="size-5 animate-spin text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+
+                        <button
+                            type="submit"
+                            className={` ${status ? "cursor-not-allowed" : "cursor-pointer"} w-full inline-flex items-center justify-center px-4
+    py-3 bg-gray-800 border border-transparent rounded-md font-semibold
+     text-xs text-white tracking-widest hover:bg-gray-700
+      active:bg-gray-900 focus:outline-none focus:border-gray-900 
+      focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150`}
+                        >
+                            {status ?
+                                <svg className="size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                 </svg>
-                                : center?.name}</div>
-                            <div className="flex justify-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
+                                : "Enviar"}
+                        </button>
+                    </form>
 
+                    <div className="space-y-5.5 h-full">
+
+                        <div className="bg-white text-nowrap p-3 py-4 w-full shadow-2xs rounded-xl border-1 border-gray-200">
+                            <div className="grid grid-cols-3 w-full text-md">
+                                <div>Centro</div>
+                                <div className="text-xl font-medium flex justify-center items-center">{loading ?
+                                    <svg className="size-5 animate-spin text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                    : center?.name}</div>
+                                <div className="flex justify-end">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                    </svg>
+
+                                </div>
+                            </div>
+                            <div className="flex items-center my-4">
+                                <div className="flex-1 border-t border-gray-400/30"></div>
+                                <div className="flex-1 border-t border-gray-400/30"></div>
+                            </div>
+                            <div className="grid grid-cols-3 w-full text-md">
+                                <div>Rol</div>
+                                <div className="text-xl font-medium text-center">{user?.roles[0]?.name}</div>
+                                <div className="flex justify-end items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                    </svg>
+
+                                </div>
+                            </div>
+                            <div className="flex items-center my-4">
+                                <div className="flex-1 border-t border-gray-400/30"></div>
+                                <div className="flex-1 border-t border-gray-400/30"></div>
+                            </div>
+                            <div className="grid grid-cols-3 w-full text-md">
+                                <div>Privilegios</div>
+                                <div className="text-xl font-medium flex justify-center items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                    <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
+                                </svg>
+                                </div>
+                                <div className="flex justify-end">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                                    </svg>
+
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white p-3 py-4 w-full shadow-2xs rounded-xl border-1 border-gray-200">
-                        <div className="grid grid-cols-3 w-full text-md">
-                            <div>Rol</div>
-                            <div className="text-xl font-medium text-center">{user.roles[0]?.name}</div>
-                            <div className="flex justify-end items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
-
-                            </div>
-                        </div>
-                        <div className="flex items-center my-4">
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                            <div className="flex-1 border-t border-gray-400/30"></div>
-                        </div>
-                        <div className="grid grid-cols-3 w-full text-md">
-                            <div>Privilegios</div>
-                            <div className="text-xl font-medium flex justify-center items-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
-                            </svg>
-                            </div>
-                            <div className="flex justify-end">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-7">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                                </svg>
-
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div >
         </>
