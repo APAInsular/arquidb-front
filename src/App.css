@@ -1,7 +1,8 @@
 /* All */
 
 * {
-  background-repeat: no-repeat; 
+
+  background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
@@ -164,7 +165,7 @@
 
 .navbar-2 li {
   opacity: 0;
-  animation: fadeInUp 0.5s ease forwards;
+  animation: fadeInUp 0.1s ease forwards;
 }
 
 .navbar-2 li:nth-child(1) {
