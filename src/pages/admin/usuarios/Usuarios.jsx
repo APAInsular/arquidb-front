@@ -9,10 +9,18 @@ import Avatar from "../../../components/ui/Avatar";
 import Paginate from "../../../components/ui/Paginate";
 import Actions from "../../../components/modals/crud/Actions";
 import DefaultTable from "../../../components/ui/DefaultTable";
+import GeneralSearch from "../../../components/modals/filters/GeneralSearch";
+import Search from "../../../components/modals/filters/Search";
 
 const Usuarios = () => {
 
     const [totalPages, setTotalPages] = useState([]);
+    const [generalSearch, setGeneralSearch] = useState(false);
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        center: "",
+    });
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -79,11 +87,31 @@ const Usuarios = () => {
                 {/* titulo */}
                 <TitleCard name="Usuarios" link="/" />
                 {/* añadir algo */}
-                <div className="w-full flex justify-between">
+                <div onClick={() => setGeneralSearch(true)} className="w-full flex justify-between space-x-1">
                     <DefaultSearch
                         title={'Usuario'}
                         Buscador={buscador}
                     />
+
+                    {generalSearch && (
+                        <div onClick={(e) => e.stopPropagation()}>
+                            {/* <Search onClose={() => setGeneralSearch(false)} /> */}
+                            <GeneralSearch
+                                onClose={() => setGeneralSearch(false)}
+                                icons={
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                    </svg>
+                                }
+                                title={"Usuarios"}
+                                url={"/usuarios"}
+                                setFormData={setFormData}
+                                children={3}
+                            >
+                            </GeneralSearch>
+                        </div>
+                    )
+                    }
                     <div className="">
                         <Link to={'/usuarios/crear'} className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-900 font-medium bg-red-200 w-min mt-2 p-1 rounded-full shadow-2xl">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
@@ -127,6 +155,9 @@ const Usuarios = () => {
                         openId={openId}
                         setOpenId={setOpenId}
                         tabla={'usuarios'}
+                        someText="name"
+                        someNumber="id"
+                        someDate="created_at"
                     />
                 )}
             </div>

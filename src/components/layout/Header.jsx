@@ -5,12 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import ProfileUser from "../modals/profile/ProfileUser";
 import Notification from "../modals/profile/Notification";
 import Search from "../modals/filters/Search";
-import { useAuth } from "../../hooks/auth";
+import { useAuth } from "../../hooks/Auth";
 import CrudManager from "../../hooks/CrudManager";
 import { Link, NavLink, useSearchParams } from "react-router-dom";
 import DataSearch from "../modals/filters/DataSearch"
 
-const Header = () => {
+const Header = ({ onClicks }) => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const searchRef = useRef(null);
@@ -39,20 +39,6 @@ const Header = () => {
 
         return () => clearTimeout(timeout);
     }, [query]);
-
-    // forma para que se cierre si haces click fuera
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (searchRef.current && !searchRef.current.contains(event.target)) {
-                setModalSearch(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
 
     const handleSearchChange = (event) => {
         setModalSearch(true);
@@ -88,9 +74,13 @@ const Header = () => {
                     <div>
                         <img src={Logo} className=" brightness-120 rounded-md" alt="COACFUE" width={50} height={50} />
                     </div>
+                    <div onClick={onClicks}
+                        className="ms-6 rounded-full p-1 text-white cursor-pointer hover:bg-white/10 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-layout-sidebar"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M9 4l0 16" /></svg>
+                    </div>
                     <div className=" mx-2 ms-auto sm:ms-10 sm:me-auto sm:w-150 ">
                         {/* search */}
-                        <form action="/" ref={searchRef} className={`bg-[#cb415a] relative text-white/60 px-3 py-1 ${modalSearch ? "rounded-t-4xl" : "rounded-4xl"} flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]`} >
+                        <form action="/" ref={searchRef} className={`bg-[#b83345] inset-shadow-2xs inset-shadow-white/18 relative text-white/60 px-3 py-1 ${modalSearch ? "rounded-t-4xl" : "rounded-4xl"} flex flex-row justify-center sm:justify-between items-center w-[48px] h-[48px] sm:h-auto sm:w-[100%]`} >
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
@@ -104,14 +94,14 @@ const Header = () => {
                                 onChange={handleSearchChange}
                                 className="hidden sm:flex outline-0 p-2 w-full text-white text-md" />
                             {/* filtro Search */}
-                            <div onClick={() => handleClick(3)} className="hidden relative md:flex cursor-pointer hover:bg-red-300/20 p-2 rounded-full">
+                            <div onClick={() => handleClick(3)} className=" relative flex cursor-pointer hover:bg-red-300/20 p-2 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                                 </svg>
                                 {/* dasda */}
                                 {modalFilter && (
                                     <div onClick={(e) => e.stopPropagation()}>
-                                        <Search />
+                                        <Search onClose={() => setModalFilter(false)} />
                                     </div>
                                 )}
                             </div>
