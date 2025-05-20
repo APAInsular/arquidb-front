@@ -57,7 +57,7 @@ const VerCliente = () => {
                 <div className=" mt-5 rounded-t-lg  p-6 sm:p-14">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                         <div className="relative">
-                            <div className="text-gray-600 bg-gray-200 rounded-xl p-2">
+                            <div className="text-gray-600 bg-gray-200 rounded-full p-2">
                                 <UserCircle className="w-30 h-30 " />
                             </div>
                             <span className="absolute -bottom-[-5px] -right-[-5px] bg-gray-600 rounded-full p-1 shadow-sm">
