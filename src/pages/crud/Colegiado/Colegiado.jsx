@@ -19,7 +19,15 @@ const Colegiado = () => {
     const [openId, setOpenId] = useState(null);
 
     const buscador = useCallback((query = '') => {
-        const { views } = CrudManager({ url: `personCollegiate${query ? '?name=' + query : '?name='}&page=${page}` });
+        const { views } = CrudManager({
+            url: `personCollegiate${query ?
+                `?name=${query}
+                &first_surname=${query}
+                &second_surname=${query}
+                &identification_number=${query}
+                &observations=${query}` :
+                '?name=&first_surname=&second_surname=&identification_number&observations'}&page=${page}`
+        });
         views({ setData: setCollegiate, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
@@ -63,7 +71,7 @@ const Colegiado = () => {
         fullSurname: `${datos.first_surname} ${datos.second_surname || ''}`,
     }));
 
-    console.log("aaaaa"+collegiates)
+    console.log("aaaaa" + collegiates)
 
 
     return (
