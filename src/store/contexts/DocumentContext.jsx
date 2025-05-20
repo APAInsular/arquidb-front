@@ -47,17 +47,44 @@ const DocumentContext = ({ children }) => {
         }
     };
 
-    const createDocuments = async (data, expedientId) => {
+    const multiUploadDocuments = async (data, expedientId) => {
         try {
             const createdPhases = await axios.get('api/phase?all=true').then(res => res.data);
 
-            const phase = createdPhases.find(phase => phase.phase === data.phase && phase.expedient_id === expedientId);
-            if (!phase) {
-                console.error(`Fase no encontrada: ${data.phase}`);
-                return;
-            }
+            // Agrupar archivos por fase
+            const groupedByPhase = data.reduce((acc, item) => {
+                if (!acc[item.phase]) {
+                    acc[item.phase] = [];
+                }
+                acc[item.phase].push(item.file);
+                return acc;
+            }, {}); // { '1111': [File, File], '2222': [File] }
 
-            return await axios.post('api/multiupload', data).then(res => res.data);
+            // Hacer una petición por cada grupo de fase
+            const uploads = await Promise.all(
+                Object.entries(groupedByPhase).map(async ([phaseKey, files]) => {
+                    const phase = createdPhases.find(
+                        p => p.phase === phaseKey && p.expedient_id === expedientId
+                    );
+
+                    if (!phase) {
+                        console.error(`Fase no encontrada: ${phaseKey}`);
+                        return null;
+                    }
+
+                    const formData = new FormData();
+                    files.forEach(file => {
+                        formData.append('files[]', file);
+                    });
+                    formData.append('phase_id', phase.id);
+
+                    return await axios.post('api/multiupload', formData);
+                })
+            );
+
+            return uploads.filter(Boolean);
+
+            // return await axios.post('api/multiupload', formData).then(res => res.data);
         } catch (error) {
             console.error('Error detallado:', error);
             throw error;
@@ -76,7 +103,7 @@ const DocumentContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ documents, createDocument, uploadDocument, eraseDocument }}>
+        <ArquidbContext.Provider value={{ documents, createDocument, multiUploadDocuments, uploadDocument, eraseDocument }}>
             {children}
         </ArquidbContext.Provider>
     );

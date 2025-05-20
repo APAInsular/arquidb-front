@@ -15,7 +15,7 @@ const CrearExpediente = () => {
     const { user } = useAuth({ middleware: 'auth' });
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
-    const { createDocument } = useDocument();
+    const { createDocument, multiUploadDocuments } = useDocument();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -105,10 +105,11 @@ const CrearExpediente = () => {
             });
             await Promise.all(createPromises);
 
-            const uploadPromises = expedientDocuments.map(async document => {
-                await createDocument(document, response.data.id);
-            });
-            await Promise.all(uploadPromises);
+            // const uploadPromises = expedientDocuments.map(async document => {
+            // await createDocument(document, response.data.id);
+            // });
+            // await Promise.all(uploadPromises);
+            await multiUploadDocuments(expedientDocuments, response.data.id);
 
             // navigate('/expedientes');
             // navigate(0);

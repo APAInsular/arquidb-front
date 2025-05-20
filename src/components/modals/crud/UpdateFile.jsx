@@ -38,7 +38,7 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
                 formData.append('file', file);
 
                 const newDocument = {
-                    data: formData,
+                    file: formData,
                     name: file.name,
                     phase: phase
                 };
