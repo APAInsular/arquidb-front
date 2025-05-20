@@ -188,18 +188,6 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                         <p>Añadir Rol</p>
                     </button>
                 </div>
-
-                {/* <div className="mb-4">
-                    <InputForm
-                        type="text"
-                        name="role"
-                        placeholder="rol"
-                        value={formData.role}
-                        onChange={handleChange}
-                        className={`w-full ${errors?.response?.data?.errors?.role ? " border-red-400" : ""}`}
-                    />
-                    {errors?.response?.data?.errors?.role && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.role}</p>}
-                </div> */}
             </div>
 
             <div className="flex items-center gap-4 mt-auto mb-1">
