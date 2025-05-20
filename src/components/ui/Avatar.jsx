@@ -14,7 +14,7 @@ const Avatar = ({ name, foto, size, text }) => {
 
     return (
 
-        <div className={`${baseClasses} ${bgClass}`} style={avatarStyle}>
+        <div className={` ${baseClasses} ${bgClass}`} style={avatarStyle}>
             {!foto && <div className={`${text}`}>{name}</div>}
         </div>
 

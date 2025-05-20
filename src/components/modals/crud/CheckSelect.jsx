@@ -4,17 +4,17 @@ const CheckSelect = ({ datos, total, setDeletes }) => {
 
     return (
         <>
-            <div className="fixed bottom-0 right-[30%] me-5 z-50 mb-5 flex justify-center items-center">
-                <div className="bg-gray-800 modal-appear text-white p-4 rounded-full shadow-2xl mx-2 w-full">
+            <div className="sm:fixed absolute bottom-0 right-[10%] sm:right-[30%] me-5 z-50 mb-5 flex justify-center items-center">
+                <div className="bg-gray-800 modal-appear text-white p-4 rounded-full shadow-2xl mx-2 sm:w-full">
                     <div className="flex flex-row justify-between items-center space-x-2.5">
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 cursor-pointer hover:bg-gray-600 rounded-full">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                             </svg>
                         </div>
-                        <div className="flex flex-row justify-center items-center space-x-2 text-nowrap me-12">
+                        <div className="flex flex-row justify-center items-center space-x-2 text-nowrap sm:me-12">
                             <div className="bg-gray-600 px-3 rounded-full">{total}</div>
-                            <p>Objetos seleccionados</p>
+                            <p className="sm:flex hidden">Objetos seleccionados</p>
                         </div>
                         <div>
                             <button

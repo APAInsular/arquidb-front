@@ -74,12 +74,16 @@ const Fase = () => {
                 {/* titulo */}
                 <TitleCard name={"Fases"} />
                 {/* poco necesario  */}
-                <div className="w-full flex justify-between">
+                <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
-                        title={'Colegiados'}
+                        title={'Fases'}
                         Buscador={buscador}
                     />
-                    <Link to={"/fases/crear"} className="flex flex-row px-10 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-800 font-medium bg-red-100 w-min mt-2 p-1 rounded-2xl">
+                    <Link
+                        // to={"/fases/crear"}
+                        // cursor-pointer hover:bg-red-800 hover:text-red-300
+                        className="flex flex-row px-10 space-x-3 cursor-not-allowed
+                          transition-all text-gray-300 font-medium bg-gray-400 w-min mt-2 p-1 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
                         </svg>
@@ -91,6 +95,10 @@ const Fase = () => {
                     <StatsCard
                         title={"Total Fases (Cualquier Fase)"}
                         value={phases?.length}
+                    />
+                    <StatsCard
+                        title={"Total Documentos (Cualquier Documento)"}
+                        value={phases?.documents?.length}
                     />
                 </div>
                 <div className="">
