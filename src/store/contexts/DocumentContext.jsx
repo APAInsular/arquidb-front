@@ -45,15 +45,32 @@ const DocumentContext = ({ children }) => {
             console.error('Error detallado:', error);
             throw error;
         }
-    }
+    };
+
+    const createDocuments = async (data, expedientId) => {
+        try {
+            const createdPhases = await axios.get('api/phase?all=true').then(res => res.data);
+
+            const phase = createdPhases.find(phase => phase.phase === data.phase && phase.expedient_id === expedientId);
+            if (!phase) {
+                console.error(`Fase no encontrada: ${data.phase}`);
+                return;
+            }
+
+            return await axios.post('api/multiupload', data).then(res => res.data);
+        } catch (error) {
+            console.error('Error detallado:', error);
+            throw error;
+        }
+    };
 
     const uploadDocument = async (data) => {
         return await axios.post('api/upload', data).then(res => res.data);
-    }
+    };
 
     const eraseDocument = async (data) => {
         await axios.post('api/erase', data).then(res => res.data);
-    }
+    };
 
     if (loading) return <WebLoader />;
     // if (error) return <p>Error: {error}</p>;

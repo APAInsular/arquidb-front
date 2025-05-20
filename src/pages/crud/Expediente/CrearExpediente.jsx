@@ -110,8 +110,8 @@ const CrearExpediente = () => {
             });
             await Promise.all(uploadPromises);
 
-            navigate('/expedientes');
-            navigate(0);
+            // navigate('/expedientes');
+            // navigate(0);
         } catch (error) {
             console.error("Error creando el expediente:", error);
         }
