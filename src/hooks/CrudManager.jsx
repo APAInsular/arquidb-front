@@ -3,7 +3,7 @@ import axios from '../lib/axios'
 export default function CrudManager({ url }) {
 
     const api = "api/"
-    
+
     // Ver los datos 
     const views = async ({ setData, setLoading, setErrors, setPages }) => {
         setLoading(true);
@@ -25,7 +25,7 @@ export default function CrudManager({ url }) {
     // Crear los datos
     const creates = async ({ setErrors, setStatus, ...props }) => {
         setErrors(null);
-        setStatus(null);
+        setStatus(true);
         return await axios
             .post(api + url, props.data)
             .then((res) => {
@@ -36,7 +36,7 @@ export default function CrudManager({ url }) {
                 if (error.response && error.response.data.errors) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
-                setStatus("error");
+                setStatus(false);
                 setErrors(error)
                 throw error;
             });
@@ -45,7 +45,7 @@ export default function CrudManager({ url }) {
     // Actualizar los datos
     const updates = async ({ setErrors, setStatus, ...props }) => {
         setErrors(null);
-        setStatus(null);
+        setStatus(true);
 
         const endpoint = props.id ? `${api}${url}/${props.id}` : `${api}${url}`;
 
@@ -53,12 +53,12 @@ export default function CrudManager({ url }) {
             .put(endpoint, props.data)
             .then(res => res.data)
             .catch(error => {
-                if (error.response && error.response.data && error.response.data.errors) {
+                if (error.response && error.response.data.errors ) {
                     setErrors(Object.values(error.response.data.errors).flat());
-                } else {
-                    setErrors(['Ocurrió un error al actualizar.']);
                 }
-                return null;
+                setErrors(error)
+                setStatus(false);
+               throw error;
             });
     };
 
@@ -72,6 +72,7 @@ export default function CrudManager({ url }) {
             .catch(error => {
                 setErrors(
                     Object.values(error.response.data.errors).flat());
+                setStatus(false);
             });
     };
 

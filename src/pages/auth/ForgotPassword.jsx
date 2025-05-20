@@ -27,7 +27,6 @@ const ForgotPassword = () => {
     return (
         <>
 
-            {/* <GuestLayout> */}
             <div className="font-sans text-gray-900 antialiased">
                 <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-[#932236]">
                     <div>
@@ -36,16 +35,14 @@ const ForgotPassword = () => {
                         </NavLink>
                     </div>
                     <div className="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-2xl shadow-gray-900 overflow-hidden sm:rounded-lg">
-                        <div className="mb-4 text-sm text-gray-500 text-justify">
-                            <strong>¿Olvidaste tu contraseña?</strong> No hay problema. Simplemente indícanos tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña. Te permitirá elegir una nueva.
+                        <div className="mb-4 text-sm text-gray-900 text-justify border-b-1 border-b-gray-400 pb-2">
+                            <strong className='font-medium'>¿Olvidaste tu contraseña?</strong> Indícanos tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña. Te permitirá elegir una nueva.
                         </div>
-                        {/* Session Status */}
                         {status && (
                             <div className={`mb-4 font-medium text-sm text-green-600`}>
                                 {status}
                             </div>
                         )}
-                        {/* Validation Errors */}
                         {errors.length > 0 && (
                             <div className='mb-4'>
                                 <div className="font-medium text-red-600">
@@ -59,7 +56,6 @@ const ForgotPassword = () => {
                             </div>
                         )}
                         <form onSubmit={submitForm}>
-                            {/* Email Address */}
                             <div>
                                 <label
                                     className={` block font-medium text-sm text-gray-700`}
@@ -87,7 +83,6 @@ const ForgotPassword = () => {
                     </div>
                 </div>
             </div >
-            {/* </GuestLayout> */}
         </>
     )
 }
