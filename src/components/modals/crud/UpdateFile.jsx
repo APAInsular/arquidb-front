@@ -34,11 +34,8 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
         setSuccess(false);
         try {
             const newDocuments = files.map(file => {
-                const formData = new FormData();
-                formData.append('file', file);
-
                 const newDocument = {
-                    file: formData,
+                    file: file,
                     name: file.name,
                     phase: phase
                 };

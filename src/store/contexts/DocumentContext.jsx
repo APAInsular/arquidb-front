@@ -74,6 +74,10 @@ const DocumentContext = ({ children }) => {
 
                     const formData = new FormData();
                     files.forEach(file => {
+                        if (!(file instanceof File)) {
+                            console.error('No es un archivo válido:', file);
+                            throw new Error('Uno o más archivos no son válidos.');
+                        }
                         formData.append('files[]', file);
                     });
                     formData.append('phase_id', phase.id);
