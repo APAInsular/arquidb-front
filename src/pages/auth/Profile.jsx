@@ -4,10 +4,12 @@ import { useAuth } from "../../hooks/Auth";
 import CrudManager from "../../hooks/CrudManager";
 import { User, Trash } from "lucide-react";
 import DeleteUser from "../../components/modals/profile/DeleteUser";
+import ChangePassword from "../../components/modals/profile/ChangePassword";
 
 const Profile = () => {
 
     const [open, setOpen] = useState(false);
+    const [openChangePassword, setOpenChangePassword] = useState(false);
 
     const { user } = useAuth({ middleware: 'auth' });
     // const { deleteUser } = useAuth({ middleware: 'auth' });
@@ -43,6 +45,10 @@ const Profile = () => {
             {open &&
                 <DeleteUser onClose={() => setOpen(false)} />
             }
+
+            {openChangePassword &&
+                <ChangePassword onClose={() => setOpenChangePassword(false)} />
+            }
             <div className="h-full overflow-y-scroll">
                 {/* imagen y banner */}
                 <div className="relative flex flex-col justify-center items-center">
@@ -71,7 +77,7 @@ const Profile = () => {
                             <p className="col-span-2 text-justify text-sm">Si sientes que alguen entra en tu cuenta cambia la contraseña para no perder los permisos de tu cuenta</p>
                         </div>
                         <div className="text-end">
-                            <button className=" bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Cambia de contraseña </button>
+                            <button onClick={() => setOpenChangePassword(true)} className=" bg-red-300 text-red-900 p-2 rounded-full px-4 font-medium">Cambia de contraseña </button>
                         </div>
                     </div>
                     <div className="bg-red-900 px-5 shadow-2xl p-2 py-4 rounded-xl">

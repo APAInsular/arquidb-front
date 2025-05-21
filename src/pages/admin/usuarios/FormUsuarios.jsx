@@ -15,7 +15,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
         email: user?.email || "",
         password: "",
         center_id: user?.center_id || "",
-        role: user?.roles?.length ? user.roles : [""],
+        role: user?.roles?.length ? user.roles.map(r => r.name) : [""],
     });
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                 name: user.name || "",
                 email: user.email || "",
                 center_id: user.center_id || "",
-                role: user?.roles?.length ? user.roles : [""],
+                role: user?.roles?.length ? user.roles.map(r => r.name) : [""],
             }));
         }
     }, [user]);
@@ -157,7 +157,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                                 type="text"
                                 name={`role-${i}`}
                                 placeholder={`Rol ${i + 1}`}
-                                value={role.name}
+                                value={role}
                                 onChange={(e) => handleArrayChange(e, i, "role")}
                                 required
                             />
@@ -173,8 +173,10 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                                     </button>
                                 </div>
                             )}
-                            {errors?.response?.data?.errors?.role && (
-                                <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.role}</p>
+                            {errors?.response?.data?.errors?.[`role.${i}`] && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.response.data.errors[`role.${i}`][0]}
+                                </p>
                             )}
                         </div>
                     ))}
