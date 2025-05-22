@@ -30,7 +30,7 @@ const Usuarios = () => {
 
 
     const buscador = useCallback((query = '') => {
-        const { views } = CrudManager({ url: `users${query ? '?name=' + query : '?name='}&page=${page}` });
+        const { views } = CrudManager({ url: `users${query ? `?name=${query}&email=${query}` : '?name=&email='}&page=${page}` });
         views({ setData: setUsers, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
@@ -60,16 +60,26 @@ const Usuarios = () => {
             key: 'role',
             label: 'Usuario Rol',
             render: (user) =>
-                user.roles?.[0] ? (
-                    <div className=" uppercase text-xs bg-yellow-200 rounded-full flex w-min px-2 py-0.5 items-center text-yellow-600 font-medium">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 me-2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
-                        </svg>
-                        {user.roles[0].name}
+                user.roles?.length > 0 ? (
+                    <div className="flex flex-wrap gap-2">
+                        {user.roles.map((role) => (
+                            <div key={role.id} className="uppercase text-xs bg-yellow-200 rounded-full flex w-min px-2 py-0.5 items-center text-yellow-600 font-medium">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                                    stroke="currentColor" className="size-4 me-2">
+                                    <path
+                                        strokeLinecap="round" strokeLinejoin="round"
+                                        d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
+                                    />
+                                </svg>
+                                {role.name}
+                            </div>
+                        ))}
                     </div>
                 ) : (
-                    <div className="bg-gray-200 text-xs uppercase py-0.5 rounded-full w-min px-2 text-center text-gray-600 font-medium">Ninguno</div>
-                ),
+                    <div className="bg-gray-200 text-xs uppercase py-0.5 rounded-full w-min px-2 text-center text-gray-600 font-medium">
+                        Ninguno
+                    </div>
+                )
         },
     ];
 
@@ -87,7 +97,7 @@ const Usuarios = () => {
                 {/* titulo */}
                 <TitleCard name="Usuarios" link="/" />
                 {/* añadir algo */}
-                <div onClick={() => setGeneralSearch(true)} className="w-full flex justify-between space-x-1">
+                <div  className="w-full flex justify-between space-x-1">
                     <DefaultSearch
                         title={'Usuario'}
                         Buscador={buscador}

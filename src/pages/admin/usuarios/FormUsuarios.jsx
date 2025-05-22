@@ -5,7 +5,6 @@ import CrudManager from "../../../hooks/CrudManager";
 const FormUsuarios = ({ user, onSubmit, status, errors }) => {
 
     const { views } = CrudManager({ url: `centers` });
-    // const { views: roles } = CrudManager({ url: `centers` });
 
     const [centers, setCenters] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -16,7 +15,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
         email: user?.email || "",
         password: "",
         center_id: user?.center_id || "",
-        role: user?.roles?.[0]?.name || ""
+        role: user?.roles?.length ? user.roles.map(r => r.name) : [""],
     });
 
     useEffect(() => {
@@ -30,7 +29,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                 name: user.name || "",
                 email: user.email || "",
                 center_id: user.center_id || "",
-                role: user?.roles?.[0]?.name || ""
+                role: user?.roles?.length ? user.roles.map(r => r.name) : [""],
             }));
         }
     }, [user]);
@@ -50,6 +49,30 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
             ...prev,
             center_id: centerId
         }));
+    };
+
+    const handleArrayChange = (e, index, field) => {
+        const newArray = [...formData[field]];
+        newArray[index] = e.target.value;
+        setFormData({
+            ...formData,
+            [field]: newArray
+        });
+    };
+
+    const addField = (field, defaultValue) => {
+        setFormData({
+            ...formData,
+            [field]: [...formData[field], defaultValue]
+        });
+    };
+
+    const removeField = (field, index) => {
+        const newArray = formData[field].filter((_, i) => i !== index);
+        setFormData({
+            ...formData,
+            [field]: newArray.length ? newArray : [""]
+        });
     };
 
     const handleSubmit = (e) => {
@@ -113,7 +136,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                             name="center_id"
                             value={formData.center_id}
                             onChange={handleCenterChange}
-                            className="w-full border-b-2 border-gray-500/70 py-3 focus:border-b-red-700 outline-none"
+                            className="w-full border-b-2 bg-gray-200/60 focus:bg-rose-100/60 rounded-t-lg border-gray-500/70 py-3 focus:border-b-red-700 outline-none"
                             required
                         >
                             <option value="">...</option>
@@ -126,16 +149,46 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                     )}
                 </div>
 
-                <div className="mb-4">
-                    <InputForm
-                        type="text"
-                        name="role"
-                        placeholder="rol"
-                        value={formData.role}
-                        onChange={handleChange}
-                        className={`w-full ${errors?.response?.data?.errors?.role ? " border-red-400" : ""}`}
-                    />
-                    {errors?.response?.data?.errors?.role && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.role}</p>}
+                <div>
+                    {/* <div> */}
+                    {formData?.role?.map((role, i) => (
+                        <div key={i} className="mb-4">
+                            <InputForm
+                                type="text"
+                                name={`role-${i}`}
+                                placeholder={`Rol ${i + 1}`}
+                                value={role}
+                                onChange={(e) => handleArrayChange(e, i, "role")}
+                                required
+                            />
+                            {formData?.role?.length > 1 && (
+                                <div className="flex justify-end items-center">
+                                    <button
+                                        onClick={() => removeField("role", i)}
+                                        className="text-red-200 hover:text-red-700 hover:bg-red-300 bg-red-500 p-1 rounded-md cursor-pointer"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                            <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            )}
+                            {errors?.response?.data?.errors?.[`role.${i}`] && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {errors.response.data.errors[`role.${i}`][0]}
+                                </p>
+                            )}
+                        </div>
+                    ))}
+                    {/* </div> */}
+                    <button onClick={() => addField("role", "")}
+                        className="flex space-x-3 flex-row items-center justify-center text-sm text-gray-700 hover:underline bg-gray-200 p-2 rounded-sm font-medium w-full cursor-pointer shadow shadow-gray-300"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
+                            <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
+                        </svg>
+                        <p>Añadir Rol</p>
+                    </button>
                 </div>
             </div>
 
