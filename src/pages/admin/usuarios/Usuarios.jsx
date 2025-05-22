@@ -30,7 +30,7 @@ const Usuarios = () => {
 
 
     const buscador = useCallback((query = '') => {
-        const { views } = CrudManager({ url: `users${query ? '?name=' + query : '?name='}&page=${page}` });
+        const { views } = CrudManager({ url: `users${query ? `?name=${query}&email=${query}` : '?name=&email='}&page=${page}` });
         views({ setData: setUsers, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
@@ -97,7 +97,7 @@ const Usuarios = () => {
                 {/* titulo */}
                 <TitleCard name="Usuarios" link="/" />
                 {/* añadir algo */}
-                <div onClick={() => setGeneralSearch(true)} className="w-full flex justify-between space-x-1">
+                <div  className="w-full flex justify-between space-x-1">
                     <DefaultSearch
                         title={'Usuario'}
                         Buscador={buscador}
