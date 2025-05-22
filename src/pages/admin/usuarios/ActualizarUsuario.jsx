@@ -51,6 +51,7 @@ const ActualizarUsuario = () => {
                     onSubmit={handleSubmit}
                     status={status}
                     errors={errors}
+                    falses={true}
                 />
             )}
         </div >

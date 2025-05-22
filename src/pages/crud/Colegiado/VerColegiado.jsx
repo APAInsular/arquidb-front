@@ -59,9 +59,9 @@ const VerColegiado = () => {
                 <div className="bg-gray-100 p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                         <div className="relative">
-                            <UserCircle2 className="w-30 h-30 bg-blue-500 rounded-full text-blue-950" />
-                            <span className="absolute -bottom-2 -right-2 bg-white rounded-full p-1 shadow-sm">
-                                <div className="w-6 h-6 rounded-full bg-green-400 flex items-center justify-center">
+                            <UserCircle2 className="w-30 h-30 bg-gray-300 rounded-full text-gray-700" />
+                            <span className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow-sm">
+                                <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center">
                                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>

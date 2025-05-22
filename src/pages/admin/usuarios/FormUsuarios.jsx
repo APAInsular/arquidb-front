@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import InputForm from "../../../components/ui/InputForm";
 import CrudManager from "../../../hooks/CrudManager";
 
-const FormUsuarios = ({ user, onSubmit, status, errors }) => {
+const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
 
     const { views } = CrudManager({ url: `centers` });
 
@@ -13,7 +13,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
     const [formData, setFormData] = useState({
         name: user?.name || "",
         email: user?.email || "",
-        password: "",
+        password: user?.password || "",
         center_id: user?.center_id || "",
         role: user?.roles?.length ? user.roles.map(r => r.name) : [""],
     });
@@ -110,6 +110,19 @@ const FormUsuarios = ({ user, onSubmit, status, errors }) => {
                     />
                     {errors?.response?.data?.errors?.email && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.email}</p>}
                 </div>
+                {falses ? null :
+                    <div className="mb-4">
+                        <InputForm
+                            type="password"
+                            name="password"
+                            placeholder="Contraseña"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className={`w-full ${errors?.response?.data?.errors?.password ? " border-red-400" : ""}`}
+                            required
+                        />
+                        {errors?.response?.data?.errors?.password && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.password}</p>}
+                    </div>}
 
                 <div className="mb-4">
                     <label htmlFor="center_id" className="block text-md font-medium text-gray-700 mb-1">
