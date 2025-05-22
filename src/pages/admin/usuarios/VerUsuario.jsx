@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
-import { Mail, Building, Shield, Calendar, User } from "lucide-react";
+import { Mail, Building, Shield, Calendar, User, Edit } from "lucide-react";
 import TitleCard from "../../../components/ui/TitleCard";
 
 const VerUsuario = () => {
@@ -78,6 +78,10 @@ const VerUsuario = () => {
                                     {user.email}
                                 </p>
                             </div>
+                            <NavLink className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/usuarios/${params.id}/editar`}>
+                                <Edit />
+                                Editar
+                            </NavLink>
                         </div>
                         <div className="mt-4 flex flex-wrap gap-2">
                             {user.roles?.length > 0 ? (

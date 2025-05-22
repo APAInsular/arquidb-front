@@ -134,7 +134,7 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                 </select>
                             </div>
                             <InputForm
-                                type="number" name="identification_number"
+                                type="text" name="identification_number"
                                 placeholder="Número Del Documento" value={formData.identification_number} onChange={handleChange} required />
                         </div>
                         <label className="block text-md font-medium text-gray-700 mb-1">Observaciones</label>

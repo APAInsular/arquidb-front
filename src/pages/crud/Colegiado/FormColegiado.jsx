@@ -181,7 +181,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                                 </select>
                             </div>
                             <InputForm
-                                type="number"
+                                type="text"
                                 name="identification_number"
                                 placeholder="Numero Del Documento"
                                 value={formData.identification_number}
