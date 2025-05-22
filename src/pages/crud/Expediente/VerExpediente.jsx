@@ -2,8 +2,9 @@ import { useParams, Link } from "react-router-dom";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
+import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import DefaultTable from "../../../components/ui/DefaultTable";
 import Delete from "../../../components/modals/crud/Delete";
@@ -21,6 +22,7 @@ const VerExpediente = () => {
     const [clients, setClients] = useState([]);
     const [collegiates, setCollegiates] = useState([]);
 
+    const [modalPhase, setModalPhase] = useState(false);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [deletes, setDeletes] = useState(false);
@@ -77,6 +79,12 @@ const VerExpediente = () => {
         }
     }, [expedientPhases]);
 
+    const phaseEditorActivate = useCallback(() => {
+        if (!modalPhase) {
+            setModalPhase(true);
+        }
+    }, [modalPhase]);
+
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />
     console.log(expedient);
     console.log(clients);
@@ -110,6 +118,9 @@ const VerExpediente = () => {
     return (
         <>
             <div className="overflow-y-auto h-full">
+                {modalPhase && (
+                    <PhaseEditor expedientPhases={expedientPhases} setModalPhase={setModalPhase} />
+                )}
                 {deletes && (
                     <Delete DatoId={deletes} type={"Documento"} onClose={() => setDeletes(false)} url={"document"} />
                 )}
@@ -227,6 +238,10 @@ const VerExpediente = () => {
                                         </div>
                                     );
                                 })}
+                            </div>
+                            <div className="text-center mt-5">
+                                <button type="button" className="cursor-pointer bg-blue-700 text-white rounded-full py-2 px-4 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
+                                    onClick={() => phaseEditorActivate()}>Editar fases</button>
                             </div>
                             {phaseSelected && (
                                 <div className="grid grid-cols-12 gap-4 p-2">

@@ -4,7 +4,7 @@ import { useAuth } from "../../../hooks/Auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
-import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
+import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import axios from "../../../lib/axios";
@@ -14,11 +14,12 @@ const EditarExpediente = () => {
     const params = useParams();
     const { user } = useAuth({ middleware: 'auth' });
     const { expedients, updateExpedient } = useExpedient();
-    const { phases, updatePhase, getPhaseTitles } = usePhase();
+    const { phases, createPhase, getPhaseTitles } = usePhase();
     const { documents, multiUploadDocuments } = useDocument();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState(null);
     const [modalPhase, setModalPhase] = useState(false);
+    const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
@@ -74,9 +75,10 @@ const EditarExpediente = () => {
         if (satisfy) setExpedient(prev => ({ ...prev, [name]: value }));
     };
 
-    const phaseEditorActivate = useCallback(() => {
+    const phaseSelectorActivate = useCallback((type) => {
         if (!modalPhase) {
             setModalPhase(true);
+            setModalPhaseType(type);
         }
     }, [modalPhase]);
 
@@ -98,7 +100,6 @@ const EditarExpediente = () => {
         newExpedient.budget = parseFloat(newExpedient.budget);
 
         const oldExpedient = expedients.find(e => e.id == params.id);
-        console.log(newExpedient);
 
         try {
             if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
@@ -109,14 +110,19 @@ const EditarExpediente = () => {
             await axios.get("/sanctum/csrf-cookie");
             await updateExpedient(params.id, newExpedient);
 
-            console.log(params.id);
+            const newPhases = expedientPhases.filter(phase => !phase.id || !phase.expedient_id);
 
-            const newPhases = await getPhaseTitles({ expedientPhases, expedientId: params.id });
+            const phasesData = await getPhaseTitles({ expedientPhases: newPhases, expedientId: params.id });
 
-            console.log(newPhases);
+            const createPromises = phasesData.map(phase => createPhase(phase));
+            await Promise.all(createPromises);
 
-            const updatePromises = newPhases.map(phase => updatePhase(phase.id, phase));
-            await Promise.all(updatePromises);
+            const oldPhases = phases
+                .filter(phase => phase.expedient_id == expedient.id)
+                .filter(oldPhase => !expedientPhases.some(phase => phase == oldPhase));
+
+            const deletePromises = oldPhases.map(async phase => await axios.delete(`api/phase/${phase.id}`));
+            await Promise.all(deletePromises);
 
             // Filtrar los documentos que no existen por la id y la phase_id de document
             const newDocuments = expedientDocuments.filter(document => !document.id || !document.phase_id);
@@ -134,15 +140,13 @@ const EditarExpediente = () => {
     expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
     expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16) || null;
 
-    console.log(expedientPhases);
-    console.log(expedientDocuments);
     console.log(user);
 
     return (
         <>
             <div>
                 <TitleCard name={"Expedientes"} action={"Editar"} />
-                {modalPhase && <PhaseEditor expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} />}
+                {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} expedientDocuments={expedientDocuments} setExpedientDocuments={setExpedientDocuments} />}
                 <form className="mb-10" method="POST" onSubmit={handleSubmit}>
                     <div className="p-2">
@@ -259,9 +263,9 @@ const EditarExpediente = () => {
                     <div className="p-2">
                         <h4 className="text-3xl text-gray-400 mb-5">Fases</h4>
                         <div className="flex space-x-2">
-                            <button type="button" onClick={() => phaseEditorActivate()} className="cursor-pointer">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-10 bg-blue-700 text-white rounded-full p-2">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                            <button type="button" onClick={() => phaseSelectorActivate("new_phase")} className="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                             </button>
                             {expedientPhases.map(phase => {
@@ -271,6 +275,11 @@ const EditarExpediente = () => {
                                         onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                 );
                             })}
+                            <button type="button" onClick={() => phaseSelectorActivate("old_phase")} className="cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-8 bg-blue-700 text-white rounded-full">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+                                </svg>
+                            </button>
                         </div>
                     </div>
                     <input type="hidden" name="center_id" value={user.center_id} />
