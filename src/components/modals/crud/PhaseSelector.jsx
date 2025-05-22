@@ -13,12 +13,14 @@ const PhaseSelector = ({ expedientPhases, setExpedientPhases, setModalPhase, inp
                     if (!expedientPhases.some(item => item.phase === phase.phase)) {
                         setExpedientPhases([...expedientPhases, phase]);
                         setPhase("");
+                        setModalPhase(false);
                     } else alert("Por favor ingrese una fase que no exista.");
                     break;
                 case "old_phase":
                     if (expedientPhases.some(item => item.phase === phase.phase)) {
                         setExpedientPhases(expedientPhases.filter(oldPhase => oldPhase.phase != phase.phase));
                         setPhase("");
+                        setModalPhase(false);
                     } else alert("Por favor ingrese una fase que exista.");
                     break;
 
