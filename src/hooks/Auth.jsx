@@ -36,6 +36,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .then((response) => {
                 setStatus(false)
                 console.log("res", response)
+                window.location.pathname = '/profile'
             })
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -104,6 +105,24 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             })
     }
 
+    const changePassword = async ({ setErrors, setStatus, ...props }) => {
+        setErrors(null);
+        setStatus(true);
+        console.log(props)
+        axios
+            .put('/api/change-password', props.data)
+            .then((response) => {
+                setStatus(false)
+                console.log("res", response)
+                window.location.pathname = '/profile'
+            })
+            .catch(error => {
+                if (error.response.status !== 422) throw error
+                setErrors(Object.values(error.response.data).flat())
+                setStatus(false);
+            })
+    }
+
     const resetPassword = async ({ setErrors, setStatus, ...props }) => {
         setErrors([])
         setStatus(null)
@@ -142,6 +161,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         deleteUser,
         register,
         login,
+        changePassword,
         forgotPassword,
         resetPassword,
         resendEmailVerification,
