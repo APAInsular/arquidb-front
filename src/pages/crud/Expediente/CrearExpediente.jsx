@@ -15,7 +15,7 @@ const CrearExpediente = () => {
     const { user } = useAuth({ middleware: 'auth' });
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
-    const { createDocument } = useDocument();
+    const { multiUploadDocuments } = useDocument();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -42,7 +42,7 @@ const CrearExpediente = () => {
                 break;
             case "budget":
                 if (/^\d{0,9}(\.\d{0,2})?$/.test(value)) {
-                    // Opcional: evitar múltiples puntos decimales
+                    // Evitar múltiples puntos decimales
                     const decimalParts = value.split('.');
                     if (decimalParts.length <= 2) {
                         satisfy = true;
@@ -96,19 +96,10 @@ const CrearExpediente = () => {
 
             console.log(newPhases);
 
-            const createPromises = newPhases.map(async phase => {
-                const formattedPhase = {
-                    ...phase,
-                    record_date: format(new Date(phase.record_date), 'yyyy-MM-dd HH:mm:ss')
-                };
-                await createPhase(formattedPhase);
-            });
+            const createPromises = newPhases.map(phase => createPhase(phase));
             await Promise.all(createPromises);
 
-            const uploadPromises = expedientDocuments.map(async document => {
-                await createDocument(document, response.data.id);
-            });
-            await Promise.all(uploadPromises);
+            await multiUploadDocuments(expedientDocuments, response.data.id);
 
             navigate('/expedientes');
             navigate(0);
@@ -118,10 +109,6 @@ const CrearExpediente = () => {
     };
 
     if (!user) return <WebLoader />
-
-    console.log(expedientPhases);
-    console.log(expedientDocuments);
-    console.log(user);
 
     return (
         <>

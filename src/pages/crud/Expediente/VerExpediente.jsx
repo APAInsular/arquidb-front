@@ -5,6 +5,9 @@ import { useDocument } from "../../../store/contexts/DocumentContext";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
 import WebLoader from "../../../routes/loaders/WebLoader";
+import DefaultTable from "../../../components/ui/DefaultTable";
+import Delete from "../../../components/modals/crud/Delete";
+import Paginate from "../../../components/ui/Paginate";
 
 const VerExpediente = () => {
     const params = useParams();
@@ -17,6 +20,11 @@ const VerExpediente = () => {
     const [phaseSelected, setPhaseSelected] = useState(null);
     const [clients, setClients] = useState([]);
     const [collegiates, setCollegiates] = useState([]);
+
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState([]);
+    const [deletes, setDeletes] = useState(false);
+    const [openId, setOpenId] = useState(null);
 
     useEffect(() => {
         if (expedients) {
@@ -55,14 +63,17 @@ const VerExpediente = () => {
         }
 
         if (expedientPhases.length && documents) {
-            const groupedDocs = expedientPhases.reduce((acc, phase) => {
-                const phaseDocs = documents.filter(doc => doc.phase_id === phase.id);
-                if (phaseDocs.length) {
-                    acc.push({ phase, documents: phaseDocs });
-                }
-                return acc;
-            }, []);
-            setExpedientDocuments(groupedDocs);
+            // const groupedDocs = expedientPhases.reduce((acc, phase) => {
+            //     const phaseDocs = documents.filter(doc => doc.phase_id === phase.id);
+            //     if (phaseDocs.length) {
+            //         acc.push({ phase, documents: phaseDocs });
+            //     }
+            //     return acc;
+            // }, []);
+            // setExpedientDocuments(groupedDocs);
+            setExpedientDocuments(documents.filter(document =>
+                expedientPhases.find(phase => phase.id === document.phase_id)
+            ));
         }
     }, [expedientPhases]);
 
@@ -72,9 +83,36 @@ const VerExpediente = () => {
     console.log(collegiates);
     console.log(expedientDocuments);
 
+    const documentsColumns = [
+        {
+            key: 'id', label: '#',
+            render: (document) =>
+                <div className="text-center">
+                    {document.id}
+                </div>
+        },
+        {
+            key: 'name', label: 'Título',
+            render: (document) =>
+                <div className="text-center">
+                    {document.name}
+                </div>
+        },
+        {
+            key: 'phase', label: 'Fase',
+            render: (document) =>
+                <div className="text-center">
+                    {document.phase.phase}
+                </div>
+        },
+    ];
+
     return (
         <>
             <div className="overflow-y-auto h-full">
+                {deletes && (
+                    <Delete DatoId={deletes} type={"Documento"} onClose={() => setDeletes(false)} url={"document"} />
+                )}
                 <div className="flex justify-between p-2 mb-5">
                     <h3 className="text-3xl">{expedient.title}</h3>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -181,7 +219,7 @@ const VerExpediente = () => {
                             <div className="flex justify-center space-x-4">
                                 {expedientPhases.map(phase => {
                                     return (
-                                        <div className="flex flex-col" key={phase.phase} onClick={() => setPhaseSelected(phase)}>
+                                        <div className="flex flex-col cursor-pointer" key={phase.phase} onClick={() => setPhaseSelected(phase)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 self-center">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
                                             </svg>
@@ -190,7 +228,6 @@ const VerExpediente = () => {
                                     );
                                 })}
                             </div>
-                            <button type="button" className="bg-blue-700 text-white py-2 px-6 rounded-full mb-5">Editar Fase</button>
                             {phaseSelected && (
                                 <div className="grid grid-cols-12 gap-4 p-2">
                                     <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
@@ -230,7 +267,7 @@ const VerExpediente = () => {
                     <div className="bg-gray-200 rounded-lg p-2">
                         <div className="border-t">
                             <strong>Documentos</strong>
-                            <div>
+                            {/* <div>
                                 {expedientDocuments.map(({ phase, documents }) => (
                                     <div key={phase.id} className="mb-6">
                                         <p className="mb-2">Fase {phase.phase}</p>
@@ -245,7 +282,22 @@ const VerExpediente = () => {
                                         </div>
                                     </div>
                                 ))}
-                            </div>
+                            </div> */}
+
+                            {/* <div className="">
+                                <Paginate page={page} setPage={setPage} totalPages={totalPages} />
+                            </div> */}
+                            <DefaultTable
+                                columns={documentsColumns}
+                                data={expedientDocuments}
+                                setDeletes={setDeletes}
+                                openId={openId}
+                                setOpenId={setOpenId}
+                                tabla={'documentos'}
+                                someText="name"
+                                someNumber="phase"
+                                someDate="created_at"
+                            />
                         </div>
                     </div>
                 </div>

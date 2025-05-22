@@ -10,20 +10,21 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
         { id: 3, label: 'Google Drive' },
     ];
 
-    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
     const [fileUrl, setFileUrl] = useState('');
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+        console.log(Array.from(e.target.files));
+        setFiles(Array.from(e.target.files));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!file) {
+        if (!files || files.length === 0) {
             setError('Por favor selecciona un archivo');
             return;
         }
@@ -31,30 +32,21 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
         setUploading(true);
         setError(null);
         setSuccess(false);
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        console.log('Archivo seleccionado:', file);
-        console.log([...formData.entries()]);
-
         try {
-            // formData.append('name', file.name);
-            const newDocument = {
-                data: formData,
-                name: file.name,
-                phase: phase
-            };
+            const newDocuments = files.map(file => {
+                const newDocument = {
+                    file: file,
+                    name: file.name,
+                    phase: phase
+                };
 
-            console.log(newDocument);
+                if (!phaseDocuments.some(document => document.name == newDocument.name)) {
+                    return newDocument;
+                }
+            });
 
-            // const response = await axios.post('api/upload', formData);
-
-            if (!phaseDocuments.some(document => document.name == newDocument.name)) {
-                setPhaseDocuments([...phaseDocuments, newDocument]);
-                setSuccess(true);
-            }
-
+            setPhaseDocuments([...phaseDocuments, ...newDocuments]);
+            setSuccess(true);
             // setFileUrl(response.data.url);
         } catch (err) {
             //setError(err.response?.data?.message || 'Error al subir el archivo');
@@ -112,6 +104,7 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
                                     name="file"
                                     onChange={handleFileChange}
                                     disabled={uploading}
+                                    multiple
                                     className="bg-red-700 text-white px-4 py-3 rounded-lg hover:bg-red-800 transition-colors"
                                 />
 
@@ -122,7 +115,7 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
                                 <div className="flex flex-col sm:flex-row justify-center gap-4">
                                     <button
                                         type="submit"
-                                        disabled={uploading || !file || success}
+                                        disabled={uploading || !files || success}
                                         className="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800 flex-1"
                                     >
                                         {uploading ? 'Subiendo...' : 'Subir Archivo'}
