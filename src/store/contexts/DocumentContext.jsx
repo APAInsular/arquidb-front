@@ -64,7 +64,7 @@ const DocumentContext = ({ children }) => {
             const uploads = await Promise.all(
                 Object.entries(groupedByPhase).map(async ([phaseKey, files]) => {
                     const phase = createdPhases.find(
-                        p => p.phase === phaseKey && p.expedient_id === expedientId
+                        p => p.phase === phaseKey && p.expedient_id == expedientId
                     );
 
                     if (!phase) {
@@ -87,8 +87,6 @@ const DocumentContext = ({ children }) => {
             );
 
             return uploads.filter(Boolean);
-
-            // return await axios.post('api/multiupload', formData).then(res => res.data);
         } catch (error) {
             console.error('Error detallado:', error);
             throw error;

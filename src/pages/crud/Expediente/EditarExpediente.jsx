@@ -119,6 +119,8 @@ const EditarExpediente = () => {
             await Promise.all(updatePromises);
 
             // Filtrar los documentos que no existen por la id y la phase_id de document
+            const newDocuments = expedientDocuments.filter(document => !document.id || !document.phase_id);
+            await multiUploadDocuments(newDocuments, params.id);
 
             navigate('/expedientes');
             navigate(0);
