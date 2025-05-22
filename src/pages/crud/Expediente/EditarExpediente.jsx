@@ -15,9 +15,9 @@ const EditarExpediente = () => {
     const { user } = useAuth({ middleware: 'auth' });
     const { expedients, updateExpedient } = useExpedient();
     const { phases, updatePhase, getPhaseTitles } = usePhase();
-    const { documents } = useDocument();
+    const { documents, multiUploadDocuments } = useDocument();
     const navigate = useNavigate();
-    const [expedient, setExpedient] = useState({});
+    const [expedient, setExpedient] = useState(null);
     const [modalPhase, setModalPhase] = useState(false);
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
@@ -29,12 +29,18 @@ const EditarExpediente = () => {
     }, [expedients]);
 
     useEffect(() => {
-        if (phases) {
+        if (phases && expedient) {
             setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
         };
     }, [phases, expedient]);
 
-    if (!expedient || !expedientPhases) return <WebLoader />;
+    useEffect(() => {
+        if (expedientPhases) {
+            setExpedientDocuments(documents.filter(document =>
+                expedientPhases.find(phase => phase.id === document.phase_id)
+            ));
+        };
+    }, [expedientPhases]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -112,6 +118,8 @@ const EditarExpediente = () => {
             const updatePromises = newPhases.map(phase => updatePhase(phase.id, phase));
             await Promise.all(updatePromises);
 
+            // Filtrar los documentos que no existen por la id y la phase_id de document
+
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
@@ -119,10 +127,10 @@ const EditarExpediente = () => {
         }
     };
 
-    if (!user || !expedient.start_date || !expedient.end_date) return <WebLoader />;
+    if (!expedient || !expedientPhases || !user || !expedient.start_date) return <WebLoader />;
 
     expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
-    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16);
+    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16) || null;
 
     console.log(expedientPhases);
     console.log(expedientDocuments);
