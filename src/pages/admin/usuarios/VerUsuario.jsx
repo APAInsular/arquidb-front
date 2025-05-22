@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
-import { Mail, Building, Shield, Calendar, User } from "lucide-react";
+import { Mail, Building, Shield, Calendar, User, Edit } from "lucide-react";
 import TitleCard from "../../../components/ui/TitleCard";
 
 const VerUsuario = () => {
@@ -56,7 +56,7 @@ const VerUsuario = () => {
             <TitleCard name={"Usuarios"} action={"Ver"} />
             <div className="h-full overflow-y-scroll mt-4 pb-10">
                 <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                    <div className="bg-gradient-to-r from-gray-50 to-black/20 p-6 sm:p-8">
+                    <div className="bg-gray-100 p-6 sm:p-8">
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                             <div className="relative">
                                 <div className="w-24 h-24 rounded-full bg-gray-600 flex items-center justify-center text-white text-4xl font-bold">
@@ -77,17 +77,38 @@ const VerUsuario = () => {
                                 <p className="text-gray-600 mt-1">
                                     {user.email}
                                 </p>
-                                <div className="mt-3 flex flex-wrap gap-2">
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                        {user?.roles?.[0]?.name || 'Sin rol asignado'}
-                                    </span>
-                                    {user.created_at && (
-                                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                            Registrado el {formatDate(user.created_at)}
-                                        </span>
-                                    )}
-                                </div>
                             </div>
+                            <NavLink className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/usuarios/${params.id}/editar`}>
+                                <Edit />
+                                Editar
+                            </NavLink>
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            {user.roles?.length > 0 ? (
+                                <div className="flex flex-wrap gap-2">
+                                    {user.roles.map((role) => (
+                                        <div key={role.id} className="uppercase text-xs bg-yellow-200 rounded-full flex w-min px-2 py-0.5 items-center text-yellow-600 font-medium">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                                                stroke="currentColor" className="size-4 me-2">
+                                                <path
+                                                    strokeLinecap="round" strokeLinejoin="round"
+                                                    d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
+                                                />
+                                            </svg>
+                                            {role.name}
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="bg-gray-200 text-xs uppercase py-0.5 rounded-full w-min px-2 text-center text-gray-600 font-medium">
+                                    Ninguno
+                                </div>
+                            )}
+                            {user.created_at && (
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600">
+                                    Registrado el {formatDate(user.created_at)}
+                                </span>
+                            )}
                         </div>
                     </div>
                     <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">

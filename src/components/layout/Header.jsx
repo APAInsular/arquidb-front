@@ -40,19 +40,6 @@ const Header = ({ onClicks }) => {
         return () => clearTimeout(timeout);
     }, [query]);
 
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (searchRef.current && !searchRef.current.contains(event.target)) {
-                setModalSearch(false);
-            }
-        };
-
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
-
     const handleSearchChange = (event) => {
         setModalSearch(true);
         setSearchParams(event.target.value ? { search: event.target.value } : {});
@@ -107,14 +94,14 @@ const Header = ({ onClicks }) => {
                                 onChange={handleSearchChange}
                                 className="hidden sm:flex outline-0 p-2 w-full text-white text-md" />
                             {/* filtro Search */}
-                            <div onClick={() => handleClick(3)} className="hidden relative md:flex cursor-pointer hover:bg-red-300/20 p-2 rounded-full">
+                            <div onClick={() => handleClick(3)} className=" relative flex cursor-pointer hover:bg-red-300/20 p-2 rounded-full">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
                                 </svg>
                                 {/* dasda */}
                                 {modalFilter && (
                                     <div onClick={(e) => e.stopPropagation()}>
-                                        <Search />
+                                        <Search onClose={() => setModalFilter(false)} />
                                     </div>
                                 )}
                             </div>

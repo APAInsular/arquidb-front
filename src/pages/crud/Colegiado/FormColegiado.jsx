@@ -163,16 +163,25 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                                 onChange={handleChange}
                                 className=""
                             />
+                            <div className="mb-4">
+                                <label htmlFor="" className="block text-md font-medium text-gray-700 mb-1">
+                                    Tipo De Documento
+                                </label>
+                                <select
+                                    id="center_id"
+                                    name="identification_type"
+                                    value={formData.identification_type}
+                                    onChange={handleChange}
+                                    className="w-full h-min py-2.5 bg-gray-200/60 focus:bg-rose-100/60 ps-2 rounded-t-lg border-b-2 focus:border-red-700 transition-all outline-none border-gray-400"
+                                    required
+                                >
+                                    <option disabled value="">Tipo de documento...</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="NIF">NIF</option>
+                                </select>
+                            </div>
                             <InputForm
                                 type="text"
-                                name="identification_type"
-                                placeholder="Tipo De Documento"
-                                value={formData.identification_type}
-                                onChange={handleChange}
-                                className=""
-                            />
-                            <InputForm
-                                type="number"
                                 name="identification_number"
                                 placeholder="Numero Del Documento"
                                 value={formData.identification_number}
@@ -212,7 +221,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             placeholder="Escribe algo..."
                             value={formData.observations}
                             onChange={handleChange}
-                            className="w-full py-2.5 border-b-2 focus:border-red-700 transition-all outline-none border-gray-400"
+                            className="bg-gray-200/50 rounded-t-lg focus:bg-rose-100/60 w-full py-2.5 border-b-2 focus:border-red-700 transition-all outline-none border-gray-400"
                         />
                     </div>
                 )}
