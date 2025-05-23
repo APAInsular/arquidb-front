@@ -26,11 +26,12 @@ const ExpedientContext = ({ children }) => {
         await updates({ setErrors: setError, setStatus, id, data });
     }
 
-    if (loading) return <WebLoader />;
+    // if (loading) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
         <ArquidbContext.Provider value={{ expedients, createExpedient, updateExpedient }}>
+            {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
     );
