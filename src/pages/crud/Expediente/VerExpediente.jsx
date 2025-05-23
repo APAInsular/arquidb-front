@@ -2,12 +2,14 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { format } from "date-fns";
 import axios from "../../../lib/axios";
 import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import Delete from "../../../components/modals/crud/Delete";
+import TitleCard from "../../../components/ui/TitleCard";
+import { ArrowBigRightDashIcon, ArrowLeftRightIcon, Download, Edit, File, FileCheck2, FileText, LucideAward, User, UserRoundIcon, Users } from "lucide-react";
 
 const VerExpediente = () => {
     const params = useParams();
@@ -26,15 +28,24 @@ const VerExpediente = () => {
     const [modalDelete, setModalDelete] = useState(false);
     const [deleteId, setDeleteId] = useState(false);
 
+    // Obtener expediente actual
     useEffect(() => {
         if (expedients) {
-            setExpedient(expedients.find(e => e.id == params.id));
+            const foundExpedient = expedients.find(e => e.id == params.id);
+            setExpedient(foundExpedient || {});
         }
-    }, [expedients]);
+    }, [expedients, params.id]);
 
+    // Filtrar fases y personas relacionadas al expediente
     useEffect(() => {
-        if (phases) {
-            setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+        if (phases && expedient.id) {
+            const filteredPhases = phases.filter(phase => phase.expedient_id == expedient.id);
+            setExpedientPhases(filteredPhases);
+
+            // Seleccionar primera fase por defecto
+            if (filteredPhases.length > 0 && !phaseSelected) {
+                setPhaseSelected(filteredPhases[0]);
+            }
         }
 
         if (Array.isArray(expedient?.people)) {
@@ -55,13 +66,10 @@ const VerExpediente = () => {
             setClients(foundClients);
             setCollegiates(foundCollegiates);
         }
-    }, [expedient]);
+    }, [expedient, phases]);
 
+    // Organizar documentos por fase
     useEffect(() => {
-        if (expedientPhases[0]) {
-            setPhaseSelected(expedientPhases[0]);
-        }
-
         if (expedientPhases.length && documents) {
             const groupedDocs = expedientPhases.reduce((acc, phase) => {
                 const phaseDocs = documents.filter(doc => doc.phase_id === phase.id);
@@ -71,11 +79,15 @@ const VerExpediente = () => {
                 return acc;
             }, []);
             setExpedientDocuments(groupedDocs);
-            // setExpedientDocuments(documents.filter(document =>
-            //     expedientPhases.find(phase => phase.id === document.phase_id)
-            // ));
         }
-    }, [expedientPhases]);
+    }, [expedientPhases, documents]);
+
+    // Memoizar documentos filtrados para mejor rendimiento
+    const filteredDocuments = useMemo(() => {
+        return expedientDocuments.filter(expedient =>
+            phaseSelected ? expedient.phase.id === phaseSelected.id : false
+        );
+    }, [expedientDocuments, phaseSelected]);
 
     const phaseEditorActivate = useCallback(() => {
         if (!modalPhase) {
@@ -88,14 +100,11 @@ const VerExpediente = () => {
         setDeleteId(id);
     }
 
-    if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />
-    console.log(expedient);
-    console.log(clients);
-    console.log(collegiates);
-    console.log(expedientDocuments);
+    if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
 
     return (
         <>
+            <TitleCard name={"Expedientes"} action={expedient.title} />
             <div className="overflow-y-auto h-full">
                 {modalPhase && (
                     <PhaseEditor expedientPhases={expedientPhases} setModalPhase={setModalPhase} />
@@ -103,209 +112,239 @@ const VerExpediente = () => {
                 {modalDelete && (
                     <Delete DatoId={deleteId} onClose={() => setModalDelete(false)} type={"Documento"} url={"document"} />
                 )}
-                <div className="flex justify-between p-2 mb-5">
-                    <h3 className="text-3xl">{expedient.title}</h3>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                    </svg>
-                </div>
-                <div className="mx-28 p-2">
-                    <div className="bg-gray-200 rounded-lg p-2 mb-4">
-                        <Link to="/expedientes" className="inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                            </svg>
-                        </Link>
+                <div className="p-2">
+                    {/* Sección Cliente-Colegiado */}
+                    <div className="rounded-md bg-white shadow p-2 mb-4">
                         <div className="text-center flex flex-col lg:flex-row space-y-12 lg:space-y-0 justify-between items-center p-10">
+                            {/* Colegiados */}
                             <div className="flex flex-col space-y-12">
-                                {collegiates.map(collegiate => {
-                                    return (
-                                        <div className="flex flex-col" key={collegiate.id}>
-                                            <h4 className="text-2xl">Colegiado</h4>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-24 self-center">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                            </svg>
-                                            <h3 className="text-3xl">{collegiate.name} {collegiate.first_surname}</h3>
+                                {collegiates.map(collegiate => (
+                                    <div className="flex flex-col justify-center items-center" key={collegiate.id}>
+                                        <h4 className="text-lg text-gray-400 mb-5">Colegiado</h4>
+                                        <div className="bg-green-300 text-green-900 rounded-4xl">
+                                            <Users className="w-30 h-30" />
                                         </div>
-                                    );
-                                })}
+                                        <Link to={`/colegiados/${collegiate.id}/show`} className="hover:text-gray-400 hover:underline text-3xl">{collegiate.name} {collegiate.first_surname}</Link>
+                                    </div>
+                                ))}
                             </div>
+
                             <div className="flex">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-12 self-center">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                                </svg>
+                                <ArrowBigRightDashIcon className="w-20 h-20" />
                             </div>
+
+                            {/* Clientes */}
                             <div className="flex flex-col space-y-12">
-                                {clients.map(client => {
-                                    return (
-                                        <div className="flex flex-col" key={client.id}>
-                                            <h4 className="text-2xl">Cliente</h4>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-24 self-center">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                            </svg>
-                                            <h3 className="text-3xl">{client.name} {client.first_surname}</h3>
+                                {clients.map(client => (
+                                    <div className="flex flex-col justify-center items-center" key={client.id}>
+                                        <h4 className="text-lg text-gray-400 mb-5">Cliente</h4>
+                                        <div className="bg-amber-300 text-amber-900 rounded-4xl">
+                                            <Users className="w-30 h-30" />
                                         </div>
-                                    );
-                                })}
+                                        <Link to={`/clientes/${client.id}/show`} className="hover:text-gray-400 hover:underline text-3xl">{client.name} {client.first_surname}</Link>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gray-200 rounded-lg p-2 mb-4">
-                        <div className="border-t">
-                            <strong>Datos generales</strong>
-                            <div className="grid grid-cols-12 gap-4 p-2">
-                                <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
-                                    <div>
-                                        <p>Expediente</p>
-                                        <strong>{expedient.number}</strong>
+
+                    {/* Información del Expediente */}
+                    <div className="bg-white shadow rounded-lg p-2 mb-4">
+                        <div className="p-2">
+                            <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
+                                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                                    <User className="w-7 h-7" />
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-800">Información Personal</h3>
+                            </div>
+                            <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-2 gap-5 p-2">
+                                <div className="space-y-3">
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Expediente Nº</p>
+                                        <p className="font-medium">{expedient?.number}</p>
+                                    </div>
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Título del proyecto</p>
+                                        <p className="font-medium">{expedient?.title}</p>
+                                    </div>
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Expediente</p>
+                                        <p className="font-medium">{expedient?.number}</p>
                                     </div>
                                     <div>
-                                        <p>Título del proyecto</p>
-                                        <strong>{expedient.title}</strong>
+                                        <p className="text-sm text-gray-500">Clase de trabajo</p>
+                                        -
                                     </div>
-                                    <div>
-                                        <p>Clase de trabajo</p>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                        </svg>
-                                    </div>
-                                    <div>
-                                        <p>Superficie estimada (m2)</p>
-                                        <strong>Info</strong>
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Superficie estimada (m2)</p>
+                                        <p className="font-medium">{expedient?.Info ? expedient?.Info : "-"}</p>
                                     </div>
                                 </div>
-                                <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
-                                    <div>
-                                        <p>Dirección</p>
-                                        <strong>{expedient.site}</strong>
+                                <div className=" col-span-2 space-y-3">
+
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Dirección</p>
+                                        <p className="font-medium">{expedient?.site ? expedient?.site : "-"}</p>
                                     </div>
-                                    <div>
-                                        <p>Observación</p>
-                                        <strong>{expedient.description}</strong>
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Observación</p>
+                                        <p className="font-medium text-xs">{expedient?.description ? expedient?.description : "-"}</p>
                                     </div>
-                                    <div>
-                                        <p>Facturas</p>
-                                        <strong>{expedient.budget} €</strong>
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Facturas</p>
+                                        <p className="font-medium">{expedient?.budget ? expedient?.budget : "-"}</p>
                                     </div>
-                                    <div>
-                                        <p>Expedientes asociados</p>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                        </svg>
+                                    <div className="">
+                                        <p className="text-sm text-gray-500">Expedientes asociados</p>
+                                        <p className="font-medium">
+                                            -
+                                        </p>
                                     </div>
                                 </div>
-                                <div className="col-span-12 lg:col-span-2">
-                                    <p>Referenciado por</p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                    </svg>
+                                <div className="space-y-3">
+                                    <p className="text-sm text-gray-500">Referenciado por</p>
+                                    -
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="bg-gray-200 rounded-lg p-2 mb-4">
-                        <div className="border-t">
-                            <strong>Fases</strong>
+
+                    {/* Sección de Fases */}
+                    <div className="bg-white shadow rounded-lg p-2 mb-4">
+                        <div className="p-2">
+                            <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
+                                <div className="p-2 rounded-lg bg-yellow-50 text-yellow-600">
+                                    <FileCheck2 className="w-7 h-7" />
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-800">Fases</h3>
+                            </div>
+
+                            {/* Selector de Fases */}
                             <div className="flex justify-center space-x-4">
-                                {expedientPhases.map(phase => {
-                                    return (
-                                        <div className="flex flex-col cursor-pointer" key={phase.phase} onClick={() => setPhaseSelected(phase)}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 self-center">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                                            </svg>
-                                            <p className="self-center">{phase.phase}</p>
-                                        </div>
-                                    );
-                                })}
+                                {expedientPhases.map(phase => (
+                                    <div
+                                        className={`bg-yellow-50 inset-shadow-2xs inset-shadow-black/5 rounded-b-none border-b-3 size-17 hover:bg-yellow-600  hover:border-yellow-200 hover:text-white transition-all rounded-md flex flex-col items-center justify-center cursor-pointer  ${phaseSelected?.id === phase.id ? 'bg-yellow-600  border-yellow-200 text-yellow-100' : 'text-yellow-600'
+                                            }`}
+                                        key={phase.id}
+                                        onClick={() => setPhaseSelected(phase)}
+                                    >
+                                        <LucideAward className="w-7 h-7" />
+                                        <p className="self-center">{phase.phase}</p>
+                                    </div>
+                                ))}
                             </div>
-                            <div className="text-center mt-5">
-                                <button type="button" className="cursor-pointer bg-blue-700 text-white rounded-full py-2 px-4 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
-                                    onClick={() => phaseEditorActivate()}>Editar fases</button>
+
+                            {/* Botón Editar Fase */}
+                            <div className="text-start mb-6 border-t-1 pt-5 border-gray-200 rounded-t-lg">
+                                <button
+                                    type="button"
+                                    className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500"
+                                    onClick={() => phaseEditorActivate()}
+                                >
+                                    <Edit className="w-5 h-5" />
+                                    <p>Editar fase</p>
+                                </button>
                             </div>
+
+                            {/* Detalles de la Fase Seleccionada */}
                             {phaseSelected && (
-                                <div className="grid grid-cols-12 gap-4 p-2">
-                                    <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
-                                        <div>
-                                            <p>N° Fase</p>
-                                            <strong>{phaseSelected.phase}</strong>
+                                <div className="grid grid-cols-6 gap-4 p-2">
+                                    <div className="col-span-2 space-y-2">
+                                        <div className="">
+                                            <p className="text-sm text-gray-500"> Nº Fase</p>
+                                            <p className="font-medium">{phaseSelected?.phase || "-"}</p>
                                         </div>
-                                        <div>
-                                            <p>Fecha de Registro</p>
-                                            <strong>{format(new Date(phaseSelected.record_date), "dd 'de' MMM, yyyy")}</strong>
+                                        <div className="">
+                                            <p className="text-sm text-gray-500">Fecha de Registro</p>
+                                            <p className="font-medium">
+                                                {phaseSelected?.record_date ?
+                                                    format(new Date(phaseSelected.record_date), "dd 'de' MMM, yyyy") :
+                                                    "-"}
+                                            </p>
                                         </div>
                                     </div>
-                                    <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
+                                    <div className="col-span-2 space-y-2">
                                         <div>
-                                            <p>Estado</p>
+                                            <p className="text-sm text-gray-500">Estado</p>
                                             {phaseSelected.state == 'signed' ? (
-                                                <strong>Visado</strong>
+                                                <p className="font-medium">Visado</p>
                                             ) : (
-                                                <strong>Sin visar</strong>
+                                                <p className="font-medium">Sin visar</p>
                                             )}
                                         </div>
                                         <div>
-                                            <p>Fecha de Visado</p>
-                                            {phaseSelected.state == 'signed' && (
-                                                <strong>{format(new Date(phaseSelected.sign_date), "dd 'de' MMM, yyyy")}</strong>
-                                            )}
+                                            <p className="text-sm text-gray-500">Fecha de Visado</p>
+                                            {phaseSelected.state == 'signed' ? (
+                                                <p className="font-medium">
+                                                    {phaseSelected?.sign_date ?
+                                                        format(new Date(phaseSelected?.sign_date), "dd 'de' MMM, yyyy") :
+                                                        "-"}
+                                                </p>
+                                            ) : <p>Aun no hay fecha</p>}
                                         </div>
                                     </div>
-                                    <div className="col-span-12 lg:col-span-2">
-                                        <p>Visador</p>
-                                        <strong>Info</strong>
+                                    <div className="col-span-2">
+                                        <p className="text-sm text-gray-500">Visador</p>
+                                        <p className="font-medium">Info</p>
                                     </div>
                                 </div>
                             )}
                         </div>
                     </div>
-                    <div className="bg-gray-200 rounded-lg p-2">
-                        <div className="border-t">
-                            <strong>Documentos</strong>
-                            <div className="mt-6">
-                                {expedientDocuments.map(({ phase, documents }) => (
-                                    <div key={phase.id} className="gap-6">
-                                        <p className="text-center text-3xl font-semibold mb-2">Fase {phase.phase}</p>
-                                        <div className="gap-4">
-                                            {documents.map(document => (
-                                                <div key={document.id} className="grid grid-cols-2 py-1.5 px-4 hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8 mt-2 transition-all shrink-0 overflow-x-scroll">
-                                                    <p className="text-center text-2xl font-semibold">Documento {document.id}</p>
-                                                    <div>
-                                                        <div className="grid grid-cols-2 gap-2">
-                                                            <Link to={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                                    <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
-                                                                </svg>
-                                                            </Link>
 
-                                                            <button type="button" onClick={() => deleteActivate(document.id)} className="flex justify-center items-center bg-red-300 text-red-600 hover:bg-red-600 hover:text-red-300 cursor-pointer font-medium py-1 text-sm rounded-full">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                                                    <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
-                                                                </svg>
-                                                            </button>
+                    {/* Documentos de la Fase Seleccionada */}
+                    <div className="bg-white shadow rounded-lg p-2">
+                        <div className="p-2">
+                            <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
+                                <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+                                    <FileText className="w-7 h-7" />
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
+                            </div>
+
+                            <div className="mt-6 mb-5">
+                                {phaseSelected ? (
+                                    filteredDocuments.length > 0 ? (
+                                        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                            {filteredDocuments.map((expedientDoc) => (
+                                                expedientDoc.documents.map(document => (
+                                                    <div key={document.id} className="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                                        <div className="flex flex-row items-center justify-between p-4">
+                                                            <div className="flex items-start gap-3">
+                                                                <div className="mt-0.5 p-2 rounded-lg bg-indigo-50 text-indigo-600">
+                                                                    <File className="w-5 h-5" />
+                                                                </div>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <p className="text-sm font-medium text-gray-900 truncate">{document.name}</p>
+                                                                    <p className="text-xs text-gray-500 mt-1">Fase {expedientDoc.phase.phase}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="">
+                                                                <a
+                                                                    href={`/api/documents/${document.id}/download`}
+                                                                    className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                                    download
+                                                                >
+                                                                    <Download className="w-4 h-4 mr-2" />
+                                                                    Descargar
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                ))
                                             ))}
                                         </div>
+                                    ) : (
+                                        <div className="text-center py-8 text-gray-500">
+                                            No hay documentos en esta fase
+                                        </div>
+                                    )
+                                ) : (
+                                    <div className="text-center py-8 text-gray-500">
+                                        Selecciona una fase para ver sus documentos
                                     </div>
-                                ))}
+                                )}
                             </div>
-
-                            {/* <div className="">
-                                <Paginate page={page} setPage={setPage} totalPages={totalPages} />
-                            </div>
-                            <DefaultTable
-                                columns={documentsColumns}
-                                data={expedientDocuments}
-                                setDeletes={setDeletes}
-                                openId={openId}
-                                setOpenId={setOpenId}
-                                tabla={'documentos'}
-                                someText="name"
-                                someNumber="phase"
-                                someDate="created_at"
-                            /> */}
                         </div>
                     </div>
                 </div>
