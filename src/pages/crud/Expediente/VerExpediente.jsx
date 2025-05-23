@@ -289,7 +289,7 @@ const VerExpediente = () => {
                                 <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                             </div>
 
-                            <div className="mt-6 mb-5">
+                            <div className="mt-6 mb-10">
                                 {phaseSelected ? (
                                     filteredDocuments.length > 0 ? (
                                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -309,11 +309,10 @@ const VerExpediente = () => {
                                                             <div className="">
                                                                 <a
                                                                     href={`/api/documents/${document.id}/download`}
-                                                                    className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                                    className="flex justify-center items-center p-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                     download
                                                                 >
-                                                                    <Download className="w-4 h-4 mr-2" />
-                                                                    Descargar
+                                                                    <Download className="w-4 h-4" />
                                                                 </a>
                                                             </div>
                                                         </div>

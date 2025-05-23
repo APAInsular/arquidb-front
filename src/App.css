@@ -116,10 +116,16 @@
   opacity: 0;
 }
 
-.navbar-2:hover p {
-  width: 100%;
-  margin-left: 10px;
-  opacity: 1;
+@media (min-width: 607px) {
+  .navbar-2:hover p {
+    width: 100%;
+    margin-left: 10px;
+    opacity: 1;
+  }
+
+  .navbar-2:hover {
+    width: 240px;
+  }
 }
 
 .navbar-2 {
@@ -129,9 +135,7 @@
   white-space: nowrap;
 }
 
-.navbar-2:hover {
-  width: 240px;
-}
+
 
 .hover-shadow {
 
