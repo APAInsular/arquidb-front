@@ -11,7 +11,9 @@ export default function CrudManager({ url }) {
             .get(api + url)
             .then(res => {
                 setData(res.data.data ?? res.data);
-                setPages(res.data.data.last_page ?? res.data.last_page);
+                if (typeof setPages === 'function') {
+                    setPages(res?.data?.data?.last_page ?? res?.data?.last_page);
+                }
             })
             .catch(error => {
                 if (error.response && error.response.data.errors) {
@@ -53,12 +55,12 @@ export default function CrudManager({ url }) {
             .put(endpoint, props.data)
             .then(res => res.data)
             .catch(error => {
-                if (error.response && error.response.data.errors ) {
+                if (error.response && error.response.data.errors) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
                 setErrors(error)
                 setStatus(false);
-               throw error;
+                throw error;
             });
     };
 

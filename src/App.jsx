@@ -35,12 +35,14 @@ import AdminRoute from './components/admin/AdminRoute';
 import PasswordReset from './pages/auth/PasswordReset';
 import NotFound from './pages/NotFound';
 import WebLoader from './routes/loaders/WebLoader';
+import AlertPage from './components/modals/AlertPage';
 
 function App() {
 
   return (
 
     <>
+      {/* <AlertPage /> */}
       <ExpedientContext>
         <PhaseContext>
           <DocumentContext>
