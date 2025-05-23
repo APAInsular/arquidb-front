@@ -52,6 +52,9 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
             //setError(err.response?.data?.message || 'Error al subir el archivo');
         } finally {
             setUploading(false);
+            setTimeout(() => {
+                onClose(true);
+            }, 1000);
         }
     };
 
