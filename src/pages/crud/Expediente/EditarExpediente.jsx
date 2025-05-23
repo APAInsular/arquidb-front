@@ -141,6 +141,7 @@ const EditarExpediente = () => {
     expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16) || null;
 
     console.log(user);
+    console.log(expedient);
 
     return (
         <>
