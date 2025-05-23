@@ -38,9 +38,9 @@ const CrearExpediente = () => {
 
     useEffect(() => {
         const fetchPeople = async () => {
-            // views({ setData: setClients, setLoading, setErrors: setError });
-            const clientQuery = await axios.get('api/personClient');
-            const collegiateQuery = await axios.get('api/personCollegiate');
+            views({ setData: setClients, setLoading, setErrors: setError });
+            // const clientQuery = await axios.get('api/personClient');
+            // const collegiateQuery = await axios.get('api/personCollegiate');
             // setCollegiates([...collegiateQuery]);
         }
         fetchPeople();
@@ -137,7 +137,7 @@ const CrearExpediente = () => {
         }
     };
 
-    if (!user || !clients || !collegiates) {
+    if (!user || !clients) {
         console.log({ user, clients, collegiates });
         return <WebLoader />
     }
@@ -288,8 +288,8 @@ const CrearExpediente = () => {
                     </div>
                     <div className="p-2 grid grid-cols-2">
                         <div>
-                            <h4 className="text-3xl text-gray-400 mb-5">Clientes</h4>
-                            <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
+                            <h4 className="text-3xl text-gray-400 mb-5">Colegiados</h4>
+                            {/* <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
                                 <option value=""></option>
                                 {clients.map(client => {
                                     return (
@@ -311,10 +311,10 @@ const CrearExpediente = () => {
                                         ) : null;
                                     })}
                                 </div>
-                            )}
+                            )} */}
                         </div>
                         <div>
-                            <h4 className="text-3xl text-gray-400 mb-5">Colegiados</h4>
+                            <h4 className="text-3xl text-gray-400 mb-5">Clientes</h4>
                             <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
                                 <option value=""></option>
                                 {clients.map(client => {
