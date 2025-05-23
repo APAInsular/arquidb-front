@@ -28,8 +28,8 @@ const Records = () => {
 
     return (
         <>
-            <div className="flex flex-col h-full">
-                <TitleCard nombre="Historial" enlace="/" />
+                <TitleCard name="Historial" enlace="/" />
+            <div className="flex flex-col h-full mt-2">
                 <div className="flex-1 overflow-y-scroll rounded-none">
                     {records.length >= 1 ? (
                         <div className="text-center pb-2">

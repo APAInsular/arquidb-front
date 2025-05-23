@@ -28,7 +28,6 @@ const VerExpediente = () => {
     const [modalDelete, setModalDelete] = useState(false);
     const [deleteId, setDeleteId] = useState(false);
 
-    // Obtener expediente actual
     useEffect(() => {
         if (expedients) {
             const foundExpedient = expedients.find(e => e.id == params.id);
@@ -36,13 +35,10 @@ const VerExpediente = () => {
         }
     }, [expedients, params.id]);
 
-    // Filtrar fases y personas relacionadas al expediente
     useEffect(() => {
         if (phases && expedient.id) {
             const filteredPhases = phases.filter(phase => phase.expedient_id == expedient.id);
             setExpedientPhases(filteredPhases);
-
-            // Seleccionar primera fase por defecto
             if (filteredPhases.length > 0 && !phaseSelected) {
                 setPhaseSelected(filteredPhases[0]);
             }
@@ -68,7 +64,6 @@ const VerExpediente = () => {
         }
     }, [expedient, phases]);
 
-    // Organizar documentos por fase
     useEffect(() => {
         if (expedientPhases.length && documents) {
             const groupedDocs = expedientPhases.reduce((acc, phase) => {
@@ -82,7 +77,6 @@ const VerExpediente = () => {
         }
     }, [expedientPhases, documents]);
 
-    // Memoizar documentos filtrados para mejor rendimiento
     const filteredDocuments = useMemo(() => {
         return expedientDocuments.filter(expedient =>
             phaseSelected ? expedient.phase.id === phaseSelected.id : false
@@ -113,8 +107,7 @@ const VerExpediente = () => {
                     <Delete DatoId={deleteId} onClose={() => setModalDelete(false)} type={"Documento"} url={"document"} />
                 )}
                 <div className="p-2">
-                    {/* Sección Cliente-Colegiado */}
-                    <div className="rounded-md bg-white shadow p-2 mb-4">
+                    <div className="rounded-md p-2 mb-4">
                         <div className="text-center flex flex-col lg:flex-row space-y-12 lg:space-y-0 justify-between items-center p-10">
                             {/* Colegiados */}
                             <div className="flex flex-col space-y-12">
@@ -148,7 +141,6 @@ const VerExpediente = () => {
                         </div>
                     </div>
 
-                    {/* Información del Expediente */}
                     <div className="bg-white shadow rounded-lg p-2 mb-4">
                         <div className="p-2">
                             <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
@@ -209,7 +201,6 @@ const VerExpediente = () => {
                         </div>
                     </div>
 
-                    {/* Sección de Fases */}
                     <div className="bg-white shadow rounded-lg p-2 mb-4">
                         <div className="p-2">
                             <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
@@ -219,7 +210,6 @@ const VerExpediente = () => {
                                 <h3 className="text-lg font-semibold text-gray-800">Fases</h3>
                             </div>
 
-                            {/* Selector de Fases */}
                             <div className="flex justify-center space-x-4">
                                 {expedientPhases.map(phase => (
                                     <div
@@ -234,7 +224,6 @@ const VerExpediente = () => {
                                 ))}
                             </div>
 
-                            {/* Botón Editar Fase */}
                             <div className="text-start mb-6 border-t-1 pt-5 border-gray-200 rounded-t-lg">
                                 <button
                                     type="button"
@@ -246,7 +235,6 @@ const VerExpediente = () => {
                                 </button>
                             </div>
 
-                            {/* Detalles de la Fase Seleccionada */}
                             {phaseSelected && (
                                 <div className="grid grid-cols-6 gap-4 p-2">
                                     <div className="col-span-2 space-y-2">
@@ -292,7 +280,6 @@ const VerExpediente = () => {
                         </div>
                     </div>
 
-                    {/* Documentos de la Fase Seleccionada */}
                     <div className="bg-white shadow rounded-lg p-2">
                         <div className="p-2">
                             <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
