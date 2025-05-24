@@ -4,10 +4,13 @@ import CrudManager from "../../../hooks/CrudManager";
 import { useEffect, useState } from "react";
 import FormUsuarios from "./FormUsuarios";
 import TitleCard from "../../../components/ui/TitleCard";
+import AlertPage from "../../../components/modals/AlertPage";
+import { UseLoader } from "../../../store/contexts/LoaderContext";
 
 const CrearUsuario = () => {
 
     const { creates } = CrudManager({ url: `users` });
+    const { showLoader, hideLoader } = UseLoader();
 
     const [status, setStatus] = useState(null);
     const [errors, setErrors] = useState([]);
@@ -19,13 +22,16 @@ const CrearUsuario = () => {
         });
 
         if (response) {
-            navigate('/usuarios');
+            showLoader();
+            setTimeout(() => {
+                navigate('/usuarios');
+                setTimeout(() => hideLoader(), 2000);
+            }, 500);
         }
     };
 
     return (
         <>
-
             <div className="h-full flex flex-col gap-4">
                 <TitleCard name={"Usuarios"} action={"Crear"} />
 

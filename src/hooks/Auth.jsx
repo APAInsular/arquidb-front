@@ -36,7 +36,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .then((response) => {
                 setStatus(false)
                 console.log("res", response)
-                window.location.pathname = '/profile'
+                window.location.pathname = '/'
             })
             .catch(error => {
                 if (error.response.status !== 422) throw error
@@ -114,7 +114,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .then((response) => {
                 setStatus(false)
                 console.log("res", response)
-                window.location.pathname = '/profile'
+                window.location.pathname = '/'
             })
             .catch(error => {
                 if (error.response.status !== 422) throw error

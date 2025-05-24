@@ -32,13 +32,13 @@ const Navbar = () => {
                                 name={"Usuarios"}
                             />
                         </li>
-                        {/* <li>
+                        <li>
                             <BotonNavbar
                                 navegate={"/centros"}
                                 icon={<LucideBuilding2 />}
-                                name={"entros"}
+                                name={"Centros"}
                             />
-                        </li> */}
+                        </li>
                     </>
                 )}
                 <li>

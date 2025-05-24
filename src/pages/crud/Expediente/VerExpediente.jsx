@@ -89,11 +89,6 @@ const VerExpediente = () => {
         }
     }, [modalPhase]);
 
-    const deleteActivate = (id) => {
-        setModalDelete(true);
-        setDeleteId(id);
-    }
-
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
 
     return (
