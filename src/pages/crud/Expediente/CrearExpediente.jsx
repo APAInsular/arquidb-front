@@ -273,8 +273,8 @@ const CrearExpediente = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="p-2 grid grid-cols-2">
-                        <div>
+                    <div className="p-4 grid grid-cols-2">
+                        <div className="text-center">
                             <h4 className="text-3xl text-gray-400 mb-5">Colegiados</h4>
                             <select name="collegiates" id="collegiates" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
                                 <option value=""></option>
@@ -300,7 +300,7 @@ const CrearExpediente = () => {
                                 </div>
                             )}
                         </div>
-                        <div>
+                        <div className="text-center">
                             <h4 className="text-3xl text-gray-400 mb-5">Clientes</h4>
                             <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
                                 <option value=""></option>
@@ -328,7 +328,7 @@ const CrearExpediente = () => {
                         </div>
                     </div>
                     <input type="hidden" name="center_id" value={user.center_id} />
-                    <div className="text-center">
+                    <div className="text-center mt-5">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>
                 </form>

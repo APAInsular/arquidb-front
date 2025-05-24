@@ -39,14 +39,14 @@ const VerExpediente = () => {
 
         if (Array.isArray(expedient?.people)) {
             const foundClients = expedient.people
-                .filter(p => p.client)
+                .filter(p => p.pivot.role == "client")
                 .map(p => {
                     const { collegiates, ...clientData } = p;
                     return { ...clientData };
                 });
 
             const foundCollegiates = expedient.people
-                .filter(p => p.collegiates)
+                .filter(p => p.pivot.role == "collegiate")
                 .map(p => {
                     const { client, ...collegiatesData } = p;
                     return { ...collegiatesData };

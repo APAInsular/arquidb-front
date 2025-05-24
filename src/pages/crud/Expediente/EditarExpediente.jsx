@@ -4,6 +4,8 @@ import { useAuth } from "../../../hooks/Auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
+import { useClient } from "../../../store/contexts/ClientContext";
+import { useCollegiate } from "../../../store/contexts/CollegiateContext";
 import PhaseSelector from "../../../components/modals/crud/PhaseSelector";
 import DocumentSelector from "../../../components/modals/crud/DocumentSelector";
 import WebLoader from "../../../routes/loaders/WebLoader";
@@ -16,6 +18,8 @@ const EditarExpediente = () => {
     const { expedients, updateExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { documents, multiUploadDocuments } = useDocument();
+    const { clients } = useClient();
+    const { collegiates } = useCollegiate();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState(null);
     const [modalPhase, setModalPhase] = useState(false);
@@ -24,6 +28,7 @@ const EditarExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
+    const [expedientPeople, setExpedientPeople] = useState([]);
 
     useEffect(() => {
         if (expedients) setExpedient(expedients.find(e => e.id == params.id));
@@ -32,6 +37,11 @@ const EditarExpediente = () => {
     useEffect(() => {
         if (phases && expedient) {
             setExpedientPhases(phases.filter(phase => phase.expedient_id == expedient.id));
+            setExpedientPeople(expedient.people.map(person => {
+                return { id: person.id, role: person.pivot.role }
+            }
+            ));
+            console.log(expedient.people[0].pivot);
         };
     }, [phases, expedient]);
 
@@ -60,11 +70,23 @@ const EditarExpediente = () => {
                 break;
             case "budget":
                 if (/^\d{0,9}(\.\d{0,2})?$/.test(value)) {
-                    // Opcional: evitar múltiples puntos decimales
+                    // Evitar múltiples puntos decimales
                     const decimalParts = value.split('.');
                     if (decimalParts.length <= 2) {
                         satisfy = true;
                     }
+                }
+                break;
+            case "clients":
+                if (value != "" && !expedientPeople.some(client => client.id == value)) {
+                    const client = { id: parseInt(value), role: "client" };
+                    setExpedientPeople([...expedientPeople, client]);
+                }
+                break;
+            case "collegiates":
+                if (value != "" && !expedientPeople.some(collegiate => collegiate.id == value)) {
+                    const collegiate = { id: parseInt(value), role: "collegiate" };
+                    setExpedientPeople([...expedientPeople, collegiate]);
                 }
                 break;
             default:
@@ -128,6 +150,8 @@ const EditarExpediente = () => {
             const newDocuments = expedientDocuments.filter(document => !document.id || !document.phase_id);
             await multiUploadDocuments(newDocuments, params.id);
 
+            await axios.post(`api/expedients/${params.id}/people`, { people: expedientPeople });
+
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
@@ -135,7 +159,10 @@ const EditarExpediente = () => {
         }
     };
 
-    if (!expedient || !expedientPhases || !user || !expedient.start_date) return <WebLoader />;
+    if (
+        !expedient || !expedientPhases || !expedientPeople || !expedient.start_date
+        || !user || !clients || !collegiates
+    ) return <WebLoader />;
 
     expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
     expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16) || null;
@@ -283,8 +310,62 @@ const EditarExpediente = () => {
                             </button>
                         </div>
                     </div>
+                    <div className="p-4 grid grid-cols-2">
+                        <div className="text-center">
+                            <h4 className="text-3xl text-gray-400 mb-5">Colegiados</h4>
+                            <select name="collegiates" id="collegiates" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
+                                <option value=""></option>
+                                {collegiates.map(collegiate => {
+                                    return (
+                                        <option key={collegiate.id} value={collegiate.id}>
+                                            {collegiate.name} {collegiate.first_surname}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                            {expedientPeople.length > 0 && (
+                                <div className="mt-6 text-md text-gray-600 w-1/2 text-center flex flex-col justify-center">
+                                    {expedientPeople.filter(collegiate => collegiate.role == "collegiate").map(collegiateData => {
+                                        const collegiate = collegiates.find(c => c.id === collegiateData.id);
+                                        return collegiate ? (
+                                            <div key={collegiateData.id} className="flex justify-between p-2 border border-gray-300 rounded-md">
+                                                <p>{collegiate.name} {collegiate.first_surname}</p>
+                                                <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldCollegiate => oldCollegiate != collegiateData))}>X</p>
+                                            </div>
+                                        ) : null;
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                        <div className="text-center">
+                            <h4 className="text-3xl text-gray-400 mb-5">Clientes</h4>
+                            <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
+                                <option value=""></option>
+                                {clients.map(client => {
+                                    return (
+                                        <option key={client.id} value={client.id}>
+                                            {client.name} {client.first_surname}
+                                        </option>
+                                    );
+                                })}
+                            </select>
+                            {expedientPeople.length > 0 && (
+                                <div className="mt-6 text-md text-gray-600 w-1/2 text-center flex flex-col justify-center">
+                                    {expedientPeople.filter(client => client.role == "client").map(clientData => {
+                                        const client = clients.find(c => c.id === clientData.id);
+                                        return client ? (
+                                            <div key={clientData.id} className="flex justify-between p-2 border border-gray-300 rounded-md">
+                                                <p>{client.name} {client.first_surname}</p>
+                                                <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldClient => oldClient != clientData))}>X</p>
+                                            </div>
+                                        ) : null;
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    </div>
                     <input type="hidden" name="center_id" value={user.center_id} />
-                    <div className="text-center">
+                    <div className="text-center mt-5">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>
                 </form>
