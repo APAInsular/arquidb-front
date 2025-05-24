@@ -150,7 +150,7 @@ const EditarExpediente = () => {
             const newDocuments = expedientDocuments.filter(document => !document.id || !document.phase_id);
             await multiUploadDocuments(newDocuments, params.id);
 
-            await axios.post(`api/expedients/${params.id}/people`, { people: expedientPeople });
+            if (expedientPeople.length > 0) await axios.post(`api/expedients/${params.id}/people`, { people: expedientPeople });
 
             navigate('/expedientes');
             navigate(0);
