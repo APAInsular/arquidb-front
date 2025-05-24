@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
-import { Mail, Phone, MapPin, UserCircle2, Calendar, Info, Home, Globe, Navigation, UserCircle } from "lucide-react";
+import { Mail, Phone, MapPin, UserCircle2, Calendar, Info, Home, Globe, Navigation, UserCircle, Link, Edit } from "lucide-react";
 import TitleCard from "../../../components/ui/TitleCard";
 
 const VerCliente = () => {
@@ -86,6 +86,10 @@ const VerCliente = () => {
                                 )}
                             </div>
                         </div>
+                        <NavLink className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/clientes/${params.id}/editar`}>
+                            <Edit />
+                            Editar
+                        </NavLink>
                     </div>
                 </div>
                 {/* Profile Header */}
