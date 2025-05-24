@@ -16,7 +16,14 @@ const Records = () => {
         views({ setData: setRecords, setLoading, setError });
     }, []);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return (
+        <div className="flex items-center justify-center h-screen">
+            <div className="animate-pulse flex flex-col items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-gray-200"></div>
+                <div className="h-4 bg-gray-200 rounded w-48"></div>
+            </div>
+        </div>
+    );
     if (error) return <p>Error: {error}</p>;
 
     return (

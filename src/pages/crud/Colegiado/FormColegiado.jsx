@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputForm from "../../../components/ui/InputForm";
 import Stepper from "../../../components/ui/Stepper";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,13 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
     const collegiate = colegiado?.collegiate?.[0];
 
     const [step, setStep] = useState(1);
+
+    useEffect(() => {
+        if (errors?.response?.data?.errors?.name
+            || errors?.response?.data?.errors?.identification_type
+            || errors?.response?.data?.errors?.identification_number
+            || errors?.response?.data?.errors?.first_surname) { setStep(1) }
+    }, [errors]);
 
     const [formData, setFormData] = useState({
         identification_type: person?.identification_type || "",
@@ -117,6 +124,8 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.name}
+                                // errors={errors?.response?.data?.errors?.[`email.${i}.email`]}
                                 name="name"
                                 placeholder="Nombre"
                                 value={formData.name}
@@ -125,6 +134,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.first_surname}
                                 name="first_surname"
                                 placeholder="Apellido"
                                 value={formData.first_surname}
@@ -133,6 +143,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.second_surname}
                                 name="second_surname"
                                 placeholder="Segundo Apellido"
                                 value={formData.second_surname}
@@ -141,6 +152,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.situation"]}
                                 name="collegiate.situation"
                                 placeholder="Tipo"
                                 value={formData.collegiate?.situation}
@@ -149,6 +161,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.college"]}
                                 name="collegiate.college"
                                 placeholder="Colegio"
                                 value={formData.collegiate?.college}
@@ -157,6 +170,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="number"
+                                errors={errors?.response?.data?.errors?.["collegiate.collegiate_number"]}
                                 name="collegiate.collegiate_number"
                                 placeholder="Nº Colegiado"
                                 value={formData.collegiate?.collegiate_number}
@@ -172,16 +186,18 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                                     name="identification_type"
                                     value={formData.identification_type}
                                     onChange={handleChange}
-                                    className="w-full h-min py-2.5 bg-gray-200/60 focus:bg-rose-100/60 ps-2 rounded-t-lg border-b-2 focus:border-red-700 transition-all outline-none border-gray-400"
+                                    className={`w-full h-min py-2.5 bg-gray-200/60 focus:bg-rose-100/60 ps-2 rounded-t-lg border-b-2 focus:border-red-700 ${errors?.response?.data?.errors?.identification_type ? " border-red-400 bg-red-200" : ""} transition-all outline-none border-gray-400`}
                                     required
                                 >
                                     <option disabled value="">Tipo de documento...</option>
                                     <option value="DNI">DNI</option>
                                     <option value="NIF">NIF</option>
                                 </select>
+                                {errors?.response?.data?.errors?.identification_type && <p className="text-red-500 text-sm mt-1">{errors?.response?.data?.errors?.identification_type}</p>}
                             </div>
                             <InputForm
-                                type="number"
+                                type="text"
+                                errors={errors?.response?.data?.errors?.identification_number}
                                 name="identification_number"
                                 placeholder="Numero Del Documento"
                                 value={formData.identification_number}
@@ -190,6 +206,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="date"
+                                errors={errors?.response?.data?.errors?.["collegiate.birth_date"]}
                                 name="collegiate.birth_date"
                                 placeholder="Fecha De Nacimiento"
                                 value={formData.collegiate?.birth_date}
@@ -198,6 +215,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.nationality"]}
                                 name="collegiate.nationality"
                                 placeholder="Nacionalidad"
                                 value={formData.collegiate?.nationality}
@@ -206,6 +224,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.degree"]}
                                 name="collegiate.degree"
                                 placeholder="Titulación"
                                 value={formData.collegiate?.degree}
@@ -223,6 +242,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             onChange={handleChange}
                             className="bg-gray-200/50 rounded-t-lg focus:bg-rose-100/60 w-full py-2.5 border-b-2 focus:border-red-700 transition-all outline-none border-gray-400"
                         />
+                        {errors?.response?.data?.errors?.observations && <p className="text-red-500 text-sm mt-1">{errors?.response?.data?.errors?.observations}</p>}
                     </div>
                 )}
 
@@ -235,6 +255,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
 
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.origin_college"]}
                                 name="collegiate.origin_college"
                                 placeholder="Colegio De Procedencia"
                                 value={formData.collegiate?.origin_college}
@@ -243,6 +264,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="number"
+                                errors={errors?.response?.data?.errors?.["collegiate.origin_college_number"]}
                                 name="collegiate.origin_college_number"
                                 placeholder="Número De Colegio De Procedencia"
                                 value={formData.collegiate?.origin_college_number}
@@ -251,6 +273,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.specialty"]}
                                 name="collegiate.specialty"
                                 placeholder="Especilidad"
                                 value={formData.collegiate?.specialty}
@@ -259,6 +282,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="date"
+                                errors={errors?.response?.data?.errors?.["collegiate.graduation_date"]}
                                 name="collegiate.graduation_date"
                                 placeholder="Fecha De Titulación"
                                 value={formData.collegiate?.graduation_date}
@@ -267,6 +291,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="date"
+                                errors={errors?.response?.data?.errors?.["collegiate.termination_date"]}
                                 name="collegiate.termination_date"
                                 placeholder="Fecha De Terminación"
                                 value={formData.collegiate?.termination_date}
@@ -275,6 +300,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.web_page"]}
                                 name="collegiate.web_page"
                                 placeholder="Pagina web"
                                 value={formData.collegiate?.web_page}
@@ -283,6 +309,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.career_end_et"]}
                                 name="collegiate.career_end_et"
                                 placeholder="ET Final De Carrera"
                                 value={formData.collegiate?.career_end_et}
@@ -291,6 +318,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="number"
+                                errors={errors?.response?.data?.errors?.["collegiate.council_reg_number"]}
                                 name="collegiate.council_reg_number"
                                 placeholder="Nº Reg. Del Consejo Superior"
                                 value={formData.collegiate?.council_reg_number}
@@ -304,6 +332,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                         <div className="grid grid-cols-2 gap-4">
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.banking_entity"]}
                                 name="collegiate.banking_entity"
                                 placeholder="Entidad Bancaria"
                                 value={formData.collegiate?.banking_entity}
@@ -312,6 +341,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             />
                             <InputForm
                                 type="text"
+                                errors={errors?.response?.data?.errors?.["collegiate.account_number"]}
                                 name="collegiate.account_number"
                                 placeholder="Nº Cuenta Bancaria"
                                 value={formData.collegiate?.account_number}
@@ -334,6 +364,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                                     <div key={i} className=" mb-4">
                                         <InputForm
                                             type="tel"
+                                            errors={errors?.response?.data?.errors?.[`phone.${i}.phone`]}
                                             name="phone"
                                             placeholder={`Teléfono ${i + 1}`}
                                             value={p.phone}
@@ -363,6 +394,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                                     <div key={i} className="mb-4">
                                         <InputForm
                                             type="email"
+                                            errors={errors?.response?.data?.errors?.[`email.${i}.email`]}
                                             name="email"
                                             placeholder={`Correo ${i + 1}`}
                                             value={e.email}
@@ -393,13 +425,40 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                             {formData.address.map((addr, i) => (
                                 <div key={i} className="mb-4 mx-1 p-3 shadow shadow-gray-300 rounded-md bg-gray-50">
                                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                                        <InputForm type="text" name="country" placeholder="País" value={addr.country} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="province" placeholder="Provincia" value={addr.province} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="municipality" placeholder="Municipio" value={addr.municipality} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="locality" placeholder="Localidad" value={addr.locality} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="street" placeholder="Calle" value={addr.street} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="number" placeholder="Número" value={addr.number} onChange={(e) => handleArrayChange(e, i, "address")} />
-                                        <InputForm type="text" name="postal_code" placeholder="Código Postal" value={addr.postal_code} onChange={(e) => handleArrayChange(e, i, "address")} />
+                                        <InputForm type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.country`]}
+                                            name="country" placeholder="País" value={addr.country}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.province`]}
+                                            name="province" placeholder="Provincia" value={addr.province}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.municipality`]}
+                                            name="municipality" placeholder="Municipio" value={addr.municipality}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.locality`]}
+                                            name="locality" placeholder="Localidad" value={addr.locality}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.street`]}
+                                            name="street" placeholder="Calle" value={addr.street}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.number`]}
+                                            name="number" placeholder="Número" value={addr.number}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
+
+                                        <InputForm type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.postal_code`]}
+                                            name="postal_code" placeholder="Código Postal" value={addr.postal_code}
+                                            onChange={(e) => handleArrayChange(e, i, "address")} />
                                     </div>
                                     {formData.address.length > 1 && (
                                         <button onClick={() => removeField("address", i)} className=" mt-2 text-sm text-red-500 hover:underline font-medium cursor-pointer">Eliminar</button>
