@@ -1,19 +1,20 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { format } from "date-fns";
+import axios from "../../../lib/axios";
+import PhaseEditor from "../../../components/modals/crud/PhaseEditor";
 import WebLoader from "../../../routes/loaders/WebLoader";
-import DefaultTable from "../../../components/ui/DefaultTable";
 import Delete from "../../../components/modals/crud/Delete";
-import Paginate from "../../../components/ui/Paginate";
 
 const VerExpediente = () => {
     const params = useParams();
     const { expedients } = useExpedient();
     const { phases } = usePhase();
     const { documents } = useDocument();
+    const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
@@ -21,10 +22,9 @@ const VerExpediente = () => {
     const [clients, setClients] = useState([]);
     const [collegiates, setCollegiates] = useState([]);
 
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState([]);
-    const [deletes, setDeletes] = useState(false);
-    const [openId, setOpenId] = useState(null);
+    const [modalPhase, setModalPhase] = useState(false);
+    const [modalDelete, setModalDelete] = useState(false);
+    const [deleteId, setDeleteId] = useState(false);
 
     useEffect(() => {
         if (expedients) {
@@ -39,14 +39,14 @@ const VerExpediente = () => {
 
         if (Array.isArray(expedient?.people)) {
             const foundClients = expedient.people
-                .filter(p => p.client)
+                .filter(p => p.pivot.role == "client")
                 .map(p => {
                     const { collegiates, ...clientData } = p;
                     return { ...clientData };
                 });
 
             const foundCollegiates = expedient.people
-                .filter(p => p.collegiates)
+                .filter(p => p.pivot.role == "collegiate")
                 .map(p => {
                     const { client, ...collegiatesData } = p;
                     return { ...collegiatesData };
@@ -63,19 +63,30 @@ const VerExpediente = () => {
         }
 
         if (expedientPhases.length && documents) {
-            // const groupedDocs = expedientPhases.reduce((acc, phase) => {
-            //     const phaseDocs = documents.filter(doc => doc.phase_id === phase.id);
-            //     if (phaseDocs.length) {
-            //         acc.push({ phase, documents: phaseDocs });
-            //     }
-            //     return acc;
-            // }, []);
-            // setExpedientDocuments(groupedDocs);
-            setExpedientDocuments(documents.filter(document =>
-                expedientPhases.find(phase => phase.id === document.phase_id)
-            ));
+            const groupedDocs = expedientPhases.reduce((acc, phase) => {
+                const phaseDocs = documents.filter(doc => doc.phase_id === phase.id);
+                if (phaseDocs.length) {
+                    acc.push({ phase, documents: phaseDocs });
+                }
+                return acc;
+            }, []);
+            setExpedientDocuments(groupedDocs);
+            // setExpedientDocuments(documents.filter(document =>
+            //     expedientPhases.find(phase => phase.id === document.phase_id)
+            // ));
         }
     }, [expedientPhases]);
+
+    const phaseEditorActivate = useCallback(() => {
+        if (!modalPhase && expedientPhases.length > 0) {
+            setModalPhase(true);
+        }
+    }, [modalPhase]);
+
+    const deleteActivate = (id) => {
+        setModalDelete(true);
+        setDeleteId(id);
+    }
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />
     console.log(expedient);
@@ -83,35 +94,14 @@ const VerExpediente = () => {
     console.log(collegiates);
     console.log(expedientDocuments);
 
-    const documentsColumns = [
-        {
-            key: 'id', label: '#',
-            render: (document) =>
-                <div className="text-center">
-                    {document.id}
-                </div>
-        },
-        {
-            key: 'name', label: 'Título',
-            render: (document) =>
-                <div className="text-center">
-                    {document.name}
-                </div>
-        },
-        {
-            key: 'phase', label: 'Fase',
-            render: (document) =>
-                <div className="text-center">
-                    {document.phase.phase}
-                </div>
-        },
-    ];
-
     return (
         <>
             <div className="overflow-y-auto h-full">
-                {deletes && (
-                    <Delete DatoId={deletes} type={"Documento"} onClose={() => setDeletes(false)} url={"document"} />
+                {modalPhase && (
+                    <PhaseEditor expedientPhases={expedientPhases} setModalPhase={setModalPhase} />
+                )}
+                {modalDelete && (
+                    <Delete DatoId={deleteId} onClose={() => setModalDelete(false)} type={"Documento"} url={"document"} />
                 )}
                 <div className="flex justify-between p-2 mb-5">
                     <h3 className="text-3xl">{expedient.title}</h3>
@@ -228,6 +218,10 @@ const VerExpediente = () => {
                                     );
                                 })}
                             </div>
+                            <div className="text-center mt-5">
+                                <button type="button" className="cursor-pointer bg-blue-700 text-white rounded-full py-2 px-4 hover:bg-blue-800 focus:ring-2 focus:ring-blue-500"
+                                    onClick={() => phaseEditorActivate()}>Editar fases</button>
+                            </div>
                             {phaseSelected && (
                                 <div className="grid grid-cols-12 gap-4 p-2">
                                     <div className="col-span-12 md:col-span-6 lg:col-span-5 space-y-2">
@@ -267,26 +261,40 @@ const VerExpediente = () => {
                     <div className="bg-gray-200 rounded-lg p-2">
                         <div className="border-t">
                             <strong>Documentos</strong>
-                            {/* <div>
+                            <div className="mt-6">
                                 {expedientDocuments.map(({ phase, documents }) => (
-                                    <div key={phase.id} className="mb-6">
-                                        <p className="mb-2">Fase {phase.phase}</p>
-                                        <div className="grid grid-cols-12 gap-4">
+                                    <div key={phase.id} className="gap-6">
+                                        <p className="text-center text-3xl font-semibold mb-2">Fase {phase.phase}</p>
+                                        <div className="gap-4">
                                             {documents.map(document => (
-                                                <div key={document.id} className="col-span-12 md:col-span-6 lg:col-span-3">
-                                                    <Link to={document.name}>
-                                                        <p>Documento {document.id}</p>
-                                                    </Link>
+                                                <div key={document.id} className="grid grid-cols-2 py-1.5 px-4 hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8 mt-2 transition-all shrink-0 overflow-x-scroll">
+                                                    <p className="text-center text-2xl font-semibold">Documento {document.id}</p>
+                                                    <div>
+                                                        <div className="grid grid-cols-2 gap-2">
+                                                            <Link to={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name} className="flex justify-center items-center bg-sky-300 text-sky-600 hover:bg-sky-600 hover:text-orange-300 cursor-pointer font-medium py-1 text-sm rounded-full">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                                                    <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                                                                    <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
+                                                                </svg>
+                                                            </Link>
+
+                                                            <button type="button" onClick={() => deleteActivate(document.id)} className="flex justify-center items-center bg-red-300 text-red-600 hover:bg-red-600 hover:text-red-300 cursor-pointer font-medium py-1 text-sm rounded-full">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                                                    <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
+                                                                </svg>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
                                 ))}
-                            </div> */}
+                            </div>
 
                             {/* <div className="">
                                 <Paginate page={page} setPage={setPage} totalPages={totalPages} />
-                            </div> */}
+                            </div>
                             <DefaultTable
                                 columns={documentsColumns}
                                 data={expedientDocuments}
@@ -297,7 +305,7 @@ const VerExpediente = () => {
                                 someText="name"
                                 someNumber="phase"
                                 someDate="created_at"
-                            />
+                            /> */}
                         </div>
                     </div>
                 </div>
