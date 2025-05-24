@@ -118,7 +118,7 @@ const CrearExpediente = () => {
 
             await multiUploadDocuments(expedientDocuments, response.data.id);
 
-            await axios.post(`api/expedient/${response.data.id}/people/attach`, { resources: [...expedientPeople] });
+            await axios.post(`api/expedients/${response.data.id}/people`, { people: expedientPeople });
 
             navigate('/expedientes');
             navigate(0);
