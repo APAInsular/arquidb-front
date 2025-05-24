@@ -78,7 +78,7 @@ const VerExpediente = () => {
     }, [expedientPhases]);
 
     const phaseEditorActivate = useCallback(() => {
-        if (!modalPhase) {
+        if (!modalPhase && expedientPhases.length > 0) {
             setModalPhase(true);
         }
     }, [modalPhase]);

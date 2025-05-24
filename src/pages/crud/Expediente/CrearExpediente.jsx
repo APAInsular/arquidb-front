@@ -5,10 +5,11 @@ import { useAuth } from "../../../hooks/Auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
-import { useState, useCallback, useEffect } from "react";
+import { useClient } from "../../../store/contexts/ClientContext";
+import { useCollegiate } from "../../../store/contexts/CollegiateContext";
+import { useState, useCallback } from "react";
 import axios from "../../../lib/axios";
 import { format } from "date-fns";
-import CrudManager from "../../../hooks/CrudManager";
 import TitleCard from "../../../components/ui/TitleCard";
 import WebLoader from "../../../routes/loaders/WebLoader";
 
@@ -17,6 +18,8 @@ const CrearExpediente = () => {
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { multiUploadDocuments } = useDocument();
+    const { clients } = useClient();
+    const { collegiates } = useCollegiate();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -25,26 +28,7 @@ const CrearExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-
-    const [clients, setClients] = useState(null);
-    const [collegiates, setCollegiates] = useState(null);
-    const [expedientClients, setExpedientClients] = useState([]);
-    const [expedientCollegiates, setExpedientCollegiates] = useState([]);
     const [expedientPeople, setExpedientPeople] = useState([]);
-
-    const { views, creates } = CrudManager({ url: `personClient` });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchPeople = async () => {
-            views({ setData: setClients, setLoading, setErrors: setError });
-            // const clientQuery = await axios.get('api/personClient');
-            // const collegiateQuery = await axios.get('api/personCollegiate');
-            // setCollegiates([...collegiateQuery]);
-        }
-        fetchPeople();
-    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -71,9 +55,15 @@ const CrearExpediente = () => {
                 }
                 break;
             case "clients":
-                if (value != "" && !expedientClients.some(clientId => clientId == value)) {
-                    setExpedientClients([...expedientClients, parseInt(value)]);
-                    setExpedientPeople([...expedientPeople, parseInt(value)]);
+                if (value != "" && !expedientPeople.some(client => client.id == value)) {
+                    const client = { id: parseInt(value), role: "client" };
+                    setExpedientPeople([...expedientPeople, client]);
+                }
+                break;
+            case "collegiates":
+                if (value != "" && !expedientPeople.some(collegiate => collegiate.id == value)) {
+                    const collegiate = { id: parseInt(value), role: "collegiate" };
+                    setExpedientPeople([...expedientPeople, collegiate]);
                 }
                 break;
             default:
@@ -128,7 +118,7 @@ const CrearExpediente = () => {
 
             await multiUploadDocuments(expedientDocuments, response.data.id);
 
-            axios.post(`api/expedient/${response.data.id}/people/attach`, { resources: expedientPeople })
+            await axios.post(`api/expedient/${response.data.id}/people/attach`, { resources: [...expedientPeople] });
 
             navigate('/expedientes');
             navigate(0);
@@ -137,14 +127,11 @@ const CrearExpediente = () => {
         }
     };
 
-    if (!user || !clients) {
-        console.log({ user, clients, collegiates });
-        return <WebLoader />
-    }
+    if (!user || !clients || !collegiates) return <WebLoader />;
 
     console.log(clients);
-    console.log(expedientClients);
-    console.log(collegiates)
+    console.log(expedientPeople);
+    console.log(collegiates);
 
     return (
         <>
@@ -289,29 +276,29 @@ const CrearExpediente = () => {
                     <div className="p-2 grid grid-cols-2">
                         <div>
                             <h4 className="text-3xl text-gray-400 mb-5">Colegiados</h4>
-                            {/* <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
+                            <select name="collegiates" id="collegiates" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
                                 <option value=""></option>
-                                {clients.map(client => {
+                                {collegiates.map(collegiate => {
                                     return (
-                                        <option key={client.id} value={client.id}>
-                                            {client.name} {client.first_surname}
+                                        <option key={collegiate.id} value={collegiate.id}>
+                                            {collegiate.name} {collegiate.first_surname}
                                         </option>
                                     );
                                 })}
                             </select>
-                            {expedientClients.length > 0 && (
+                            {expedientPeople.length > 0 && (
                                 <div className="mt-6 text-md text-gray-600 w-1/2 text-center flex flex-col justify-center">
-                                    {expedientClients.map(id => {
-                                        const client = clients.find(c => c.id === id);
-                                        return client ? (
-                                            <div key={id} className="flex justify-between p-2 border border-gray-300 rounded-md">
-                                                <p>{client.name} {client.first_surname}</p>
-                                                <p className="cursor-pointer" onClick={() => setExpedientClients(expedientClients.filter(oldClient => oldClient != id))}>X</p>
+                                    {expedientPeople.filter(collegiate => collegiate.role == "collegiate").map(collegiateData => {
+                                        const collegiate = collegiates.find(c => c.id === collegiateData.id);
+                                        return collegiate ? (
+                                            <div key={collegiateData.id} className="flex justify-between p-2 border border-gray-300 rounded-md">
+                                                <p>{collegiate.name} {collegiate.first_surname}</p>
+                                                <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldCollegiate => oldCollegiate != collegiateData))}>X</p>
                                             </div>
                                         ) : null;
                                     })}
                                 </div>
-                            )} */}
+                            )}
                         </div>
                         <div>
                             <h4 className="text-3xl text-gray-400 mb-5">Clientes</h4>
@@ -325,14 +312,14 @@ const CrearExpediente = () => {
                                     );
                                 })}
                             </select>
-                            {expedientClients.length > 0 && (
+                            {expedientPeople.length > 0 && (
                                 <div className="mt-6 text-md text-gray-600 w-1/2 text-center flex flex-col justify-center">
-                                    {expedientClients.map(id => {
-                                        const client = clients.find(c => c.id === id);
+                                    {expedientPeople.filter(client => client.role == "client").map(clientData => {
+                                        const client = clients.find(c => c.id === clientData.id);
                                         return client ? (
-                                            <div key={id} className="flex justify-between p-2 border border-gray-300 rounded-md">
+                                            <div key={clientData.id} className="flex justify-between p-2 border border-gray-300 rounded-md">
                                                 <p>{client.name} {client.first_surname}</p>
-                                                <p className="cursor-pointer" onClick={() => setExpedientClients(expedientClients.filter(oldClient => oldClient != id))}>X</p>
+                                                <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldClient => oldClient != clientData))}>X</p>
                                             </div>
                                         ) : null;
                                     })}
