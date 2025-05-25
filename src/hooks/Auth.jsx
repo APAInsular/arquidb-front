@@ -2,8 +2,11 @@ import useSWR from 'swr'
 import axios from '../lib/axios'
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import { UseLoader } from '../store/contexts/LoaderContext';
 
 export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
+
+    let { showLoader, hideLoader, showError, hideError } = UseLoader();
     let navigate = useNavigate();
     let params = useParams();
 
@@ -35,12 +38,17 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .put('/api/user', props)
             .then((response) => {
                 setStatus(false)
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
                 console.log("res", response)
-                window.location.pathname = '/'
+                navigate(-1)
+                // window.location.pathname = '/'
             })
             .catch(error => {
                 if (error.response.status !== 422) throw error
                 setErrors(Object.values(error.response.data.errors).flat())
+                showError();
+                setTimeout(() => hideError(), 4000);
                 setStatus(false);
             })
     }
@@ -52,6 +60,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .delete('/api/user', { data: password })
             .then((response) => {
                 console.log("res", response);
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
                 setStatus(false);
                 removeToken()
                 window.location.pathname = '/login'
@@ -59,6 +69,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 setErrors(
                     Object.values(error.response.data.errors).flat());
+                showError();
+                setTimeout(() => hideError(), 4000);
                 setStatus(false);
             });
     }
@@ -81,6 +93,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
         axios
             .post('/api/login', props)
             .then((response) => {
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
                 setStatus(response.data)
                 setToken(response.data.token);
                 mutate();
@@ -89,6 +103,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 if (error.response.status !== 422) throw error
                 setErrors(Object.values(error.response.data.errors).flat())
+                showError();
+                setTimeout(() => hideError(), 4000);
                 setStatus(false)
             })
     }
@@ -113,12 +129,16 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .put('/api/change-password', props.data)
             .then((response) => {
                 setStatus(false)
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
                 console.log("res", response)
                 window.location.pathname = '/'
             })
             .catch(error => {
                 if (error.response.status !== 422) throw error
                 setErrors(Object.values(error.response.data).flat())
+                showError();
+                setTimeout(() => hideError(), 4000);
                 setStatus(false);
             })
     }

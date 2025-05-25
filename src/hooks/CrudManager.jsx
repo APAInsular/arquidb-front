@@ -80,10 +80,16 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
         setStatus(true);
         await axios
             .delete(`${api}${url}/${ElementId}`,)
-            .then(res => res.data)
+            .then(res => {
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
+                res.data
+            })
             .catch(error => {
                 setErrors(
                     Object.values(error.response.data.errors).flat());
+                showError();
+                setTimeout(() => hideError(), 4000);
                 setStatus(false);
             });
     };
