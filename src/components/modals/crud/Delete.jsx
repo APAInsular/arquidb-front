@@ -1,10 +1,12 @@
 import { useState } from "react";
 import CrudManager from "../../../hooks/CrudManager";
 import { AlertOctagonIcon } from "lucide-react";
+import { UseLoader } from "../../../store/contexts/LoaderContext";
 
 const Delete = ({ DatoId, onClose, type, url }) => {
     const name = type.toLowerCase() + "s";
-    const { deletes } = CrudManager({ url: `${url}` });
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { deletes } = CrudManager({ url: `${url}`, showLoader, hideLoader, showError, hideError });
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
