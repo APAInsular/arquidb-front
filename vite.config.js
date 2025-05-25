@@ -10,9 +10,9 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes('node_modules')) {
-            if (id.includes('react')) {
-              return 'react';
-            }
+            // if (id.includes('react')) {
+            //   return 'react';
+            // }
             // if (id.includes('date-fns')) {
             //   return 'date-fns';
             // }
