@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { useDocument } from "../../../store/contexts/DocumentContext";
+import { useNavigate } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
+import axios from "../../../lib/axios";
 
 const Delete = ({ DatoId, onClose, type, url }) => {
     const name = type.toLowerCase() + "s";
     const { deletes } = CrudManager({ url: `${url}` });
+    const { documents } = useDocument();
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -17,8 +22,13 @@ const Delete = ({ DatoId, onClose, type, url }) => {
 
         try {
             await Promise.all(
-                idsToDelete.map(id =>
-                    deletes({ setErrors: setError, setStatus: setLoading, ElementId: id })
+                idsToDelete.map(id => {
+                    if (url == "document") {
+                        const path = documents.find(document => document.id == id).name
+                        axios.post('api/erase', { path });
+                    }
+                    deletes({ setErrors: setError, setStatus: setLoading, ElementId: id });
+                }
                 )
             );
         } catch (err) {
@@ -26,6 +36,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
         } finally {
             setTimeout(() => {
                 onClose();
+                navigate(0);
             }, 500);
             setLoading(false);
         }
