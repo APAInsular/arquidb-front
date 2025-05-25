@@ -4,6 +4,7 @@ import { AlertOctagonIcon } from "lucide-react";
 import { UseLoader } from "../../../store/contexts/LoaderContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
 import { useNavigate } from "react-router-dom";
+import axios from "../../../lib/axios";
 
 const Delete = ({ DatoId, onClose, type, url }) => {
     const name = type.toLowerCase() + "s";
@@ -38,6 +39,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
         } finally {
             setTimeout(() => {
                 onClose();
+                navigate(0);
             }, 500);
             setLoading(false);
         }
