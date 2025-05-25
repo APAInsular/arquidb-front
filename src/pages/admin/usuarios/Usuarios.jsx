@@ -3,7 +3,7 @@ import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
 import { useCallback, useEffect, useState } from "react";
 import Delete from "../../../components/modals/crud/Delete";
-import CrudManager from "../../../hooks/CrudManager";
+import { useCrudManager } from "../../../hooks/CrudManager";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
 import Avatar from "../../../components/ui/Avatar";
 import Paginate from "../../../components/ui/Paginate";
@@ -30,7 +30,7 @@ const Usuarios = () => {
 
 
     const buscador = useCallback((query = '') => {
-        const { views } = CrudManager({ url: `users${query ? `?name=${query}&email=${query}` : '?name=&email='}&page=${page}` });
+        const { views } = useCrudManager({ url: `users${query ? `?name=${query}&email=${query}` : '?name=&email='}&page=${page}` });
         views({ setData: setUsers, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
@@ -97,7 +97,7 @@ const Usuarios = () => {
                 {/* titulo */}
                 <TitleCard name="Usuarios" link="/" />
                 {/* añadir algo */}
-                <div  className="w-full flex justify-between space-x-1">
+                <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
                         title={'Usuario'}
                         Buscador={buscador}

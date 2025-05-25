@@ -9,26 +9,37 @@ import { UseLoader } from "../../../store/contexts/LoaderContext";
 
 const CrearUsuario = () => {
 
-    const { creates } = CrudManager({ url: `users` });
-    const { showLoader, hideLoader } = UseLoader();
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { creates } = CrudManager({ url: `users`, showLoader, hideLoader, showError, hideError });
 
     const [status, setStatus] = useState(null);
     const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
 
+    console.log(errors);
+
+    // useEffect(() => {
+    //     if (errors) {
+    //         showError();
+    //         setTimeout(() => hideError(), 2000);
+    //     }
+    // }, [errors, showError, hideError]);
+
     const handleUpdate = async (formData) => {
         const response = await creates({
-            data: formData, setErrors, setStatus
+            data: formData, url: "usuarios", setErrors, setStatus
         });
 
-        if (response) {
-            showLoader();
-            setTimeout(() => {
-                navigate('/usuarios');
-                setTimeout(() => hideLoader(), 2000);
-            }, 500);
-        }
+        // if (response) {
+        //     showLoader();
+        //     setTimeout(() => {
+        //         navigate('/usuarios');
+        //         setTimeout(() => hideLoader(), 2000);
+        //     }, 500);
+        // }
+
     };
+
 
     return (
         <>

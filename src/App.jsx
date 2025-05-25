@@ -37,13 +37,14 @@ import NotFound from './pages/NotFound';
 import WebLoader from './routes/loaders/WebLoader';
 import AlertPage from './components/modals/AlertPage';
 import LoaderContext from './store/contexts/LoaderContext';
+import AlertErrorPage from './components/modals/AlertErrorPage';
 
 function App() {
 
   return (
 
     <>
-      {/* <AlertPage /> */}
+      {/* <AlertErrorPage /> */}
       <LoaderContext>
         <ExpedientContext>
           <PhaseContext>
