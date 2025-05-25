@@ -1,6 +1,6 @@
 import axios from '../lib/axios'
 
-export default function CrudManager({ url }) {
+export default function CrudManager({ url, showLoader, hideLoader, showError, hideError }) {
 
     const api = "api/"
 
@@ -11,7 +11,9 @@ export default function CrudManager({ url }) {
             .get(api + url)
             .then(res => {
                 setData(res.data.data ?? res.data);
-                setPages(res.data.data.last_page ?? res.data.last_page);
+                if (typeof setPages === 'function') {
+                    setPages(res?.data?.data?.last_page ?? res?.data?.last_page);
+                }
             })
             .catch(error => {
                 if (error.response && error.response.data.errors) {
@@ -30,6 +32,8 @@ export default function CrudManager({ url }) {
             .post(api + url, props.data)
             .then((res) => {
                 setStatus("success");
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
                 return res.data;
             })
             .catch((error) => {
@@ -37,6 +41,8 @@ export default function CrudManager({ url }) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
                 setStatus(false);
+                showError();
+                setTimeout(() => hideError(), 4000);
                 setErrors(error)
                 throw error;
             });
@@ -51,14 +57,20 @@ export default function CrudManager({ url }) {
 
         return axios
             .put(endpoint, props.data)
-            .then(res => res.data)
+            .then(res => {
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
+                return res.data
+            })
             .catch(error => {
-                if (error.response && error.response.data.errors ) {
+                if (error.response && error.response.data.errors) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
-                setErrors(error)
                 setStatus(false);
-               throw error;
+                showError();
+                setTimeout(() => hideError(), 4000);
+                setErrors(error);
+                throw error;
             });
     };
 

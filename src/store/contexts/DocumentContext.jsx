@@ -101,11 +101,12 @@ const DocumentContext = ({ children }) => {
         await axios.post('api/erase', data).then(res => res.data);
     };
 
-    if (loading) return <WebLoader />;
+
     if (error) return console.log(error);
 
     return (
         <ArquidbContext.Provider value={{ documents, createDocument, multiUploadDocuments, uploadDocument, eraseDocument }}>
+            {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
     );

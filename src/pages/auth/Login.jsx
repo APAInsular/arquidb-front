@@ -110,7 +110,7 @@ const Login = () => {
                             <div className="text-center w-full font-medium">
                                 <p>Usar GitHub</p>
                             </div>
-                        </div> */}
+                        </div>
                     </div>
 
 

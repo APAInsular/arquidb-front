@@ -1,22 +1,31 @@
 import Default from "../Default";
+import { usePhase } from "../../../store/contexts/PhaseContext";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const PhaseEditor = ({ expedientPhases, setExpedientPhases, setModalPhase }) => {
+const PhaseEditor = ({ expedientPhases, setModalPhase }) => {
+    const { updatePhase, getPhaseTitles } = usePhase();
+    const navigate = useNavigate();
     const [oldPhase, setOldPhase] = useState({});
     const [newPhase, setNewPhase] = useState({});
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (expedientPhases.some(item => item.phase === oldPhase.phase)) {
             if (!expedientPhases.some(item => item.phase === newPhase.phase)) {
                 let phaseObj = expedientPhases.find(phase => phase.phase == oldPhase.phase);
                 phaseObj.phase = newPhase.phase;
-                setExpedientPhases([...expedientPhases]);
+
+                const updatedData = await getPhaseTitles({ expedientPhases: [phaseObj], expedientId: phaseObj.expedient_id })
+                    .then(res => res[0]);
+
+                await updatePhase(updatedData.id, updatedData);
+                setModalPhase(false);
+                navigate(0);
             } else alert("Por favor, en el segundo campo ingrese una fase que no exista.");
 
         } else alert("Por favor, en el primer campo ingrese una fase que exista.");
-        console.log(expedientPhases);
     };
 
     const handleInputChange = (e) => {
