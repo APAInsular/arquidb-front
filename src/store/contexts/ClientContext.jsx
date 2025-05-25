@@ -1,44 +1,38 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
-import axios from '../../lib/axios';
 
 const ArquidbContext = createContext();
-export const usePhase = () => useContext(ArquidbContext);
+export const useClient = () => useContext(ArquidbContext);
 
-const PhaseContext = ({ children }) => {
-    const { views, creates, updates } = CrudManager({ url: `phase` });
+const ClientContext = ({ children }) => {
+    const { views, creates, updates } = CrudManager({ url: `personClient` });
 
-    const [phases, setPhases] = useState([]);
+    const [clients, setClients] = useState([]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setPhases, setLoading, setErrors: setError });
+        views({ setData: setClients, setLoading, setErrors: setError });
     }, []);
 
-    const createPhase = async (data) => {
+    const createClient = async (data) => {
         return await creates({ setErrors: setError, setStatus, data });
     }
 
-    const updatePhase = async (id, data) => {
+    const updateClient = async (id, data) => {
         await updates({ setErrors: setError, setStatus, id, data });
     }
 
-    const getPhaseTitles = async (data) => {
-        return await axios.post('api/phase/titles', data).then(res => res.data);
-    }
-
-    // if (loading) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles }}>
+        <ArquidbContext.Provider value={{ clients, createClient, updateClient }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
     );
 }
 
-export default PhaseContext;
+export default ClientContext;

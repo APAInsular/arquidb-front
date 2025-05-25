@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks/Auth";
+import WebLoader from "../../routes/loaders/WebLoader";
 
 const AdminRoute = () => {
     const { user, isLoading } = useAuth({ middleware: 'auth' });
@@ -7,7 +8,7 @@ const AdminRoute = () => {
     // console.log("Usuario cargado:", user, "Cargando:", isLoading);
 
     if (isLoading || user === undefined) {
-        return <div>Cargando...</div>;
+        return <WebLoader />;
     }
 
     if (user && user.roles.map(u => u.name) == "superAdmin") {

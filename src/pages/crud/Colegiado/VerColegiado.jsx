@@ -1,189 +1,401 @@
-import { useParams } from "react-router-dom";
-import TitleCard from "../../../components/ui/TitleCard";
+import { Link, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
 import { useEffect, useState } from "react";
+import { UserCircle2, BookOpen, GraduationCap, Globe, Banknote, Briefcase, Calendar, MapPin, FileText, Shield, Phone, Mail, Navigation, Edit } from "lucide-react";
+import TitleCard from "../../../components/ui/TitleCard";
 
 const VerColegiado = () => {
-
     const params = useParams();
-
     const { views } = CrudManager({ url: `personCollegiate/${params.id}` });
 
-    const [collegiates, setCollegiate] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [collegiate, setCollegiate] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         views({ setData: setCollegiate, setLoading, setErrors: setError });
     }, []);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) return (
+        <div className="flex items-center justify-center h-screen">
+            <div className="animate-pulse flex flex-col items-center gap-4">
+                <div className="w-16 h-16 rounded-full bg-gray-200"></div>
+                <div className="h-4 bg-gray-200 rounded w-48"></div>
+            </div>
+        </div>
+    );
 
-    console.log(collegiates)
+    if (error) return (
+        <div className="flex items-center justify-center h-screen">
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 max-w-md">
+                <div className="flex">
+                    <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <div className="ml-3">
+                        <p className="text-sm text-red-700">Error al cargar el colegiado: {error}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+
+    if (!collegiate) return null;
+
+    const formatDate = (dateString) => {
+        if (!dateString) return 'No especificada';
+        return new Date(dateString).toLocaleDateString('es-ES');
+    };
+
+    const person = collegiate.person || {};
+    const colleg = collegiate.collegiate?.[0] || {};
+
+    console.log(collegiate);
 
     return (
         <>
-            <div className="h-full flex flex-col">
-                <TitleCard name={"Colegiados"} action={"Ver"} />
-                <div className="grid grid-cols-1 xl:grid-cols-4 relative h-full overflow-y-scroll gap-2 mt-1">
-                    <div className=" flex justify-center items-center flex-col space-y-3">
-                        <div className="flex flex-col justify-center items-center">
-                            <div className="bg-gray-300 p-2 text-gray-500 w-min rounded-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-25">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                </svg>
+            <TitleCard name={"Colegiados"} action={"Ver"} />
+            <div className="h-full overflow-y-scroll">
+                <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+                    <div className="bg-gray-100 p-6 sm:p-8">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                            <div className="relative">
+                                <UserCircle2 className="w-30 h-30 bg-gray-300 rounded-full text-gray-700" />
+                                <span className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow-sm">
+                                    <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center">
+                                        <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </span>
+                            </div>
+                            <div className="flex-1">
+                                <h2 className="text-3xl font-bold text-gray-800">
+                                    {person.name} {person.first_surname} {person.second_surname}
+                                </h2>
+                                <p className="text-gray-600 mt-1">
+                                    {person.identification_type} / {person.identification_number}
+                                </p>
+                            </div>
+                            <Link className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/colegiados/${params.id}/editar`}>
+                                <Edit />
+                                Editar
+                            </Link>
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-medium bg-blue-100 text-blue-800">
+                                <BookOpen className="w-4 h-4 mr-1" />
+                                {colleg.degree || 'Sin titulación'}
+                            </span>
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-medium bg-purple-100 text-purple-800">
+                                <Shield className="w-4 h-4 mr-1" />
+                                Nº {colleg.collegiate_number || 'Sin número'}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-200">
+                        <div className="p-6 sm:p-8">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                                    <UserCircle2 className="w-5 h-5" />
+                                </div>
+                                <h3 className="text-lg font-semibold text-gray-800">Datos Personales</h3>
+                            </div>
 
+                            <div className="space-y-4">
+                                <div className="grid grid-cols-3 gap-4">
+                                    <div className="col-span-1">
+                                        <p className="text-sm text-gray-500">Tipo ID</p>
+                                        <p className="font-medium">{person.identification_type}</p>
+                                    </div>
+                                    <div className="col-span-2">
+                                        <p className="text-sm text-gray-500">Número ID</p>
+                                        <p className="font-medium">{person.identification_number}</p>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p className="text-sm text-gray-500">Nombre completo</p>
+                                    <p className="font-medium">
+                                        {person.name} {person.first_surname} {person.second_surname}
+                                    </p>
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <Calendar className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Fecha de nacimiento</p>
+                                        <p className="font-medium">{formatDate(colleg.birth_date)}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <Globe className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Nacionalidad</p>
+                                        <p className="font-medium">{colleg.nationality || 'No especificada'}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <p className="text-2xl font-medium text-start px-10">{collegiates.person?.name + " " + collegiates.person?.first_surname + " " + collegiates.person?.second_surname}</p>
                         </div>
-                        <div className="w-full p-2 space-y-4">
-                            <div className="text-black-100 w-full py-2 px-3 space-y-2.5 flex flex-col ">
-                                <div className="flex flex-row justify-between items-center pb-2 border-s-4 border-gray-500 ps-2">
-                                    <div className="font-semibold">Tipos</div>
-                                    <div>{collegiates.collegiate?.[0].degree}</div>
+                        <div className="p-6 sm:p-8">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="p-2 rounded-lg bg-green-50 text-green-600">
+                                    <Briefcase className="w-5 h-5" />
                                 </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-s-4 border-gray-500 ps-2">
-                                    <div className="font-semibold">Colegio</div>
-                                    <div>{collegiates.collegiate?.[0].college}</div>
+                                <h3 className="text-lg font-semibold text-gray-800">Datos Profesionales</h3>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <Shield className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Número de colegiado</p>
+                                        <p className="font-medium">{colleg.collegiate_number || 'No especificado'}</p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-s-4 border-gray-500 ps-2">
-                                    <div className="font-semibold">{collegiates.person?.identification_type}</div>
-                                    <div>{collegiates.person?.identification_number}</div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <BookOpen className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Colegio</p>
+                                        <p className="font-medium">{colleg.college || 'No especificado'}</p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-s-4 border-gray-500 ps-2">
-                                    <div className="font-semibold">Fecha de Naicimiento</div>
-                                    <div>{collegiates.collegiate?.[0].birth_date?.slice(0, 10).split("-").reverse().join("/")}</div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <GraduationCap className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Titulación</p>
+                                        <p className="font-medium">{colleg.degree || 'No especificada'}</p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-s-4 border-gray-500 ps-2">
-                                    <div className="font-semibold">Nacionaliidad</div>
-                                    <div>{collegiates.collegiate?.[0].nationality}</div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <FileText className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Especialidad</p>
+                                        <p className="font-medium">{colleg.specialty || 'No especificada'}</p>
+                                    </div>
                                 </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-s-4 border-gray-500 ps-2">
-                                    <div className="font-semibold">Nº Colegio</div>
-                                    <div>{collegiates.collegiate?.[0].collegiate_number}</div>
+                            </div>
+                        </div>
+
+                        {/* Academic Info Section */}
+                        <div className="p-6 sm:p-8">
+                            <div className="flex items-center gap-3 mb-6">
+                                <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+                                    <GraduationCap className="w-5 h-5" />
                                 </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-s-4 border-gray-500 ps-2">
-                                    <div className="font-semibold">Titulación</div>
-                                    <div>{collegiates.collegiate?.[0].degree}</div>
+                                <h3 className="text-lg font-semibold text-gray-800">Datos Académicos</h3>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <Calendar className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Fecha de titulación</p>
+                                        <p className="font-medium">{formatDate(colleg.graduation_date)}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <Calendar className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Fecha final</p>
+                                        <p className="font-medium">{formatDate(colleg.termination_date)}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <BookOpen className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Colegio de procedencia</p>
+                                        <p className="font-medium">{colleg.origin_college || 'No especificado'}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <Globe className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Página web</p>
+                                        <p className="font-medium">{colleg.web_page || 'No especificada'}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="w-full grid grid-cols-12 col-span-3">
-                        <div className=" flex flex-col items-end justify-center space-y-2">
-                            <div className="bg-gray-200 cursor-pointer hover:bg-gray-400 p-4 py-10 rounded-bl-xl rounded-tr-xl">a</div>
-                            <div className="bg-gray-100 border-2 border-e-0 border-gray-300 text-gray-500 cursor-pointer hover:bg-gray-400 p-4 py-10 rounded-bl-xl rounded-tr-xl">b</div>
-                            <div className="bg-gray-100 border-2 border-e-0 border-gray-300 text-gray-500 cursor-pointer hover:bg-gray-400 p-4 py-10 rounded-bl-xl rounded-tr-xl">c</div>
-                        </div>
-                        <div className="bg-gray-200 overflow-scroll h-full w-full rounded-md col-span-11">
-                            <div className=" text-gray-800 py-2 px-3">
-                                <div className="flex items-center my-2">
-                                    <div className="flex-1 border-t border-gray-700 border-[1px]"></div>
-                                    <div className="px-7 font-medium text-lg text-gray-800">Datos Profecioanles</div>
-                                    <div className="flex-1 border-t border-gray-700 border-[1px]"></div>
+
+                    <div className="p-6 sm:p-8 border-t border-gray-200 bg-gray-50">
+                        <div className="grid md:grid-cols-2 gap-8">
+                            <div>
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-2 rounded-lg bg-yellow-50 text-yellow-600">
+                                        <Banknote className="w-5 h-5" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-gray-800">Datos Contables</h3>
                                 </div>
-                                <div className=" space-y-6">
-                                    <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-900/40">
-                                        <div className="font-medium">Observación</div>
-                                        <div>{collegiates.person?.observations}</div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <p className="text-sm text-gray-500">Número de cuenta</p>
+                                        <p className="font-medium">{colleg.account_number || 'No especificado'}</p>
                                     </div>
-                                    <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-900/40">
-                                        <div className="font-medium">Colegio De Procedencia</div>
-                                        <div>{collegiates.collegiate?.[0].origin_college}</div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Entidad bancaria</p>
+                                        <p className="font-medium">{colleg.banking_entity || 'No especificada'}</p>
                                     </div>
-                                    <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-900/40">
-                                        <div className="font-medium">Especialidad</div>
-                                        <div>{collegiates.collegiate?.[0].specialty}</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-2 rounded-lg bg-gray-100 text-gray-600">
+                                        <FileText className="w-5 h-5" />
                                     </div>
-                                    <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-900/40">
-                                        <div className="font-medium">Fecha Final</div>
-                                        <div>{collegiates.collegiate?.[0].termination_date}</div>
-                                    </div>
-                                    <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-900/40">
-                                        <div className="font-medium">Fecha Titulación</div>
-                                        <div>{collegiates.collegiate?.[0].graduation_date}</div>
-                                    </div>
-                                    <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-900/40">
-                                        <div className="font-medium">ET FInal De Carrera</div>
-                                        <div>{collegiates.collegiate?.[0].career_end_et}</div>
-                                    </div>
-                                    <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-900/40">
-                                        <div className="font-medium">Nº Reg</div>
-                                        <div>{collegiates.collegiate?.[0].council_reg_number}</div>
-                                    </div>
-                                    <div className="flex flex-row justify-between items-center">
-                                        <div className="font-medium">Pagina Web</div>
-                                        <div>{collegiates.collegiate?.[0].web_page}</div>
-                                    </div>
+                                    <h3 className="text-lg font-semibold text-gray-800">Observaciones</h3>
+                                </div>
+
+                                <div className="prose prose-sm max-w-none text-gray-700 bg-white p-4 rounded-lg border border-gray-200">
+                                    {person.observations || 'No hay observaciones registradas'}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* <div className="flex flex-col col-span-3 space-y-4">
-                        <div className="bg-red-900 rounded-2xl text-red-100 py-2 px-3">
-                            <div className="flex flex-row justify-between items-center">
-                                <div>Observación</div>
-                                <div>{collegiates.person?.observations}</div>
+                    <div className="m-2">
+                        <div className="flex items-center gap-3 mb-2 p-6">
+                            <div className="p-2 rounded-lg bg-yellow-50 text-yellow-600">
+                                <Phone className="w-5 h-5" />
                             </div>
-                            <div className="flex items-center my-2">
-                                <div className="flex-1 border-t border-gray-100/40"></div>
-                                <div className="px-7 font-medium text-lg text-gray-100">Datos Profecioanles</div>
-                                <div className="flex-1 border-t border-gray-100/40"></div>
-                            </div>
-                            <div className="space-y-3">
-                                <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-100/40">
-                                    <div>Colegio De Procedencia</div>
-                                    <div>{collegiates.collegiate?.[0].origin_college}</div>
-                                </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-100/40">
-                                    <div>Especialidad</div>
-                                    <div>{collegiates.collegiate?.[0].specialty}</div>
-                                </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-100/40">
-                                    <div>Fecha Final</div>
-                                    <div>{collegiates.collegiate?.[0].termination_date}</div>
-                                </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-100/40">
-                                    <div>Fecha Titulación</div>
-                                    <div>{collegiates.collegiate?.[0].graduation_date}</div>
-                                </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-100/40">
-                                    <div>ET FInal De Carrera</div>
-                                    <div>{collegiates.collegiate?.[0].career_end_et}</div>
-                                </div>
-                                <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-100/40">
-                                    <div>Nº Reg</div>
-                                    <div>{collegiates.collegiate?.[0].council_reg_number}</div>
-                                </div>
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>Pagina Web</div>
-                                    <div>{collegiates.collegiate?.[0].web_page}</div>
-                                </div>
-                            </div>
+                            <h3 className="text-lg font-semibold text-gray-800">Datos de contacto</h3>
                         </div>
-                        <div className="bg-red-900 rounded-2xl text-red-100 py-2 px-3">
-                            <div className="flex items-center my-2">
-                                <div className="flex-1 border-t border-gray-100/40"></div>
-                                <div className="px-7 font-medium text-lg text-gray-100">Datos Contables</div>
-                                <div className="flex-1 border-t border-gray-100/40"></div>
-                            </div>
-                            <div className="space-y-3">
-                                <div className="flex flex-row justify-between items-center pb-2 border-b-1 border-gray-100/40">
-                                    <div>Nº Cuenta Bancaria</div>
-                                    <div>{collegiates.collegiate?.[0].account_number}</div>
+                        <div className="grid grid-cols-2 mb-5 p-7 pt-0">
+                            {collegiate?.email && (
+                                <>
+                                    <div className="flex items-start gap-3">
+                                        <div className="mt-0.5">
+                                            <Mail className="w-5 h-5 text-gray-400" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-500">Correo electrónico</p>
+                                            <div className="flex flex-col">
+                                                {collegiate?.email.map(client =>
+                                                    <a key={client.email.id}
+                                                        href={`mailto:${client?.email}`}
+                                                        className="font-medium text-blue-600 hover:text-blue-800"
+                                                    >
+                                                        {client?.email}
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+
+                            {collegiate?.phone && (
+                                <div className="flex items-start gap-3">
+                                    <div className="mt-0.5">
+                                        <Phone className="w-5 h-5 text-gray-400" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-gray-500">Teléfono</p>
+                                        <div className="flex flex-col">
+                                            {collegiate?.phone.map(client =>
+                                                <a key={client.phone.id}
+                                                    href={`tel:${client?.phone}`}
+                                                    className="font-medium text-blue-600 hover:text-blue-800"
+                                                >
+                                                    {client?.phone}
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex flex-row justify-between items-center">
-                                    <div>Entidad Bancaria</div>
-                                    <div>{collegiates.collegiate?.[0].banking_entity}</div>
-                                </div>
-                            </div>
+                            )}
                         </div>
-                    </div> */}
+                        {collegiate?.address && (
+                            <div className="bg-white p-6 sm:p-8 border-t-2 border-gray-200 mb-6">
+                                <div className="flex items-center gap-3 mb-6">
+                                    <div className="p-2 rounded-lg bg-indigo-200 text-indigo-700">
+                                        <MapPin className="w-5 h-5" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-gray-800">Dirección</h3>
+                                </div>
+
+                                {collegiate?.address.map(add =>
+                                    <div key={add.address?.id}>
+                                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            <div>
+                                                <p className="text-sm text-gray-500">País</p>
+                                                <p className="font-medium">{add?.country || '-'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-gray-500">Provincia</p>
+                                                <p className="font-medium">{add?.province || '-'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-gray-500">Municipio</p>
+                                                <p className="font-medium">{add?.municipality || '-'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-gray-500">Localidad</p>
+                                                <p className="font-medium">{add?.locality || '-'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-gray-500">Calle</p>
+                                                <p className="font-medium">{add?.street || '-'}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-gray-500">Código Postal</p>
+                                                <p className="font-medium">{add?.postal_code || '-'}</p>
+                                            </div>
+                                        </div>
+
+                                        {add?.street && (
+                                            <div className="mt-6 mb-5">
+                                                <a
+                                                    href={`https://www.google.com/maps/search/?api=1&query=${add?.street}+${add?.number}+${add?.postal_code}+${add?.locality}`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                                >
+                                                    <Navigation className="w-4 h-4 mr-2" />
+                                                    Ver en mapa
+                                                </a>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default VerColegiado;

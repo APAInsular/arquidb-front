@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputForm from "../../../components/ui/InputForm";
 import Stepper from "../../../components/ui/Stepper";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,13 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
     const client = cliente?.client?.[0];
 
     const [step, setStep] = useState(1);
+
+    useEffect(() => {
+        if (errors?.response?.data?.errors?.name
+            || errors?.response?.data?.errors?.identification_type
+            || errors?.response?.data?.errors?.identification_number
+            || errors?.response?.data?.errors?.first_surname) { setStep(1) }
+    }, [errors]);
 
     const [formData, setFormData] = useState({
         identification_type: person?.identification_type || "",
@@ -91,8 +98,8 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
 
     return (
         <>
-            <Stepper currentStep={step} totalSteps={2} />
 
+            <Stepper currentStep={step} totalSteps={2} />
             <div className="flex-1 overflow-y-scroll">
                 {step === 1 && (
                     <div>
@@ -100,26 +107,40 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                             <p>Datos Generales</p>
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+
                             <InputForm
-                                type="text" name="name" required
+                                type="text" errors={errors?.response?.data?.errors?.name} name="name" required
                                 placeholder="Nombre" value={formData.name} onChange={handleChange} />
-
                             <InputForm
-                                type="text" name="first_surname" required
+                                type="text" errors={errors?.response?.data?.errors?.first_surname} name="first_surname" required
                                 placeholder="Apellido" value={formData.first_surname} onChange={handleChange} />
-
                             <InputForm
-                                type="text" name="second_surname"
+                                type="text" errors={errors?.response?.data?.errors?.second_surname} name="second_surname"
                                 placeholder="Segundo Apellido" value={formData.second_surname} onChange={handleChange} />
-
                             <InputForm
                                 type="text" name="client.agent"
                                 placeholder="Agente" value={formData.client?.agent} onChange={handleChange} />
 
-                            <InputForm type="text" name="identification_type" placeholder="Tipo De Documento" value={formData.identification_type} onChange={handleChange} required />
-
+                            <div className="mb-4">
+                                <label htmlFor="" className="block text-md font-medium text-gray-700 mb-1">
+                                    Tipo De Documento
+                                </label>
+                                <select
+                                    id="center_id"
+                                    name="identification_type"
+                                    value={formData.identification_type}
+                                    onChange={handleChange}
+                                    className={`w-full h-min py-2.5 bg-gray-200/60 focus:bg-rose-100/60 ps-2 rounded-t-lg border-b-2 focus:border-red-700 ${errors?.response?.data?.errors?.identification_type ? " border-red-400 bg-red-200" : ""} transition-all outline-none border-gray-400`}
+                                    required
+                                >
+                                    <option disabled value="">Tipo de documento...</option>
+                                    <option value="DNI">DNI</option>
+                                    <option value="NIF">NIF</option>
+                                </select>
+                                {errors?.response?.data?.errors?.identification_type && <p className="text-red-500 text-sm mt-1">{errors?.response?.data?.errors?.identification_type}</p>}
+                            </div>
                             <InputForm
-                                type="number" name="identification_number"
+                                type="text" errors={errors?.response?.data?.errors?.identification_number} name="identification_number"
                                 placeholder="Número Del Documento" value={formData.identification_number} onChange={handleChange} required />
                         </div>
                         <label className="block text-md font-medium text-gray-700 mb-1">Observaciones</label>
@@ -128,8 +149,9 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                             placeholder="Escribe algo..."
                             value={formData.observations}
                             onChange={handleChange}
-                            className="w-full py-2.5 border-b-2 focus:border-red-700 transition-all outline-none border-gray-400"
+                            className="w-full bg-gray-200/60 rounded-t-lg ps-2 py-2.5 border-b-2 focus:border-red-700 transition-all outline-none border-gray-400"
                         />
+                        {errors?.response?.data?.errors?.observations && <p className="text-red-500 text-sm mt-1">{errors?.response?.data?.errors?.observations}</p>}
                     </div>
                 )}
 
@@ -145,6 +167,7 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                     <div key={i} className=" mb-4">
                                         <InputForm
                                             type="tel"
+                                            errors={errors?.response?.data?.errors?.[`phone.${i}.phone`]}
                                             name="phone"
                                             placeholder={`Teléfono ${i + 1}`}
                                             value={p.phone}
@@ -152,9 +175,9 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                             required
                                         />
                                         {formData.phone.length > 1 && (
-                                            <div className="flex justify-end items-center">
-                                                <button onClick={() => removeField("phone", i)} className="text-red-200 hover:text-red-700 hover:bg-red-300 bg-red-500 p-1 rounded-md cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                            <div className="flex justify-center items-center">
+                                                <button onClick={() => removeField("phone", i)} className="flex justify-center items-center w-full text-white hover:text-red-700 hover:bg-red-300 bg-red-500 p-1 rounded-md cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
                                                         <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
                                                     </svg>
                                                 </button>
@@ -175,6 +198,7 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                     <div key={i} className="mb-4">
                                         <InputForm
                                             type="email"
+                                            errors={errors?.response?.data?.errors?.[`email.${i}.email`]}
                                             name="email"
                                             placeholder={`Correo ${i + 1}`}
                                             value={e.email}
@@ -183,8 +207,8 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                         />
                                         {formData.email.length > 1 && (
                                             <div className="flex justify-end items-center">
-                                                <button onClick={() => removeField("email", i)} className="text-red-200 hover:text-red-700 hover:bg-red-300 bg-red-500 p-1 rounded-md cursor-pointer">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                                <button onClick={() => removeField("email", i)} className="w-full flex justify-center items-center text-white hover:text-red-700 hover:bg-red-300 bg-red-500 p-1 rounded-md cursor-pointer">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
                                                         <path fillRule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clipRule="evenodd" />
                                                     </svg>
                                                 </button>
@@ -207,37 +231,51 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                                 <div key={i} className="mb-4 mx-1 p-3 shadow shadow-gray-300 rounded-md bg-gray-50">
                                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
                                         <InputForm
-                                            type="text" name="country"
-                                            placeholder="País" value={addr.country}
+                                            type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.country`]}
+                                            name="country"
+                                            placeholder={"País"} value={addr.country}
                                             onChange={(e) => handleArrayChange(e, i, "address")} />
 
                                         <InputForm
-                                            type="text" name="province"
+                                            type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.province`]}
+                                            name="province"
                                             placeholder="Provincia" value={addr.province}
                                             onChange={(e) => handleArrayChange(e, i, "address")} />
 
                                         <InputForm
-                                            type="text" name="municipality"
+                                            type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.municipality`]}
+                                            name="municipality"
                                             placeholder="Municipio" value={addr.municipality}
                                             onChange={(e) => handleArrayChange(e, i, "address")} />
 
                                         <InputForm
-                                            type="text" name="locality"
+                                            type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.locality`]}
+                                            name="locality"
                                             placeholder="Localidad" value={addr.locality}
                                             onChange={(e) => handleArrayChange(e, i, "address")} />
 
                                         <InputForm
-                                            type="text" name="street"
+                                            type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.street`]}
+                                            name="street"
                                             placeholder="Calle" value={addr.street}
                                             onChange={(e) => handleArrayChange(e, i, "address")} required />
 
                                         <InputForm
-                                            type="text" name="number"
+                                            type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.number`]}
+                                            name="number"
                                             placeholder="Número" value={addr.number}
                                             onChange={(e) => handleArrayChange(e, i, "address")} required />
 
                                         <InputForm
-                                            type="text" name="postal_code"
+                                            type="text"
+                                            errors={errors?.response?.data?.errors?.[`address.${i}.postal_code`]}
+                                            name="postal_code"
                                             placeholder="Código Postal" value={addr.postal_code}
                                             onChange={(e) => handleArrayChange(e, i, "address")} required />
                                     </div>
@@ -258,7 +296,7 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                         </div>
                     </div>
                 )}
-            </div>
+            </div >
 
             <div className="grid grid-cols-2 gap-2 lg:gap-10 mt-4 lg:mx-10">
                 {step > 1 ? (
@@ -284,6 +322,7 @@ const FormCliente = ({ cliente, onSubmit, status, errors }) => {
                     </button>
                 )}
             </div>
+
         </>
     );
 };

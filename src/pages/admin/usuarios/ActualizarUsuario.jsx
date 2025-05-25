@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import FormUsuarios from "./FormUsuarios";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import TitleCard from "../../../components/ui/TitleCard";
+import { UseLoader } from "../../../store/contexts/LoaderContext";
 
 
 const ActualizarUsuario = () => {
 
     const { id } = useParams();
-    const { updates } = CrudManager({ url: `users/${id}` });
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { updates } = CrudManager({ url: `users/${id}`, showLoader, hideLoader, showError, hideError });
     const { views } = CrudManager({ url: `users/${id}` });
 
     const [user, setUsers] = useState({});
@@ -51,6 +53,7 @@ const ActualizarUsuario = () => {
                     onSubmit={handleSubmit}
                     status={status}
                     errors={errors}
+                    falses={true}
                 />
             )}
         </div >
