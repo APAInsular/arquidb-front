@@ -30,11 +30,12 @@ const PhaseContext = ({ children }) => {
         return await axios.post('api/phase/titles', data).then(res => res.data);
     }
 
-    if (loading) return <WebLoader />;
+    // if (loading) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
         <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles }}>
+            {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
     );

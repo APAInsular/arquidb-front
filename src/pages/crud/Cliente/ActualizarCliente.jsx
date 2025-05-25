@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import FormCliente from "./FormCliente";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import TitleCard from "../../../components/ui/TitleCard";
+import { UseLoader } from "../../../store/contexts/LoaderContext";
 
 const ActualizarCliente = () => {
 
     const { id } = useParams();
-    const { updates } = CrudManager({ url: `personClient/${id}` });
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { updates } = CrudManager({ url: `personClient/${id}`, showLoader, hideLoader, showError, hideError });
     const { views } = CrudManager({ url: `personClient/${id}` });
 
     const [cliente, setCliente] = useState({});

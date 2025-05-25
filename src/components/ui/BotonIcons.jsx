@@ -2,7 +2,7 @@
 const BotonIcons = ({ size, icon, notis }) => {
     return (
         <>
-            <div className={`flex justify-center items-center shrink-0 relative w-[${size}px] h-[${size}px] rounded-full 
+            <div className={`flex justify-center items-center shrink-0 relative w-[48px] h-[${size}px] rounded-full 
                             bg-red-400/20
                             hover:bg-red-950/20 hover:text-red-950 transition-all cursor-pointer`}>
                 <div>{icon}</div>

@@ -12,7 +12,6 @@ const Profile = () => {
     const [openChangePassword, setOpenChangePassword] = useState(false);
 
     const { user } = useAuth({ middleware: 'auth' });
-    // const { deleteUser } = useAuth({ middleware: 'auth' });
 
     const { views } = CrudManager({ url: `centers/${user?.center_id}` });
 
@@ -23,7 +22,7 @@ const Profile = () => {
     const { updateUser } = useAuth({ middleware: 'auth' });
 
     const [status, setStatu] = useState(false);
-    const [email, setEmail] = useState(user?.email)
+    const [email, setEmail] = useState(user?.email);
     const [name, setName] = useState(user?.name)
 
     const submitForm = event => {
@@ -38,7 +37,10 @@ const Profile = () => {
 
     useEffect(() => {
         views({ setData: setCenter, setLoading, setErrors: setError });
-    }, []);
+        !email ? setEmail(user?.email) : "";
+        !name ? setName(user?.name) : "";
+    }, [user]);
+
 
     return (
         <>
