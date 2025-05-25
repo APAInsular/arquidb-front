@@ -8,14 +8,21 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          librerias: ['axios'],
-          vendors: ['chart.js'],
-        }
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react')) {
+              return 'react';
+            }
+            if (id.includes('date-fns')) {
+              return 'date-fns';
+            }
+            if (id.includes('axios')) {
+              return 'axios';
+            }
+            return 'vendor';
+          }
+        },
       },
-      chunkSizeWarningLimit: 800,
-    }
-  }
+    },
+  },
 })
