@@ -298,7 +298,7 @@ const VerExpediente = () => {
                                                 expedientDoc.documents.map(document => (
                                                     <div key={document.id} className="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                                         <div className="flex flex-row items-center justify-between p-4">
-                                                            <div className="flex items-start gap-3">
+                                                            <a href={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name} className="flex items-start gap-3 cursor-pointer">
                                                                 <div className="mt-0.5 p-2 rounded-lg bg-indigo-50 text-indigo-600">
                                                                     <File className="w-5 h-5" />
                                                                 </div>
@@ -306,10 +306,10 @@ const VerExpediente = () => {
                                                                     <p className="text-sm font-medium text-gray-900 truncate">{document.name}</p>
                                                                     <p className="text-xs text-gray-500 mt-1">Fase {expedientDoc.phase.phase}</p>
                                                                 </div>
-                                                            </div>
+                                                            </a>
                                                             <div className="">
                                                                 <a
-                                                                    href={`/api/documents/${document.id}/download`}
+                                                                    href={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name}
                                                                     className="flex justify-center items-center p-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                     download
                                                                 >
