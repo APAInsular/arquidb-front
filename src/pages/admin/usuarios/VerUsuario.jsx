@@ -3,6 +3,8 @@ import { NavLink, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
 import { Mail, Building, Shield, Calendar, User, Edit } from "lucide-react";
 import TitleCard from "../../../components/ui/TitleCard";
+import PulseLoader from "../../../routes/loaders/PulseLoader";
+import WebError from "../../../routes/errors/WebError";
 
 const VerUsuario = () => {
     const params = useParams();
@@ -16,32 +18,8 @@ const VerUsuario = () => {
         views({ setData: setUser, setLoading, setErrors: setError });
     }, []);
 
-    if (loading) return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="animate-pulse flex flex-col items-center gap-4">
-                <div className="w-24 h-24 rounded-full bg-gray-200"></div>
-                <div className="h-4 bg-gray-200 rounded w-48"></div>
-                <div className="h-4 bg-gray-200 rounded w-64"></div>
-            </div>
-        </div>
-    );
-
-    if (error) return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 max-w-md">
-                <div className="flex">
-                    <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div className="ml-3">
-                        <p className="text-sm text-red-700">Error al cargar el usuario: {error}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+    if (loading) { return <PulseLoader /> };
+    if (error) { return <WebError /> };
 
     if (!user) return null;
 

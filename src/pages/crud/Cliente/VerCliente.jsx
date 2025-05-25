@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
-import { Mail, Phone, MapPin, UserCircle2, Calendar, Info, Home, Globe, Navigation, UserCircle, Link, Edit } from "lucide-react";
+import { Mail, Phone, MapPin, UserCircle2, Calendar, Info, Home, Globe, Navigation, UserCircle, Link, Edit, UserIcon } from "lucide-react";
 import TitleCard from "../../../components/ui/TitleCard";
+import PulseLoader from "../../../routes/loaders/PulseLoader";
+import WebError from "../../../routes/errors/WebError";
 
 const VerCliente = () => {
 
@@ -17,31 +19,8 @@ const VerCliente = () => {
         views({ setData: setClient, setLoading, setErrors: setError });
     }, []);
 
-    if (loading) return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="animate-pulse flex flex-col items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-gray-200"></div>
-                <div className="h-4 bg-gray-200 rounded w-48"></div>
-            </div>
-        </div>
-    );
-
-    if (error) return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 max-w-md">
-                <div className="flex">
-                    <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div className="ml-3">
-                        <p className="text-sm text-red-700">Error al cargar el cliente: {error}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+    if (loading) { return <PulseLoader /> };
+    if (error) { return <WebError /> };
 
     const person = clients?.person || {};
     const address = clients?.address || {};
@@ -54,42 +33,40 @@ const VerCliente = () => {
             {/* Main Card */}
             <TitleCard name={"Clientes"} action={"Ver"} />
             <div className="h-full overflow-y-scroll">
-                <div className=" mt-5 rounded-t-lg  p-6 sm:p-14">
+                <div className=" mt-5 rounded-t-lg  p-6 sm:p-12">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                         <div className="relative">
-                            <div className="text-gray-600 bg-gray-200 rounded-full p-2">
-                                <UserCircle className="w-30 h-30 " />
-                            </div>
-                            <span className="absolute -bottom-[-5px] -right-[-5px] bg-gray-600 rounded-full p-1 shadow-sm">
+                            <UserIcon className="w-30 h-30 bg-gray-400/70 rounded-full text-gray-100 shadow" />
+                            <span className="absolute -bottom-0 -right-0 bg-white rounded-full p-1 shadow-sm">
                                 <div className="w-8 h-8 rounded-full bg-green-400 flex items-center justify-center">
-                                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                    <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
                                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                     </svg>
                                 </div>
                             </span>
                         </div>
                         <div className="flex-1">
-                            <h2 className="text-5xl font-bold text-black">
+                            <h2 className="text-3xl font-bold text-black">
                                 {person?.name} {person?.first_surname} {person?.second_surname}
                             </h2>
-                            <p className="text-gray-900 mt-1 text-xl">
+                            <p className="text-gray-900 mt-1 text-lg">
                                 {person?.identification_type} / {person?.identification_number}
                             </p>
-                            <div className="mt-3 flex flex-wrap gap-2">
-                                <span className=" shadow inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                                    Cliente activo
-                                </span>
-                                {agent && (
-                                    <span className=" shadow inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                        Agente: {agent}
-                                    </span>
-                                )}
-                            </div>
                         </div>
                         <NavLink className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/clientes/${params.id}/editar`}>
                             <Edit />
                             Editar
                         </NavLink>
+                    </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                        <span className=" shadow inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-medium bg-orange-100 text-orange-800">
+                            Cliente activo
+                        </span>
+                        {agent && (
+                            <span className=" shadow inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-medium bg-yellow-100 text-yellow-800">
+                                Agente: {agent}
+                            </span>
+                        )}
                     </div>
                 </div>
                 {/* Profile Header */}

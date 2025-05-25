@@ -35,6 +35,8 @@ import AdminRoute from './components/admin/AdminRoute';
 import PasswordReset from './pages/auth/PasswordReset';
 import NotFound from './pages/NotFound';
 import LoaderContext from './store/contexts/LoaderContext';
+import Centros from './pages/admin/Centro/Centros';
+import VerCentro from './pages/admin/Centro/VerCentro';
 
 function App() {
 
@@ -81,6 +83,10 @@ function App() {
                         <Route path="/usuarios/:id/show" element={<VerUsuario />} />
                         <Route path="/usuarios/crear" element={<CrearUsuario />} />
                         <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
+                        <Route path="/centros" element={<Centros />} />
+                        <Route path="/centros/:id/show" element={<VerCentro />} />
+                        {/* <Route path="/centros/crear" element={<CrearCentro />} /> */}
+                        {/* <Route path="/centros/:id/editar" element={<ActualizarCentro />} /> */}
                       </Route>
                     </Route>
                     <Route path="/login" element={<Login />} />
