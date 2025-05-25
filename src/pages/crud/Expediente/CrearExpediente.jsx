@@ -7,7 +7,7 @@ import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
 import { useClient } from "../../../store/contexts/ClientContext";
 import { useCollegiate } from "../../../store/contexts/CollegiateContext";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import axios from "../../../lib/axios";
 import { format } from "date-fns";
 import CrudManager from "../../../hooks/CrudManager";
@@ -19,8 +19,6 @@ const CrearExpediente = () => {
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { multiUploadDocuments } = useDocument();
-    const { clients } = useClient();
-    const { collegiates } = useCollegiate();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -29,7 +27,6 @@ const CrearExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-    const [expedientPeople, setExpedientPeople] = useState([]);
 
     const [clients, setClients] = useState(null);
     const [collegiates, setCollegiates] = useState(null);

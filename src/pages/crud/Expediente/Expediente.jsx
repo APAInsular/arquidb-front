@@ -11,15 +11,6 @@ const Expediente = () => {
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
     const { expedients } = useExpedient();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (expedients) {
-            setExpedientes(expedients);
-        }
-    }, [expedients]);
-
-    console.log(expedients)
 
     const expedientesColumns = [
         {
@@ -70,6 +61,14 @@ const Expediente = () => {
         ...expediente,
         fullTitle: `${expediente.title} (${expediente.budget}€) - ${expediente.site}, ${expediente.postal_code}`,
     }));
+
+    useEffect(() => {
+        if (expedients) {
+            setExpedientes(expedients);
+        }
+    }, [expedients]);
+
+
 
 
     return (

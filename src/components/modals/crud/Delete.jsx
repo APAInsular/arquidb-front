@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { useDocument } from "../../../store/contexts/DocumentContext";
-import { useNavigate } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
-import axios from "../../../lib/axios";
 import { AlertOctagonIcon } from "lucide-react";
 import { UseLoader } from "../../../store/contexts/LoaderContext";
+import { useDocument } from "../../../store/contexts/DocumentContext";
+import { useNavigate } from "react-router-dom";
 
 const Delete = ({ DatoId, onClose, type, url }) => {
     const name = type.toLowerCase() + "s";
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
     const { deletes } = CrudManager({ url: `${url}`, showLoader, hideLoader, showError, hideError });
-      const { documents } = useDocument();
+    const { documents } = useDocument();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
@@ -30,7 +29,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
                         const path = documents.find(document => document.id == id).name
                         axios.post('api/erase', { path });
                     }
-                    deletes({ setErrors: setError, setStatus: setLoading, ElementId: id });
+                    return deletes({ setErrors: setError, setStatus: setLoading, ElementId: id })
                 }
                 )
             );
@@ -39,7 +38,6 @@ const Delete = ({ DatoId, onClose, type, url }) => {
         } finally {
             setTimeout(() => {
                 onClose();
-                navigate(0);
             }, 500);
             setLoading(false);
         }
