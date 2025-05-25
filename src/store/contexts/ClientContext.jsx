@@ -17,18 +17,10 @@ const ClientContext = ({ children }) => {
         views({ setData: setClients, setLoading, setErrors: setError });
     }, []);
 
-    const createClient = async (data) => {
-        return await creates({ setErrors: setError, setStatus, data });
-    }
-
-    const updateClient = async (id, data) => {
-        await updates({ setErrors: setError, setStatus, id, data });
-    }
-
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ clients, createClient, updateClient }}>
+        <ArquidbContext.Provider value={{ clients }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
