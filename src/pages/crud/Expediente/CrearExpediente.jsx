@@ -10,6 +10,7 @@ import { useCollegiate } from "../../../store/contexts/CollegiateContext";
 import { useState, useCallback } from "react";
 import axios from "../../../lib/axios";
 import { format } from "date-fns";
+import CrudManager from "../../../hooks/CrudManager";
 import TitleCard from "../../../components/ui/TitleCard";
 import WebLoader from "../../../routes/loaders/WebLoader";
 
@@ -29,6 +30,26 @@ const CrearExpediente = () => {
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
     const [expedientPeople, setExpedientPeople] = useState([]);
+
+    const [clients, setClients] = useState(null);
+    const [collegiates, setCollegiates] = useState(null);
+    const [expedientClients, setExpedientClients] = useState([]);
+    const [expedientCollegiates, setExpedientCollegiates] = useState([]);
+    const [expedientPeople, setExpedientPeople] = useState([]);
+
+    const { views, creates } = CrudManager({ url: `personClient` });
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchPeople = async () => {
+            views({ setData: setClients, setLoading, setErrors: setError });
+            // const clientQuery = await axios.get('api/personClient');
+            // const collegiateQuery = await axios.get('api/personCollegiate');
+            // setCollegiates([...collegiateQuery]);
+        }
+        fetchPeople();
+    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

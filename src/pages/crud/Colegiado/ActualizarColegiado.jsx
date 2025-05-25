@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import FormColegiado from "./FormColegiado";
 import TitleCard from "../../../components/ui/TitleCard";
 import WebLoader from "../../../routes/loaders/WebLoader";
+import { UseLoader } from "../../../store/contexts/LoaderContext";
 
 const ActualizarColegiado = () => {
 
     const { id } = useParams();
-    const { updates } = CrudManager({ url: `personCollegiate/${id}` });
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { updates } = CrudManager({ url: `personCollegiate/${id}`, showLoader, hideLoader, showError, hideError });
     const { views } = CrudManager({ url: `personCollegiate/${id}` });
 
     const [colegiado, setColegiado] = useState({});

@@ -97,7 +97,7 @@ const Usuarios = () => {
                 {/* titulo */}
                 <TitleCard name="Usuarios" link="/" />
                 {/* añadir algo */}
-                <div  className="w-full flex justify-between space-x-1">
+                <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
                         title={'Usuario'}
                         Buscador={buscador}
