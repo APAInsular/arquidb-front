@@ -18,9 +18,7 @@ const CrearExpediente = () => {
     const { user } = useAuth({ middleware: 'auth' });
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
-    const { multiUploadDocuments } = useDocument();
-    const { clients } = useClient();
-    const { collegiates } = useCollegiate();
+    const { multiUploadDocuments } = useDocument();d
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -29,7 +27,6 @@ const CrearExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-    const [expedientPeople, setExpedientPeople] = useState([]);
 
     const [clients, setClients] = useState(null);
     const [collegiates, setCollegiates] = useState(null);
