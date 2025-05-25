@@ -1,7 +1,4 @@
-import { useContext } from 'react';
 import axios from '../lib/axios'
-import { UseLoader } from '../store/contexts/LoaderContext';
-import { useNavigate } from 'react-router-dom';
 
 export default function CrudManager({ url, showLoader, hideLoader, showError, hideError }) {
 
@@ -36,17 +33,16 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
             .then((res) => {
                 setStatus("success");
                 showLoader();
-                setTimeout(() => hideLoader(), 2000);
+                setTimeout(() => hideLoader(), 4000);
                 return res.data;
             })
             .catch((error) => {
-                hideLoader();
-                showError();
-                setTimeout(() => hideError(), 2000);
                 if (error.response && error.response.data.errors) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
                 setStatus(false);
+                showError();
+                setTimeout(() => hideError(), 4000);
                 setErrors(error)
                 throw error;
             });
@@ -61,13 +57,19 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
 
         return axios
             .put(endpoint, props.data)
-            .then(res => res.data)
+            .then(res => {
+                showLoader();
+                setTimeout(() => hideLoader(), 4000);
+                return res.data
+            })
             .catch(error => {
                 if (error.response && error.response.data.errors) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }
-                setErrors(error)
                 setStatus(false);
+                showError();
+                setTimeout(() => hideError(), 4000);
+                setErrors(error);
                 throw error;
             });
     };

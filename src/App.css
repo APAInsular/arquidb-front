@@ -193,7 +193,7 @@
 }
 
 .animate-spin2 {
-  animation: spins 2.5s;
+  animation: spins 4.5s;
 }
 
 @keyframes spins {

@@ -18,25 +18,14 @@ const CrearUsuario = () => {
 
     console.log(errors);
 
-    // useEffect(() => {
-    //     if (errors) {
-    //         showError();
-    //         setTimeout(() => hideError(), 2000);
-    //     }
-    // }, [errors, showError, hideError]);
-
     const handleUpdate = async (formData) => {
         const response = await creates({
-            data: formData, url: "usuarios", setErrors, setStatus
+            data: formData, setErrors, setStatus
         });
 
-        // if (response) {
-        //     showLoader();
-        //     setTimeout(() => {
-        //         navigate('/usuarios');
-        //         setTimeout(() => hideLoader(), 2000);
-        //     }, 500);
-        // }
+        if (response) {
+            navigate('/usuarios');
+        }
 
     };
 
