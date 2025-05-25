@@ -13,9 +13,9 @@ export default defineConfig({
             // if (id.includes('react')) {
             //   return 'react';
             // }
-            // if (id.includes('date-fns')) {
-            //   return 'date-fns';
-            // }
+            if (id.includes('date-fns')) {
+              return 'date-fns';
+            }
             if (id.includes('react-route-dom')) {
               return 'react-route-dom';
             }
