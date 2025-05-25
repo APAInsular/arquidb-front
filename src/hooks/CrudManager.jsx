@@ -3,10 +3,9 @@ import axios from '../lib/axios'
 import { UseLoader } from '../store/contexts/LoaderContext';
 import { useNavigate } from 'react-router-dom';
 
-export function useCrudManager({ url, showLoader, hideLoader, showError, hideError }) {
+export default function CrudManager({ url, showLoader, hideLoader, showError, hideError }) {
 
     const api = "api/"
-    const navigate = useNavigate();
 
     // Ver los datos 
     const views = async ({ setData, setLoading, setErrors, setPages }) => {
@@ -38,7 +37,6 @@ export function useCrudManager({ url, showLoader, hideLoader, showError, hideErr
                 setStatus("success");
                 showLoader();
                 setTimeout(() => hideLoader(), 2000);
-                navigate(`/${props.url}`);
                 return res.data;
             })
             .catch((error) => {

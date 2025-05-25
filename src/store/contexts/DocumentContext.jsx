@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext, useContext } from 'react';
-import { useCrudManager } from '../../hooks/CrudManager';
+import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
 import axios from '../../lib/axios';
 
@@ -8,7 +8,7 @@ export const useDocument = () => useContext(ArquidbContext);
 
 const DocumentContext = ({ children }) => {
 
-    const { views, creates, updates } = useCrudManager({ url: `document` });
+    const { views, creates, updates } = CrudManager({ url: `document` });
 
     const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(false);
