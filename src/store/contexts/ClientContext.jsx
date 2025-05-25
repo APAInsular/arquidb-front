@@ -25,11 +25,11 @@ const ClientContext = ({ children }) => {
         await updates({ setErrors: setError, setStatus, id, data });
     }
 
-    if (loading) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
         <ArquidbContext.Provider value={{ clients, createClient, updateClient }}>
+            {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
     );
