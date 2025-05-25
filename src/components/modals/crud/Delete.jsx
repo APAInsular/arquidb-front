@@ -2,11 +2,15 @@ import { useState } from "react";
 import CrudManager from "../../../hooks/CrudManager";
 import { AlertOctagonIcon } from "lucide-react";
 import { UseLoader } from "../../../store/contexts/LoaderContext";
+import { useDocument } from "../../../store/contexts/DocumentContext";
+import { useNavigate } from "react-router-dom";
 
 const Delete = ({ DatoId, onClose, type, url }) => {
     const name = type.toLowerCase() + "s";
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
     const { deletes } = CrudManager({ url: `${url}`, showLoader, hideLoader, showError, hideError });
+    const { documents } = useDocument();
+    const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -20,8 +24,13 @@ const Delete = ({ DatoId, onClose, type, url }) => {
 
         try {
             await Promise.all(
-                idsToDelete.map(id =>
-                    deletes({ setErrors: setError, setStatus: setLoading, ElementId: id })
+                idsToDelete.map(id => {
+                    if (url == "document") {
+                        const path = documents.find(document => document.id == id).name
+                        axios.post('api/erase', { path });
+                    }
+                    return deletes({ setErrors: setError, setStatus: setLoading, ElementId: id })
+                }
                 )
             );
         } catch (err) {

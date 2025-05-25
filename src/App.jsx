@@ -6,6 +6,8 @@ import Login from './pages/auth/Login';
 import ExpedientContext from './store/contexts/ExpedientContext';
 import PhaseContext from './store/contexts/PhaseContext';
 import DocumentContext from './store/contexts/DocumentContext';
+import ClientContext from './store/contexts/ClientContext';
+import CollegiateContext from './store/contexts/CollegiateContext';
 import Expediente from './pages/crud/Expediente/Expediente';
 import VerExpediente from './pages/crud/Expediente/VerExpediente';
 import CrearExpediente from './pages/crud/Expediente/CrearExpediente';
@@ -49,6 +51,8 @@ function App() {
         <ExpedientContext>
           <PhaseContext>
             <DocumentContext>
+                     <ClientContext>
+              <CollegiateContext>
               {/* rutas de la pagina */}
               <Routes>
                 {/* El contenedor general con el header y aside */}
@@ -89,6 +93,8 @@ function App() {
                 <Route path="/password-reset/:token" element={<PasswordReset />} />
                 <Route path="/*" element={<NotFound />} />
               </Routes>
+              </CollegiateContext>
+            </ClientContext>
             </DocumentContext>
           </PhaseContext>
         </ExpedientContext>

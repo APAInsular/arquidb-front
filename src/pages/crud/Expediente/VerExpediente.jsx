@@ -46,14 +46,14 @@ const VerExpediente = () => {
 
         if (Array.isArray(expedient?.people)) {
             const foundClients = expedient.people
-                .filter(p => p.client)
+                .filter(p => p.pivot.role == "client")
                 .map(p => {
                     const { collegiates, ...clientData } = p;
                     return { ...clientData };
                 });
 
             const foundCollegiates = expedient.people
-                .filter(p => p.collegiates)
+                .filter(p => p.pivot.role == "collegiate")
                 .map(p => {
                     const { client, ...collegiatesData } = p;
                     return { ...collegiatesData };
@@ -74,6 +74,9 @@ const VerExpediente = () => {
                 return acc;
             }, []);
             setExpedientDocuments(groupedDocs);
+            // setExpedientDocuments(documents.filter(document =>
+            //     expedientPhases.find(phase => phase.id === document.phase_id)
+            // ));
         }
     }, [expedientPhases, documents]);
 
@@ -97,6 +100,9 @@ const VerExpediente = () => {
             <div className="overflow-y-auto h-full">
                 {modalPhase && (
                     <PhaseEditor expedientPhases={expedientPhases} setModalPhase={setModalPhase} />
+                )}
+                {modalDelete && (
+                    <Delete DatoId={deleteId} onClose={() => setModalDelete(false)} type={"Documento"} url={"document"} />
                 )}
                 {modalDelete && (
                     <Delete DatoId={deleteId} onClose={() => setModalDelete(false)} type={"Documento"} url={"document"} />

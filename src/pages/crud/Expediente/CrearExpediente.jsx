@@ -5,6 +5,8 @@ import { useAuth } from "../../../hooks/Auth";
 import { useExpedient } from "../../../store/contexts/ExpedientContext";
 import { usePhase } from "../../../store/contexts/PhaseContext";
 import { useDocument } from "../../../store/contexts/DocumentContext";
+import { useClient } from "../../../store/contexts/ClientContext";
+import { useCollegiate } from "../../../store/contexts/CollegiateContext";
 import { useState, useCallback, useEffect } from "react";
 import axios from "../../../lib/axios";
 import { format } from "date-fns";
@@ -71,9 +73,15 @@ const CrearExpediente = () => {
                 }
                 break;
             case "clients":
-                if (value != "" && !expedientClients.some(clientId => clientId == value)) {
-                    setExpedientClients([...expedientClients, parseInt(value)]);
-                    setExpedientPeople([...expedientPeople, parseInt(value)]);
+                if (value != "" && !expedientPeople.some(client => client.id == value)) {
+                    const client = { id: parseInt(value), role: "client" };
+                    setExpedientPeople([...expedientPeople, client]);
+                }
+                break;
+            case "collegiates":
+                if (value != "" && !expedientPeople.some(collegiate => collegiate.id == value)) {
+                    const collegiate = { id: parseInt(value), role: "collegiate" };
+                    setExpedientPeople([...expedientPeople, collegiate]);
                 }
                 break;
             default:
@@ -128,7 +136,7 @@ const CrearExpediente = () => {
 
             await multiUploadDocuments(expedientDocuments, response.data.id);
 
-            axios.post(`api/expedient/${response.data.id}/people/attach`, { resources: expedientPeople })
+            if (expedientPeople.length > 0) await axios.post(`api/expedients/${response.data.id}/people`, { people: expedientPeople });
 
             navigate('/expedientes');
             navigate(0);
@@ -137,18 +145,15 @@ const CrearExpediente = () => {
         }
     };
 
-    if (!user || !clients) {
-        console.log({ user, clients, collegiates });
-        return <WebLoader />
-    }
+    if (!user || !clients || !collegiates) return <WebLoader />;
 
     console.log(clients);
-    console.log(expedientClients);
-    console.log(collegiates)
+    console.log(expedientPeople);
+    console.log(collegiates);
 
     return (
         <>
-            <div>
+            <div className="h-full overflow-y-scroll">
                 <TitleCard name={"Expedientes"} action={"Crear"} />
                 {modalPhase && <PhaseSelector expedientPhases={expedientPhases} setExpedientPhases={setExpedientPhases} setModalPhase={setModalPhase} inputName={modalPhaseType} />}
                 {modalDocument && <DocumentSelector phase={documentsPhase} setModalDocument={setModalDocument} expedientDocuments={expedientDocuments} setExpedientDocuments={setExpedientDocuments} />}
@@ -286,34 +291,34 @@ const CrearExpediente = () => {
                             </button>
                         </div>
                     </div>
-                    <div className="p-2 grid grid-cols-2">
-                        <div>
+                    <div className="p-4 grid grid-cols-2">
+                        <div className="text-center">
                             <h4 className="text-3xl text-gray-400 mb-5">Colegiados</h4>
-                            {/* <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
+                            <select name="collegiates" id="collegiates" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
                                 <option value=""></option>
-                                {clients.map(client => {
+                                {collegiates.map(collegiate => {
                                     return (
-                                        <option key={client.id} value={client.id}>
-                                            {client.name} {client.first_surname}
+                                        <option key={collegiate.id} value={collegiate.id}>
+                                            {collegiate.name} {collegiate.first_surname}
                                         </option>
                                     );
                                 })}
                             </select>
-                            {expedientClients.length > 0 && (
+                            {expedientPeople.length > 0 && (
                                 <div className="mt-6 text-md text-gray-600 w-1/2 text-center flex flex-col justify-center">
-                                    {expedientClients.map(id => {
-                                        const client = clients.find(c => c.id === id);
-                                        return client ? (
-                                            <div key={id} className="flex justify-between p-2 border border-gray-300 rounded-md">
-                                                <p>{client.name} {client.first_surname}</p>
-                                                <p className="cursor-pointer" onClick={() => setExpedientClients(expedientClients.filter(oldClient => oldClient != id))}>X</p>
+                                    {expedientPeople.filter(collegiate => collegiate.role == "collegiate").map(collegiateData => {
+                                        const collegiate = collegiates.find(c => c.id === collegiateData.id);
+                                        return collegiate ? (
+                                            <div key={collegiateData.id} className="flex justify-between p-2 border border-gray-300 rounded-md">
+                                                <p>{collegiate.name} {collegiate.first_surname}</p>
+                                                <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldCollegiate => oldCollegiate != collegiateData))}>X</p>
                                             </div>
                                         ) : null;
                                     })}
                                 </div>
-                            )} */}
+                            )}
                         </div>
-                        <div>
+                        <div className="text-center">
                             <h4 className="text-3xl text-gray-400 mb-5">Clientes</h4>
                             <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border border-gray-300 rounded-md">
                                 <option value=""></option>
@@ -325,14 +330,14 @@ const CrearExpediente = () => {
                                     );
                                 })}
                             </select>
-                            {expedientClients.length > 0 && (
+                            {expedientPeople.length > 0 && (
                                 <div className="mt-6 text-md text-gray-600 w-1/2 text-center flex flex-col justify-center">
-                                    {expedientClients.map(id => {
-                                        const client = clients.find(c => c.id === id);
+                                    {expedientPeople.filter(client => client.role == "client").map(clientData => {
+                                        const client = clients.find(c => c.id === clientData.id);
                                         return client ? (
-                                            <div key={id} className="flex justify-between p-2 border border-gray-300 rounded-md">
+                                            <div key={clientData.id} className="flex justify-between p-2 border border-gray-300 rounded-md">
                                                 <p>{client.name} {client.first_surname}</p>
-                                                <p className="cursor-pointer" onClick={() => setExpedientClients(expedientClients.filter(oldClient => oldClient != id))}>X</p>
+                                                <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldClient => oldClient != clientData))}>X</p>
                                             </div>
                                         ) : null;
                                     })}
@@ -341,7 +346,7 @@ const CrearExpediente = () => {
                         </div>
                     </div>
                     <input type="hidden" name="center_id" value={user.center_id} />
-                    <div className="text-center">
+                    <div className="text-center mt-5">
                         <button type="submit" className="bg-blue-600 text-white rounded-full py-2 px-6 w-2/3">Enviar</button>
                     </div>
                 </form>
