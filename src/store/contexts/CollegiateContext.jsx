@@ -20,8 +20,8 @@ const CollegiateContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ collegiates }}>
-            {loading ? <WebLoader /> : ""}
+        <ArquidbContext.Provider value={{ collegiates, loading }}>
+            {/* {loading ? <WebLoader /> : ""} */}
             {children}
         </ArquidbContext.Provider>
     );

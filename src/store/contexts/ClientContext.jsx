@@ -20,8 +20,8 @@ const ClientContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ clients }}>
-            {loading ? <WebLoader /> : ""}
+        <ArquidbContext.Provider value={{ clients, loading }}>
+            {/* {loading ? <WebLoader /> : ""} */}
             {children}
         </ArquidbContext.Provider>
     );
