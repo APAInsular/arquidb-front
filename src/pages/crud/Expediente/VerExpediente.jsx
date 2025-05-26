@@ -10,8 +10,13 @@ import WebLoader from "../../../routes/loaders/WebLoader";
 import Delete from "../../../components/modals/crud/Delete";
 import TitleCard from "../../../components/ui/TitleCard";
 import { ArrowBigRightDashIcon, ArrowLeftRightIcon, Download, Edit, File, FileCheck2, FileText, LucideAward, User, UserRoundIcon, Users } from "lucide-react";
+import { UseLoader } from "../../../store/contexts/LoaderContext";
+import { useAuth } from "../../../hooks/Auth";
 
 const VerExpediente = () => {
+
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { user } = useAuth({ middleware: 'auth' });
     const params = useParams();
     const { expedients } = useExpedient();
     const { phases } = usePhase();
@@ -103,9 +108,9 @@ const VerExpediente = () => {
     const onToggleDocument = (id) => {
         setDocumentsToSign(prev => {
             if (prev.includes(id)) {
-                return prev.filter(docId => docId !== id); // lo quitamos
+                return prev.filter(docId => docId !== id);
             } else {
-                return [...prev, id]; // lo agregamos
+                return [...prev, id];
             }
         });
     };
@@ -121,13 +126,14 @@ const VerExpediente = () => {
                 documents: documentsToSign,
             });
 
-            alert(response.data.message || "Documentos visados correctamente.");
-            // Limpia la selección si quieres
+            showLoader();
+            setTimeout(() => hideLoader(), 4000);
             setDocumentsToSign([]);
             navigate(0);
         } catch (error) {
             console.error("Error al visar documentos:", error);
-            alert("Ocurrió un error al visar los documentos.");
+            showError();
+            setTimeout(() => hideError(), 4000);
         }
     };
 
@@ -148,15 +154,15 @@ const VerExpediente = () => {
                         <div className="text-center flex flex-col lg:flex-row space-y-12 lg:space-y-0 justify-between items-center p-10">
                             {/* Colegiados */}
                             <div className="flex flex-col space-y-12">
-                                {collegiates.map(collegiate => (
-                                    <div className="flex flex-col justify-center items-center" key={collegiate.id}>
-                                        <h4 className="text-lg text-gray-400 mb-5">Colegiado</h4>
-                                        <div className="bg-green-300 text-green-900 rounded-4xl">
-                                            <Users className="w-30 h-30" />
-                                        </div>
-                                        <Link to={`/colegiados/${collegiate.id}/show`} className="hover:text-gray-400 hover:underline text-3xl">{collegiate.name} {collegiate.first_surname}</Link>
+                                <div className="flex flex-col justify-center items-center">
+                                    <h4 className="text-lg text-gray-400 mb-5">Colegiado</h4>
+                                    <div className="bg-green-300 text-green-900 rounded-4xl">
+                                        <Users className="w-30 h-30" />
                                     </div>
-                                ))}
+                                    {collegiates.map(collegiate => (
+                                        <Link key={collegiate.id} to={`/colegiados/${collegiate.id}/show`} className="hover:text-gray-400 hover:underline text-3xl">{collegiate.name} {collegiate.first_surname}</Link>
+                                    ))}
+                                </div>
                             </div>
 
                             <div className="flex">
@@ -165,15 +171,15 @@ const VerExpediente = () => {
 
                             {/* Clientes */}
                             <div className="flex flex-col space-y-12">
-                                {clients.map(client => (
-                                    <div className="flex flex-col justify-center items-center" key={client.id}>
-                                        <h4 className="text-lg text-gray-400 mb-5">Cliente</h4>
-                                        <div className="bg-amber-300 text-amber-900 rounded-4xl">
-                                            <Users className="w-30 h-30" />
-                                        </div>
-                                        <Link to={`/clientes/${client.id}/show`} className="hover:text-gray-400 hover:underline text-3xl">{client.name} {client.first_surname}</Link>
+                                <div className="flex flex-col justify-center items-center">
+                                    <h4 className="text-lg text-gray-400 mb-5">Cliente</h4>
+                                    <div className="bg-amber-300 text-amber-900 rounded-4xl">
+                                        <Users className="w-30 h-30" />
                                     </div>
-                                ))}
+                                    {clients.map(client => (
+                                        <Link key={client.id} to={`/clientes/${client.id}/show`} className="hover:text-gray-400 hover:underline text-3xl">{client.name} {client.first_surname}</Link>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -328,15 +334,26 @@ const VerExpediente = () => {
                                     <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                                 </div>
                                 <div>
-                                    <button
-                                        type="button"
-                                        onClick={signSelectedDocuments}
-                                        className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                                        disabled={documentsToSign.length === 0}
-                                    >
-                                        <Edit className="w-5 h-5" />
-                                        <p>Visar</p>
-                                    </button>
+                                    {user?.roles.map(u => u.name) == "visor" ? (
+                                        <button
+                                            type="button"
+                                            onClick={signSelectedDocuments}
+                                            className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                                            disabled={documentsToSign.length === 0}
+                                        >
+                                            <Edit className="w-5 h-5" />
+                                            <p>Visar</p>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                                            disabled
+                                        >
+                                            <Edit className="w-5 h-5" />
+                                            <p>Visar</p>
+                                        </button>
+                                    )}
                                 </div>
                             </div>
 
@@ -350,14 +367,18 @@ const VerExpediente = () => {
                                                         <div className="flex items-center space-x-2">
                                                             {!document.user_id ? (
                                                                 <>
-                                                                    <input
-                                                                        type="checkbox"
-                                                                        checked={documentsToSign.includes(document.id)}
-                                                                        onChange={() => onToggleDocument(document.id)}
-                                                                        disabled={document.user_id}
-                                                                        className="form-checkbox h-4 w-4 text-blue-600"
-                                                                    />
-                                                                    <label className="text-sm text-gray-700">Seleccionar</label>
+                                                                    {user?.roles.map(u => u.name) == "visor" ? (
+                                                                        <>
+                                                                            <input
+                                                                                type="checkbox"
+                                                                                checked={documentsToSign.includes(document.id)}
+                                                                                onChange={() => onToggleDocument(document.id)}
+                                                                                disabled={document.user_id}
+                                                                                className="form-checkbox h-4 w-4 text-blue-600"
+                                                                            />
+                                                                            <label className="text-sm text-gray-700">Seleccionar</label>
+                                                                        </>
+                                                                    ) : ""}
                                                                 </>
                                                             ) : (
                                                                 <>
@@ -381,17 +402,8 @@ const VerExpediente = () => {
                                                                     <p className="text-xs text-gray-500 mt-1">Fase {expedientDoc.phase.phase}</p>
                                                                 </div>
                                                             </a>
-                                                            <div className="">
-                                                                <a
-                                                                    href={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name}
-                                                                    className="flex justify-center items-center p-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                                    download
-                                                                >
-                                                                    <Download className="w-4 h-4" />
-                                                                </a>
-                                                            </div>
-                                                            <div className="cursor-pointer" onClick={() => deleteActive(document.id)}>
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                            <div className="bg-white text-white  shadow-xl p-1 rounded-md cursor-pointer" onClick={() => deleteActive(document.id)}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="  fill-red-500 size-6">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                                                 </svg>
 
