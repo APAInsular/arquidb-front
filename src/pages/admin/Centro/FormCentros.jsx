@@ -48,79 +48,73 @@ const FormCentros = ({ center, onSubmit, status, errors, falses }) => {
             <div>
                 <div className="mb-4">
                     <InputForm
+                        errors={errors?.response?.data?.errors?.name}
                         type="text"
                         name="name"
                         placeholder="Nombre"
                         value={formData.name}
                         onChange={handleChange}
-                        className={`w-full ${errors?.response?.data?.errors?.name ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.response?.data?.errors?.name && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.name}</p>}
                 </div>
 
                 <div className="mb-4">
                     <InputForm
+                        errors={errors?.response?.data?.errors?.locality}
                         type="text"
                         name="locality"
                         placeholder="Localidad"
                         value={formData.locality}
                         onChange={handleChange}
-                        className={`w-full ${errors?.response?.data?.errors?.locality ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.response?.data?.errors?.locality && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.locality}</p>}
                 </div>
 
                 <div className="mb-4">
                     <InputForm
+                        errors={errors?.response?.data?.errors?.municipality}
                         type="text"
                         name="municipality"
                         placeholder="Municipo"
                         value={formData.municipality}
                         onChange={handleChange}
-                        className={`w-full ${errors?.response?.data?.errors?.municipality ? " border-red-400" : ""}`}
                     />
-                    {errors?.response?.data?.errors?.municipality && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.municipality}</p>}
                 </div>
 
                 <div className="mb-4">
                     <InputForm
+                        errors={errors?.response?.data?.errors?.number}
                         type="number"
                         name="number"
                         placeholder="Numero"
                         value={formData.number}
                         onChange={handleChange}
-                        className={`w-full ${errors?.response?.data?.errors?.number ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.response?.data?.errors?.number && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.number}</p>}
                 </div>
 
                 <div className="mb-4">
                     <InputForm
+                        errors={errors?.response?.data?.errors?.phone}
                         type="phone"
                         name="phone"
                         placeholder="Teléfono"
                         value={formData.phone}
                         onChange={handleChange}
-                        className={`w-full ${errors?.response?.data?.errors?.phone ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.response?.data?.errors?.phone && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.phone}</p>}
                 </div>
 
                 <div className="mb-4">
                     <InputForm
+                        errors={errors?.response?.data?.errors?.street}
                         type="text"
                         name="street"
                         placeholder="Calle"
                         value={formData.street}
                         onChange={handleChange}
-                        className={`w-full text-ellipsis ${errors?.response?.data?.errors?.street ? " border-red-400" : ""}`}
                         required
                     />
-                    {errors?.response?.data?.errors?.street && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.street}</p>}
                 </div>
 
 
