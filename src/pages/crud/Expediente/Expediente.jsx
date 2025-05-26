@@ -84,7 +84,7 @@ const Expediente = () => {
 
     return (
         <>
-            {deletes && <Delete DatoId={deletes} onClose={() => { setDeletes(false); setExpedientes(expedientes) }} type="Expediente" url={"expedient"} />}
+            {deletes && <Delete DatoId={deletes} onClose={() => { setDeletes(false); }} type="Expediente" url={"expedient"} />}
             <div className="flex flex-col h-full">
                 <TitleCard name="Expedientes" link="/" />
                 <div className="w-full flex justify-end">

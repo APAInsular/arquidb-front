@@ -16,7 +16,7 @@ import InputForm from "../../../components/ui/InputForm";
 const EditarExpediente = () => {
     const params = useParams();
     const { user } = useAuth({ middleware: 'auth' });
-    const { expedients, updateExpedient } = useExpedient();
+    const { expedients, updateExpedient, error: expedientError } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { documents, multiUploadDocuments } = useDocument();
     const { clients, clientsLoading } = useClient();
@@ -197,6 +197,7 @@ const EditarExpediente = () => {
                             <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
                                 <InputForm
                                     onChange={handleInputChange}
+                                    errors={expedientError?.response?.data?.errors?.title}
                                     type={"text"}
                                     name={"title"}
                                     placeholder={"Titulo"}
@@ -208,6 +209,7 @@ const EditarExpediente = () => {
                                     <InputForm
                                         onChange={handleInputChange}
                                         type="text"
+                                        errors={expedientError?.response?.data?.errors?.number}
                                         name="number"
                                         placeholder="Número"
                                         value={expedient?.number || ''}
@@ -221,6 +223,7 @@ const EditarExpediente = () => {
                                 <InputForm
                                     onChange={handleInputChange}
                                     type="text"
+                                    errors={expedientError?.response?.data?.errors?.description}
                                     name="description"
                                     placeholder="Descripción"
                                     value={expedient?.description || ''}
@@ -228,6 +231,7 @@ const EditarExpediente = () => {
 
                                 <InputForm
                                     onChange={handleInputChange}
+                                    errors={expedientError?.response?.data?.errors?.budget}
                                     type="number"
                                     name="budget"
                                     placeholder="Presupuesto"
@@ -239,6 +243,7 @@ const EditarExpediente = () => {
 
                                 <InputForm
                                     onChange={handleInputChange}
+                                    errors={expedientError?.response?.data?.errors?.site}
                                     type="text"
                                     name="site"
                                     placeholder="Emplazamiento"
@@ -249,6 +254,7 @@ const EditarExpediente = () => {
                                 <InputForm
                                     onChange={handleInputChange}
                                     type="text"
+                                    errors={expedientError?.response?.data?.errors?.postal_code}
                                     name="postal_code"
                                     placeholder="Código Postal"
                                     value={expedient?.postal_code || ''}
@@ -260,6 +266,7 @@ const EditarExpediente = () => {
                                 <InputForm
                                     onChange={handleInputChange}
                                     type="date"
+                                    errors={expedientError?.response?.data?.errors?.start_date}
                                     name="start_date"
                                     placeholder="Fecha Inicial"
                                     value={expedient?.start_date || ''}
@@ -270,12 +277,12 @@ const EditarExpediente = () => {
                                 <InputForm
                                     onChange={handleInputChange}
                                     type="date"
+                                    errors={expedientError?.response?.data?.errors?.end_date}
                                     name="end_date"
                                     placeholder="Fecha Final"
                                     className={errors2 ? 'border-red-500 bg-red-200' : ''}
                                     value={expedient?.end_date || ''}
                                 />
-
 
                             </div>
                             <p className="text-red-500"> {errors2}</p>
