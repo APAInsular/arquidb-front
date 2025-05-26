@@ -91,7 +91,7 @@ const Usuarios = () => {
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Usuario"} onClose={() => setDeletes(false)} url={"users"} />
+                <Delete DatoId={deletes} type={"Usuario"} onClose={() => { setDeletes(false); buscador(); }} url={"users"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
@@ -167,7 +167,7 @@ const Usuarios = () => {
                         tabla={'usuarios'}
                         someText="name"
                         someNumber="id"
-                        someDate="created_at"
+                        someDate="email_verified_at"
                     />
                 )}
             </div>

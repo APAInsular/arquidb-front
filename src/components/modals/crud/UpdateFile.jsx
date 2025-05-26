@@ -59,11 +59,8 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
     };
 
     return (
-        <div
-            className="fixed inset-0 z-50 flex justify-center items-center bg-black/80 bg-opacity-50"
-            role="dialog"
-            aria-modal="true"
-        >
+        <div className="fixed inset-0 z-300 flex justify-center items-center bg-black/80 bg-opacity-50"
+            role="dialog" aria-modal="true">
             <div className="bg-red-700 text-white p-6 rounded-lg shadow-2xl w-full max-w-5xl border border-gray-300">
                 <div className="flex flex-col md:flex-row gap-6">
                     {/* Sección izquierda */}
