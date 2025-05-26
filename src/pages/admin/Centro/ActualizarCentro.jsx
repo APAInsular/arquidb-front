@@ -1,20 +1,20 @@
 import { useNavigate, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
 import { useEffect, useState } from "react";
-import FormUsuarios from "./FormUsuarios";
 import WebLoader from "../../../routes/loaders/WebLoader";
 import TitleCard from "../../../components/ui/TitleCard";
 import { UseLoader } from "../../../store/contexts/LoaderContext";
+import FormCentros from "./FormCentros";
 
 
-const ActualizarUsuario = () => {
+const ActualizarCentro = () => {
 
     const { id } = useParams();
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { updates } = CrudManager({ url: `users/${id}`, showLoader, hideLoader, showError, hideError });
-    const { views } = CrudManager({ url: `users/${id}` });
+    const { updates } = CrudManager({ url: `centers/${id}`, showLoader, hideLoader, showError, hideError });
+    const { views } = CrudManager({ url: `centers/${id}` });
 
-    const [user, setUsers] = useState({});
+    const [center, setCenter] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [status, setStatus] = useState(null);
@@ -28,28 +28,28 @@ const ActualizarUsuario = () => {
         });
 
         if (response) {
-            navigate('/usuarios');
+            navigate('/centros');
         }
     };
 
     useEffect(() => {
-        const fetchUsuario = async () => {
-            views({ setData: setUsers, setLoading, setErrors: setError });
+        const fetchCentro = async () => {
+            views({ setData: setCenter, setLoading, setErrors: setError });
         }
-        fetchUsuario();
+        fetchCentro();
     }, [id]);
 
     return (
         <div className="h-full flex flex-col gap-4">
-            <TitleCard name={"Usuarios"} action={"Editar"} />
+            <TitleCard name={"Centros"} action={"Editar"} />
 
             {loading ? (
                 <WebLoader />
             ) : error ? (
                 <p>{error}</p>
             ) : (
-                <FormUsuarios
-                    user={user}
+                <FormCentros
+                    center={center}
                     onSubmit={handleSubmit}
                     status={status}
                     errors={errors}
@@ -60,4 +60,4 @@ const ActualizarUsuario = () => {
     );
 }
 
-export default ActualizarUsuario;
+export default ActualizarCentro;

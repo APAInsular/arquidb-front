@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import CrudManager from "../hooks/CrudManager";
 import TitleCard from "../components/ui/TitleCard";
+import PulseLoader from "../routes/loaders/PulseLoader";
+import WebError from "../routes/errors/WebError";
 
 const Records = () => {
 
@@ -16,19 +18,12 @@ const Records = () => {
         views({ setData: setRecords, setLoading, setError });
     }, []);
 
-    if (loading) return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="animate-pulse flex flex-col items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-gray-200"></div>
-                <div className="h-4 bg-gray-200 rounded w-48"></div>
-            </div>
-        </div>
-    );
-    if (error) return <p>Error: {error}</p>;
+    if (loading) { return <PulseLoader /> };
+    if (error) { return <WebError /> };
 
     return (
         <>
-                <TitleCard name="Historial" enlace="/" />
+            <TitleCard name="Historial" enlace="/" />
             <div className="flex flex-col h-full mt-2">
                 <div className="flex-1 overflow-y-scroll rounded-none">
                     {records.length >= 1 ? (

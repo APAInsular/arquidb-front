@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import CrudManager from "../../../hooks/CrudManager";
 import { FileText, Calendar, CheckCircle, Clock, Download, AlertCircle, File } from "lucide-react";
 import TitleCard from "../../../components/ui/TitleCard";
+import PulseLoader from "../../../routes/loaders/PulseLoader";
+import WebError from "../../../routes/errors/WebError";
 
 const VerFase = () => {
     const params = useParams();
@@ -16,29 +18,8 @@ const VerFase = () => {
         views({ setData: setPhase, setLoading, setErrors: setError });
     }, []);
 
-    if (loading) return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="animate-pulse flex flex-col items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-gray-200"></div>
-                <div className="h-4 bg-gray-200 rounded w-48"></div>
-            </div>
-        </div>
-    );
-
-    if (error) return (
-        <div className="flex items-center justify-center h-screen">
-            <div className="bg-red-50 border-l-4 border-red-500 p-4 max-w-md">
-                <div className="flex">
-                    <div className="flex-shrink-0">
-                        <AlertCircle className="h-5 w-5 text-red-500" />
-                    </div>
-                    <div className="ml-3">
-                        <p className="text-sm text-red-700">Error al cargar la fase: {error}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+    if (loading) { return <PulseLoader /> };
+    if (error) { return <WebError /> };
 
     if (!phase) return null;
 
