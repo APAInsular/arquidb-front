@@ -21,6 +21,7 @@ const VerExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [phaseSelected, setPhaseSelected] = useState(null);
+    const [documentsToSign, setDocumentsToSign] = useState([]);
     const [clients, setClients] = useState([]);
     const [collegiates, setCollegiates] = useState([]);
 
@@ -92,6 +93,44 @@ const VerExpediente = () => {
         }
     }, [modalPhase]);
 
+    const deleteActive = useCallback((id) => {
+        if (!modalDelete) {
+            setDeleteId(id);
+            setModalDelete(true);
+        }
+    }, [modalDelete]);
+
+    const onToggleDocument = (id) => {
+        setDocumentsToSign(prev => {
+            if (prev.includes(id)) {
+                return prev.filter(docId => docId !== id); // lo quitamos
+            } else {
+                return [...prev, id]; // lo agregamos
+            }
+        });
+    };
+
+    const signSelectedDocuments = async () => {
+        if (documentsToSign.length === 0) {
+            alert("Selecciona al menos un documento para visar.");
+            return;
+        }
+
+        try {
+            const response = await axios.post("api/user/documents/sign", {
+                documents: documentsToSign,
+            });
+
+            alert(response.data.message || "Documentos visados correctamente.");
+            // Limpia la selección si quieres
+            setDocumentsToSign([]);
+            navigate(0);
+        } catch (error) {
+            console.error("Error al visar documentos:", error);
+            alert("Ocurrió un error al visar los documentos.");
+        }
+    };
+
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
 
     return (
@@ -100,9 +139,6 @@ const VerExpediente = () => {
             <div className="overflow-y-auto h-full">
                 {modalPhase && (
                     <PhaseEditor expedientPhases={expedientPhases} setModalPhase={setModalPhase} />
-                )}
-                {modalDelete && (
-                    <Delete DatoId={deleteId} onClose={() => setModalDelete(false)} type={"Documento"} url={"document"} />
                 )}
                 {modalDelete && (
                     <Delete DatoId={deleteId} onClose={() => setModalDelete(false)} type={"Documento"} url={"document"} />
@@ -230,6 +266,7 @@ const VerExpediente = () => {
                                     type="button"
                                     className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500"
                                     onClick={() => phaseEditorActivate()}
+                                    disabled={expedientPhases.length === 0}
                                 >
                                     <Edit className="w-5 h-5" />
                                     <p>Editar fase</p>
@@ -283,11 +320,24 @@ const VerExpediente = () => {
 
                     <div className="bg-white shadow rounded-lg p-2">
                         <div className="p-2">
-                            <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
-                                <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
-                                    <FileText className="w-7 h-7" />
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
+                                    <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+                                        <FileText className="w-7 h-7" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
+                                <div>
+                                    <button
+                                        type="button"
+                                        onClick={signSelectedDocuments}
+                                        className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                                        disabled={documentsToSign.length === 0}
+                                    >
+                                        <Edit className="w-5 h-5" />
+                                        <p>Visar</p>
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="mt-6 mb-10">
@@ -297,24 +347,54 @@ const VerExpediente = () => {
                                             {filteredDocuments.map((expedientDoc) => (
                                                 expedientDoc.documents.map(document => (
                                                     <div key={document.id} className="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                                        <div className="flex items-center space-x-2">
+                                                            {!document.user_id ? (
+                                                                <>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={documentsToSign.includes(document.id)}
+                                                                        onChange={() => onToggleDocument(document.id)}
+                                                                        disabled={document.user_id}
+                                                                        className="form-checkbox h-4 w-4 text-blue-600"
+                                                                    />
+                                                                    <label className="text-sm text-gray-700">Seleccionar</label>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={true}
+                                                                        disabled={true}
+                                                                        className="form-checkbox h-4 w-4 text-blue-600"
+                                                                    />
+                                                                    <label className="text-sm text-gray-700">Visado</label>
+                                                                </>
+                                                            )}
+                                                        </div>
                                                         <div className="flex flex-row items-center justify-between p-4">
-                                                            <div className="flex items-start gap-3">
+                                                            <a href={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name} className="flex items-start gap-3 cursor-pointer">
                                                                 <div className="mt-0.5 p-2 rounded-lg bg-indigo-50 text-indigo-600">
                                                                     <File className="w-5 h-5" />
                                                                 </div>
                                                                 <div className="flex-1 min-w-0">
-                                                                    <p className="text-sm font-medium text-gray-900 truncate">{document.name}</p>
+                                                                    <p className="text-sm font-medium text-gray-900 truncate w-20 text-ellipsis overflow-hidden">{document.name.split('/').pop()}</p>
                                                                     <p className="text-xs text-gray-500 mt-1">Fase {expedientDoc.phase.phase}</p>
                                                                 </div>
-                                                            </div>
+                                                            </a>
                                                             <div className="">
                                                                 <a
-                                                                    href={`/api/documents/${document.id}/download`}
+                                                                    href={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name}
                                                                     className="flex justify-center items-center p-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                                                     download
                                                                 >
                                                                     <Download className="w-4 h-4" />
                                                                 </a>
+                                                            </div>
+                                                            <div className="cursor-pointer" onClick={() => deleteActive(document.id)}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                                </svg>
+
                                                             </div>
                                                         </div>
                                                     </div>

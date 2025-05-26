@@ -47,6 +47,8 @@ const Dashboard = () => {
 
     if (error) return <p>Error: {error}</p>;
 
+    console.log("HOLAAA", expedientes?.map(person => person.people).map(per => per.collegiates))
+
     const expedientesColumns = [
         {
             key: 'number',
@@ -59,12 +61,22 @@ const Dashboard = () => {
         {
             key: 'cliente',
             label: 'Cliente',
-            render: (expediente) => expediente.people[0]?.clients ? expediente.people[0].name : "..."
+            render: (expediente) => {
+                return expediente.people
+                    ?.filter(person => person.client && !person.collegiates)
+                    .map(person => person.name)
+                    .join(', ') || '...';
+            }
         },
         {
             key: 'colegiado',
             label: 'Colegiado',
-            render: (expediente) => expediente.people[0]?.collegiate ? expediente.collegiate[0]?.name : "..."
+            render: (expediente) => {
+                return expediente.people
+                    ?.filter(person => person.collegiates && !person.client)
+                    .map(person => person.name)
+                    .join(', ') || '...';
+            }
         },
         {
             key: 'budget',

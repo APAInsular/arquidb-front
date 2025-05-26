@@ -2,12 +2,14 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
 import axios from '../../lib/axios';
+import { UseLoader } from './LoaderContext';
 
 const ArquidbContext = createContext();
 export const usePhase = () => useContext(ArquidbContext);
 
 const PhaseContext = ({ children }) => {
-    const { views, creates, updates } = CrudManager({ url: `phase` });
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { views, creates, updates } = CrudManager({ url: `phase`, showLoader, hideLoader, showError, hideError });
 
     const [phases, setPhases] = useState([]);
     const [loading, setLoading] = useState(false);
