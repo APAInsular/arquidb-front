@@ -17,18 +17,10 @@ const CollegiateContext = ({ children }) => {
         views({ setData: setCollegiates, setLoading, setErrors: setError });
     }, []);
 
-    const createCollegiate = async (data) => {
-        return await creates({ setErrors: setError, setStatus, data });
-    }
-
-    const updateCollegiate = async (id, data) => {
-        await updates({ setErrors: setError, setStatus, id, data });
-    }
-
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ collegiates, createCollegiate, updateCollegiate }}>
+        <ArquidbContext.Provider value={{ collegiates }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
