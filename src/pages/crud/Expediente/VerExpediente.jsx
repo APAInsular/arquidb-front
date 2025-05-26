@@ -180,11 +180,21 @@ const VerExpediente = () => {
 
                     <div className="bg-white shadow rounded-lg p-2 mb-4">
                         <div className="p-2">
-                            <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
-                                <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
-                                    <User className="w-7 h-7" />
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
+                                    <div className="p-2 rounded-lg bg-blue-50 text-blue-600">
+                                        <User className="w-7 h-7" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-gray-800">Información Personal</h3>
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-800">Información Personal</h3>
+                                <div className="flex items-center">
+                                    <Link to={`/expedientes/${expedient.id}/editar`}
+                                        className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                                    >
+                                        <Edit className="w-5 h-5" />
+                                        <p>Editar expediente</p>
+                                    </Link>
+                                </div>
                             </div>
                             <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-2 gap-5 p-2">
                                 <div className="space-y-3">
