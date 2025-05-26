@@ -38,6 +38,7 @@ import LoaderContext from './store/contexts/LoaderContext';
 import Centros from './pages/admin/Centro/Centros';
 import VerCentro from './pages/admin/Centro/VerCentro';
 import CrearCentro from './pages/admin/Centro/CrearCentro';
+import ActualizarCentro from './pages/admin/Centro/ActualizarCentro';
 
 function App() {
 
@@ -87,7 +88,7 @@ function App() {
                         <Route path="/centros" element={<Centros />} />
                         <Route path="/centros/:id/show" element={<VerCentro />} />
                         <Route path="/centros/crear" element={<CrearCentro />} />
-                        {/* <Route path="/centros/:id/editar" element={<ActualizarCentro />} /> */}
+                        <Route path="/centros/:id/editar" element={<ActualizarCentro />} />
                       </Route>
                     </Route>
                     <Route path="/login" element={<Login />} />
