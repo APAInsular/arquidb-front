@@ -59,7 +59,7 @@ const Centros = () => {
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Centro"} onClose={() => setDeletes(false)} url={"centers"} />
+                <Delete DatoId={deletes} type={"Centro"} onClose={() => { setDeletes(false); buscador(); }} url={"centers"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}

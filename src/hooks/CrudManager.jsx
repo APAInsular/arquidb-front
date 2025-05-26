@@ -86,11 +86,10 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
                 res.data
             })
             .catch(error => {
-                setErrors(
-                    Object.values(error.response.data.errors).flat());
+                setStatus(false);
+                setErrors(error.response.data.errors);
                 showError();
                 setTimeout(() => hideError(), 4000);
-                setStatus(false);
             });
     };
 

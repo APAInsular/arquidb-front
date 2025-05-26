@@ -77,7 +77,7 @@ const Colegiado = () => {
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Colegiado"} onClose={() => setDeletes(false)} url={"personCollegiate"} />
+                <Delete DatoId={deletes} type={"Colegiado"} onClose={() => { setDeletes(false); buscador(); }} url={"personCollegiate"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}

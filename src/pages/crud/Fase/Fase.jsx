@@ -68,7 +68,7 @@ const Fase = () => {
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Fase"} onClose={() => setDeletes(false)} url={"phase"} />
+                <Delete DatoId={deletes} type={"Fase"} onClose={() => { setDeletes(false); buscador(); }} url={"phase"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
