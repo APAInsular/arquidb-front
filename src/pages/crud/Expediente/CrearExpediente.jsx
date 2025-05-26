@@ -75,7 +75,6 @@ const CrearExpediente = () => {
 
         if (satisfy) setExpedient(prev => ({ ...prev, [name]: value }));
     };
-
     const phaseSelectorActivate = useCallback((type) => {
         if (!modalPhase) {
             setModalPhase(true);
@@ -225,7 +224,7 @@ const CrearExpediente = () => {
                             </div>
                         </div>
 
-                        <div overflow-y-scrolliv className="">
+                        <div className="">
                             <div className="text-xl font-medium text-gray-400 border-b-1 pb-3 mb-4">
                                 <p>Datos Fase</p>
                             </div>
@@ -337,6 +336,7 @@ const CrearExpediente = () => {
                                 }
                             </div>
                         </div>
+                        
                         <input type="hidden" name="center_id" className="hidden" value={user.center_id} />
                     </div>
 

@@ -64,7 +64,7 @@ const Cliente = () => {
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Cliente"} onClose={() => setDeletes(false)} url={"personClient"} />
+                <Delete DatoId={deletes} type={"Cliente"} onClose={() => { setDeletes(false); buscador(); }} url={"personClient"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}

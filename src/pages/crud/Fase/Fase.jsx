@@ -68,7 +68,7 @@ const Fase = () => {
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Fase"} onClose={() => setDeletes(false)} url={"phase"} />
+                <Delete DatoId={deletes} type={"Fase"} onClose={() => { setDeletes(false); buscador(); }} url={"phase"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
@@ -118,7 +118,7 @@ const Fase = () => {
                         openId={openId}
                         setOpenId={setOpenId}
                         tabla={'fases'}
-                        someText="name"
+                        someText="title"
                         someNumber="phase"
                         someDate="created_at"
                     />)}
