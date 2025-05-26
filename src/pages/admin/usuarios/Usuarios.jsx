@@ -167,7 +167,7 @@ const Usuarios = () => {
                         tabla={'usuarios'}
                         someText="name"
                         someNumber="id"
-                        someDate="created_at"
+                        someDate="email_verified_at"
                     />
                 )}
             </div>

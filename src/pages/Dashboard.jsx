@@ -150,7 +150,7 @@ const Dashboard = () => {
                         tabla={'expedientes'}
                         someText="title"
                         someNumber="id"
-                        someDate="created_at"
+                        someDate="start_date"
                     />)}
             </div>
         </>

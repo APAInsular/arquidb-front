@@ -129,7 +129,7 @@ const Expediente = () => {
                                 tabla={'expedientes'}
                                 someText="title"
                                 someNumber="number"
-                                someDate="created_at"
+                                someDate="start_date"
                             />
                         </>
                     )}
