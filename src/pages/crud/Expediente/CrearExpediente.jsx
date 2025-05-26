@@ -19,8 +19,8 @@ const CrearExpediente = () => {
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { multiUploadDocuments } = useDocument();
-    const { clients } = useClient();
-    const { collegiates } = useCollegiate();
+    const { clients, loading: clientsLoading } = useClient();
+    const { collegiates, loading: collegiatesLoading } = useCollegiate();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [click, setClick] = useState(false);
@@ -246,7 +246,7 @@ const CrearExpediente = () => {
                             <div className="grid xl:grid-cols-12 lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 grid-cols-1  gap-2 pt-2">
                                 {expedientPhases.map(phase => {
                                     return (
-                                        <button className="" type="button" key={phase.phase}
+                                        <button type="button" key={phase.phase}
                                             className="bg-rose-900 text-white rounded-md text-center font-medium py-2 px-6 hover:bg-rose-500 focus:ring-2"
                                             onClick={() => documentSelectorActivate(phase.phase)}>{phase.phase}</button>
                                     );
@@ -259,64 +259,82 @@ const CrearExpediente = () => {
                         <div className="p-4 grid sm:grid-cols-2 sm:space-x-5">
                             <div className="flex flex-col items-center justify-center space-x-2">
                                 <h4 className="p-2 text-md w-full font-medium text-gray-800">Colegiados</h4>
-                                <select name="collegiates" id="collegiates" onChange={handleInputChange} className="p-2 border-b-2 border-gray-400 bg-gray-200/50 pt-3 rounded-t-md w-full focus:bg-red-50 focus:border-red-800" required>
-                                    <option value="" >...</option>
-                                    {collegiates.map(collegiate => {
-                                        return (
-                                            <option key={collegiate.id} value={collegiate.id}>
-                                                {collegiate.name} {collegiate.first_surname}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                                {expedientPeople.length > 0 && (
-                                    <div className="mt-6 text-md text-gray-600 w-full text-nowrap text-center flex flex-col justify-center">
-                                        {expedientPeople.filter(collegiate => collegiate.role == "collegiate").map(collegiateData => {
-                                            const collegiate = collegiates.find(c => c.id === collegiateData.id);
-                                            return collegiate ? (
-                                                <div key={collegiateData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
-                                                    <p>{collegiate.name} {collegiate.first_surname}</p>
-                                                    <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldCollegiate => oldCollegiate != collegiateData))}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                                                        </svg>
+                                {collegiatesLoading ? <div className="flex justify-center items-center ">
+                                    <svg className="size-9 animate-spin text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </div> :
+                                    <>
+                                        <select name="collegiates" id="collegiates" onChange={handleInputChange} className="p-2 border-b-2 border-gray-400 bg-gray-200/50 pt-3 rounded-t-md w-full focus:bg-red-50 focus:border-red-800" required>
+                                            <option value="" >...</option>
+                                            {collegiates.map(collegiate => {
+                                                return (
+                                                    <option key={collegiate.id} value={collegiate.id}>
+                                                        {collegiate.name} {collegiate.first_surname}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                        {expedientPeople.length > 0 && (
+                                            <div className="mt-6 text-md text-gray-600 w-full text-nowrap text-center flex flex-col justify-center">
+                                                {expedientPeople.filter(collegiate => collegiate.role == "collegiate").map(collegiateData => {
+                                                    const collegiate = collegiates.find(c => c.id === collegiateData.id);
+                                                    return collegiate ? (
+                                                        <div key={collegiateData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
+                                                            <p>{collegiate.name} {collegiate.first_surname}</p>
+                                                            <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldCollegiate => oldCollegiate != collegiateData))}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                                </svg>
 
-                                                    </p>
-                                                </div>
-                                            ) : null;
-                                        })}
-                                    </div>
-                                )}
+                                                            </p>
+                                                        </div>
+                                                    ) : null;
+                                                })}
+                                            </div>
+                                        )}
+                                    </>
+                                }
                             </div>
                             <div className="flex flex-col items-center justify-center space-x-2">
                                 <h4 className="p-2 text-md w-full font-medium text-gray-800">Clientes</h4>
-                                <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border-b-2 border-gray-400 bg-gray-200/50 pt-3 rounded-t-md w-full focus:bg-red-50 focus:border-red-800" required>
-                                    <option value="">...</option>
-                                    {clients.map(client => {
-                                        return (
-                                            <option key={client.id} value={client.id}>
-                                                {client.name} {client.first_surname}
-                                            </option>
-                                        );
-                                    })}
-                                </select>
-                                {expedientPeople.length > 0 && (
-                                    <div className="mt-6 text-md text-gray-600 w-full text-nowrap text-center flex flex-col justify-center">
-                                        {expedientPeople.filter(client => client.role == "client").map(clientData => {
-                                            const client = clients.find(c => c.id === clientData.id);
-                                            return client ? (
-                                                <div key={clientData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
-                                                    <p>{client.name} {client.first_surname}</p>
-                                                    <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldClient => oldClient != clientData))}>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                                                        </svg>
-                                                    </p>
-                                                </div>
-                                            ) : null;
-                                        })}
-                                    </div>
-                                )}
+                                {clientsLoading ? <div className="flex justify-center items-center ">
+                                    <svg className="size-9 animate-spin text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </div> :
+                                    <>
+                                        <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border-b-2 border-gray-400 bg-gray-200/50 pt-3 rounded-t-md w-full focus:bg-red-50 focus:border-red-800" required>
+                                            <option value="">...</option>
+                                            {clients.map(client => {
+                                                return (
+                                                    <option key={client.id} value={client.id}>
+                                                        {client.name} {client.first_surname}
+                                                    </option>
+                                                );
+                                            })}
+                                        </select>
+                                        {expedientPeople.length > 0 && (
+                                            <div className="mt-6 text-md text-gray-600 w-full text-nowrap text-center flex flex-col justify-center">
+                                                {expedientPeople.filter(client => client.role == "client").map(clientData => {
+                                                    const client = clients.find(c => c.id === clientData.id);
+                                                    return client ? (
+                                                        <div key={clientData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
+                                                            <p>{client.name} {client.first_surname}</p>
+                                                            <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldClient => oldClient != clientData))}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
+                                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                                                                </svg>
+                                                            </p>
+                                                        </div>
+                                                    ) : null;
+                                                })}
+                                            </div>
+                                        )}
+                                    </>
+                                }
                             </div>
                         </div>
                         <input type="hidden" name="center_id" className="hidden" value={user.center_id} />

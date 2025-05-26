@@ -31,8 +31,8 @@ const ExpedientContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ expedients, createExpedient, updateExpedient }}>
-            {loading ? <WebLoader /> : ""}
+        <ArquidbContext.Provider value={{ expedients, createExpedient, updateExpedient, loading }}>
+            {/* {loading ? <WebLoader /> : ""} */}
             {children}
         </ArquidbContext.Provider>
     );
