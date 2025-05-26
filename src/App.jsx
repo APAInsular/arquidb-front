@@ -37,6 +37,7 @@ import NotFound from './pages/NotFound';
 import LoaderContext from './store/contexts/LoaderContext';
 import Centros from './pages/admin/Centro/Centros';
 import VerCentro from './pages/admin/Centro/VerCentro';
+import CrearCentro from './pages/admin/Centro/CrearCentro';
 
 function App() {
 
@@ -85,7 +86,7 @@ function App() {
                         <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
                         <Route path="/centros" element={<Centros />} />
                         <Route path="/centros/:id/show" element={<VerCentro />} />
-                        {/* <Route path="/centros/crear" element={<CrearCentro />} /> */}
+                        <Route path="/centros/crear" element={<CrearCentro />} />
                         {/* <Route path="/centros/:id/editar" element={<ActualizarCentro />} /> */}
                       </Route>
                     </Route>
