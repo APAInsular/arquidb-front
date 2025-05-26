@@ -11,7 +11,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
     const { deletes } = CrudManager({ url: `${url}`, showLoader, hideLoader, showError, hideError });
     const { documents } = useDocument();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -39,7 +39,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
         } finally {
             setTimeout(() => {
                 onClose();
-                navigate(0);
+                // navigate(0);
             }, 500);
             setLoading(false);
         }

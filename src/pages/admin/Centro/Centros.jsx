@@ -12,16 +12,19 @@ import DefaultTable from "../../../components/ui/DefaultTable";
 import GeneralSearch from "../../../components/modals/filters/GeneralSearch";
 import Search from "../../../components/modals/filters/Search";
 
-const Usuarios = () => {
+const Centros = () => {
 
     const [totalPages, setTotalPages] = useState([]);
     const [generalSearch, setGeneralSearch] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
-        email: "",
-        center: "",
+        municipality: "",
+        locality: "",
+        street: "",
+        number: "",
+        phone: "",
     });
-    const [users, setUsers] = useState([]);
+    const [centers, setcenters] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -30,8 +33,8 @@ const Usuarios = () => {
 
 
     const buscador = useCallback((query = '') => {
-        const { views } = CrudManager({ url: `users${query ? `?name=${query}&email=${query}` : '?name=&email='}&page=${page}` });
-        views({ setData: setUsers, setLoading, setErrors: setError, setPages: setTotalPages });
+        const { views } = CrudManager({ url: `centers${query ? `?name=${query}&phone=${query}` : '?name=&phone='}&page=${page}` });
+        views({ setData: setcenters, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
     useEffect(() => {
@@ -40,66 +43,31 @@ const Usuarios = () => {
 
     if (error) return <p>Error: {error}</p>;
 
-    const visator = users.filter(item => item.roles.some(role => role.name === "visor"));
-    const admin = users.filter(item => item.roles.some(role => role.name === "superAdmin"));
-
-    const userColumns = [
-        {
-            key: 'name',
-            label: 'Usuario',
-            render: (user) => (
-                <div className="flex flex-row justify-start items-center space-x-2 w-min">
-                    <Avatar name={user?.name?.at(0)} size={32} text={"text-white"} />
-                    <p>{user.name}</p>
-                </div>
-            ),
-        },
-        { key: 'email', label: 'Correo' },
-        { key: 'centerName', label: 'Centro', render: (user) => user.center.name },
-        {
-            key: 'role',
-            label: 'Usuario Rol',
-            render: (user) =>
-                user.roles?.length > 0 ? (
-                    <div className="flex flex-wrap gap-2">
-                        {user.roles.map((role) => (
-                            <div key={role.id} className="uppercase text-xs bg-yellow-200 rounded-full flex w-min px-2 py-0.5 items-center text-yellow-600 font-medium">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
-                                    stroke="currentColor" className="size-4 me-2">
-                                    <path
-                                        strokeLinecap="round" strokeLinejoin="round"
-                                        d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
-                                    />
-                                </svg>
-                                {role.name}
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="bg-gray-200 text-xs uppercase py-0.5 rounded-full w-min px-2 text-center text-gray-600 font-medium">
-                        Ninguno
-                    </div>
-                )
-        },
+    const centerColumns = [
+        { key: 'name', label: 'Nombre' },
+        { key: 'municipality', label: 'Municipio' },
+        { key: 'locality', label: 'Localidad' },
+        { key: 'street', label: 'Calle' },
+        { key: 'number', label: 'Número' },
+        { key: 'phone', label: 'Teléfono' },
     ];
 
-    const formattedUsers = users.map(user => ({
-        ...user,
-        centerName: user.center.name,
+    const formattedCenters = centers.map(center => ({
+        ...center,
     }));
 
     return (
         <>
             {deletes && (
-                <Delete DatoId={deletes} type={"Usuario"} onClose={() => { setDeletes(false); buscador(); }} url={"users"} />
+                <Delete DatoId={deletes} type={"Centro"} onClose={() => { setDeletes(false); buscador(); }} url={"centers"} />
             )}
             <div className="flex flex-col h-full">
                 {/* titulo */}
-                <TitleCard name="Usuarios" link="/" />
+                <TitleCard name="Centros" link="/" />
                 {/* añadir algo */}
                 <div className="w-full flex justify-between space-x-1">
                     <DefaultSearch
-                        title={'Usuario'}
+                        title={'Centro'}
                         Buscador={buscador}
                     />
 
@@ -113,8 +81,8 @@ const Usuarios = () => {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                                     </svg>
                                 }
-                                title={"Usuarios"}
-                                url={"/usuarios"}
+                                title={"Centros"}
+                                url={"/centros"}
                                 setFormData={setFormData}
                                 children={3}
                             >
@@ -123,28 +91,28 @@ const Usuarios = () => {
                     )
                     }
                     <div className="">
-                        <Link to={'/usuarios/crear'} className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-900 font-medium bg-red-200 w-min mt-2 p-1 rounded-full shadow-2xl">
+                        <Link to={'/centros/crear'} className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-900 font-medium bg-red-200 w-min mt-2 p-1 rounded-full shadow-2xl">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
                                 <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
                             </svg>
-                            <p>Añadir usuario</p>
+                            <p>Añadir centro</p>
                         </Link>
                     </div>
                 </div>
                 {/* card  */}
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
-                        title={"Total Usuarios (Cualquier usuario)"}
-                        value={users.length}
+                        title={"Total Centros (Cualquier centro)"}
+                        value={centers.length}
                     />
-                    <StatsCard
+                    {/* <StatsCard
                         title={"Total Admin (Solo usuarios Admin)"}
                         value={admin.length}
                     />
                     <StatsCard
                         title={"Total Visores (Solo usuario Visores)"}
                         value={visator.length}
-                    />
+                    /> */}
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
@@ -159,15 +127,15 @@ const Usuarios = () => {
                     </div>
                 ) : (
                     <DefaultTable
-                        columns={userColumns}
-                        data={formattedUsers}
+                        columns={centerColumns}
+                        data={formattedCenters}
                         setDeletes={setDeletes}
                         openId={openId}
                         setOpenId={setOpenId}
-                        tabla={'usuarios'}
+                        tabla={'centros'}
                         someText="name"
                         someNumber="id"
-                        someDate="email_verified_at"
+                        someDate="created_at"
                     />
                 )}
             </div>
@@ -175,4 +143,4 @@ const Usuarios = () => {
     );
 }
 
-export default Usuarios;
+export default Centros;
