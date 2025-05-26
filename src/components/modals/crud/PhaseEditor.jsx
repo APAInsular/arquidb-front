@@ -41,14 +41,14 @@ const PhaseEditor = ({ expedientPhases, setModalPhase }) => {
             <div className="bg-white text-red-500">
                 <form method="POST" onSubmit={handleSubmit}>
                     <div className="mb-10 text-black">
-                        <h3 className="text-3xl border-b">Fases</h3>
+                        <h3 className="text-3xl border-b">Editar fase</h3>
                         <div className="flex justify-center">
                             <div className="w-2/3 overflow-y-auto max-h-[200px]">
                                 <input type="number" name="old_phase" id="old_phase"
-                                    value={oldPhase.phase || ""} onChange={handleInputChange} min={0} max={9999}
+                                    value={oldPhase.phase || ""} onChange={handleInputChange} min={0} max={9999} placeholder="Viejo número"
                                     className="w-full p-2 border border-gray-300 rounded-md mt-10" />
                                 <input type="number" name="new_phase" id="new_phase"
-                                    value={newPhase.phase || ""} onChange={handleInputChange} min={0} max={9999}
+                                    value={newPhase.phase || ""} onChange={handleInputChange} min={0} max={9999} placeholder="Nuevo número"
                                     className="w-full p-2 border border-gray-300 rounded-md mt-10" />
                             </div>
                         </div>
