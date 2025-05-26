@@ -21,6 +21,7 @@ const VerExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [phaseSelected, setPhaseSelected] = useState(null);
+    const [documentsToSign, setDocumentsToSign] = useState([]);
     const [clients, setClients] = useState([]);
     const [collegiates, setCollegiates] = useState([]);
 
@@ -98,6 +99,37 @@ const VerExpediente = () => {
             setModalDelete(true);
         }
     }, [modalDelete]);
+
+    const onToggleDocument = (id) => {
+        setDocumentsToSign(prev => {
+            if (prev.includes(id)) {
+                return prev.filter(docId => docId !== id); // lo quitamos
+            } else {
+                return [...prev, id]; // lo agregamos
+            }
+        });
+    };
+
+    const signSelectedDocuments = async () => {
+        if (documentsToSign.length === 0) {
+            alert("Selecciona al menos un documento para visar.");
+            return;
+        }
+
+        try {
+            const response = await axios.post("api/user/documents/sign", {
+                documents: documentsToSign,
+            });
+
+            alert(response.data.message || "Documentos visados correctamente.");
+            // Limpia la selección si quieres
+            setDocumentsToSign([]);
+            navigate(0);
+        } catch (error) {
+            console.error("Error al visar documentos:", error);
+            alert("Ocurrió un error al visar los documentos.");
+        }
+    };
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
 
@@ -234,6 +266,7 @@ const VerExpediente = () => {
                                     type="button"
                                     className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500"
                                     onClick={() => phaseEditorActivate()}
+                                    disabled={expedientPhases.length === 0}
                                 >
                                     <Edit className="w-5 h-5" />
                                     <p>Editar fase</p>
@@ -287,11 +320,24 @@ const VerExpediente = () => {
 
                     <div className="bg-white shadow rounded-lg p-2">
                         <div className="p-2">
-                            <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
-                                <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
-                                    <FileText className="w-7 h-7" />
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-3 mb-6 border-b-1 pb-4 border-gray-200">
+                                    <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+                                        <FileText className="w-7 h-7" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                                 </div>
-                                <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
+                                <div>
+                                    <button
+                                        type="button"
+                                        onClick={signSelectedDocuments}
+                                        className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                                        disabled={documentsToSign.length === 0}
+                                    >
+                                        <Edit className="w-5 h-5" />
+                                        <p>Visar</p>
+                                    </button>
+                                </div>
                             </div>
 
                             <div className="mt-6 mb-10">
@@ -301,6 +347,30 @@ const VerExpediente = () => {
                                             {filteredDocuments.map((expedientDoc) => (
                                                 expedientDoc.documents.map(document => (
                                                     <div key={document.id} className="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                                        <div className="flex items-center space-x-2">
+                                                            {!document.user_id ? (
+                                                                <>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={documentsToSign.includes(document.id)}
+                                                                        onChange={() => onToggleDocument(document.id)}
+                                                                        disabled={document.user_id}
+                                                                        className="form-checkbox h-4 w-4 text-blue-600"
+                                                                    />
+                                                                    <label className="text-sm text-gray-700">Seleccionar</label>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={true}
+                                                                        disabled={true}
+                                                                        className="form-checkbox h-4 w-4 text-blue-600"
+                                                                    />
+                                                                    <label className="text-sm text-gray-700">Visado</label>
+                                                                </>
+                                                            )}
+                                                        </div>
                                                         <div className="flex flex-row items-center justify-between p-4">
                                                             <a href={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.name} className="flex items-start gap-3 cursor-pointer">
                                                                 <div className="mt-0.5 p-2 rounded-lg bg-indigo-50 text-indigo-600">
