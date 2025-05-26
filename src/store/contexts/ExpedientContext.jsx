@@ -1,13 +1,14 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
+import { UseLoader } from './LoaderContext';
 
 const ArquidbContext = createContext();
 export const useExpedient = () => useContext(ArquidbContext);
 
 const ExpedientContext = ({ children }) => {
-
-    const { views, creates, updates } = CrudManager({ url: `expedient` });
+    const { showLoader, hideLoader, showError, hideError } = UseLoader();
+    const { views, creates, updates } = CrudManager({ url: `expedient`, showLoader, hideLoader, showError, hideError });
 
     const [expedients, setExpedients] = useState([]);
     const [loading, setLoading] = useState(false);

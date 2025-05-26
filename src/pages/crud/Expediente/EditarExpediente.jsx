@@ -41,7 +41,6 @@ const EditarExpediente = () => {
                 return { id: person.id, role: person.pivot.role }
             }
             ));
-            console.log(expedient.people[0].pivot);
         };
     }, [phases, expedient]);
 
@@ -69,7 +68,7 @@ const EditarExpediente = () => {
                 }
                 break;
             case "budget":
-                if (/^\d{0,9}(\.\d{0,2})?$/.test(value)) {
+                if (/^\d{0,7}(\.\d{0,2})?$/.test(value)) {
                     // Evitar múltiples puntos decimales
                     const decimalParts = value.split('.');
                     if (decimalParts.length <= 2) {
@@ -150,7 +149,7 @@ const EditarExpediente = () => {
             const newDocuments = expedientDocuments.filter(document => !document.id || !document.phase_id);
             await multiUploadDocuments(newDocuments, params.id);
 
-            if (expedientPeople.length > 0) await axios.post(`api/expedients/${params.id}/people`, { people: expedientPeople });
+            await axios.post(`api/expedients/${params.id}/people`, { people: expedientPeople });
 
             navigate('/expedientes');
             navigate(0);
@@ -164,8 +163,8 @@ const EditarExpediente = () => {
         || !user || !clients || !collegiates
     ) return <WebLoader />;
 
-    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 16);
-    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 16) || null;
+    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 10);
+    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 10) || null;
 
     console.log(user);
     console.log(expedient);
@@ -266,7 +265,7 @@ const EditarExpediente = () => {
                                     <strong>*</strong> Fecha Inicial
                                 </label>
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     name="start_date"
                                     id="start_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
@@ -279,7 +278,7 @@ const EditarExpediente = () => {
                                     Fecha Final
                                 </label>
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     name="end_date"
                                     id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"

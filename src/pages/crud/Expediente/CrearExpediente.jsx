@@ -10,7 +10,6 @@ import { useCollegiate } from "../../../store/contexts/CollegiateContext";
 import { useState, useCallback, useEffect } from "react";
 import axios from "../../../lib/axios";
 import { format } from "date-fns";
-import CrudManager from "../../../hooks/CrudManager";
 import TitleCard from "../../../components/ui/TitleCard";
 import WebLoader from "../../../routes/loaders/WebLoader";
 
@@ -19,6 +18,8 @@ const CrearExpediente = () => {
     const { expedients, createExpedient } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { multiUploadDocuments } = useDocument();
+    const { clients } = useClient();
+    const { collegiates } = useCollegiate();
     const navigate = useNavigate();
     const [expedient, setExpedient] = useState({});
     const [modalPhase, setModalPhase] = useState(false);
@@ -27,26 +28,7 @@ const CrearExpediente = () => {
     const [expedientPhases, setExpedientPhases] = useState([]);
     const [expedientDocuments, setExpedientDocuments] = useState([]);
     const [documentsPhase, setDocumentsPhase] = useState(null);
-
-    const [clients, setClients] = useState(null);
-    const [collegiates, setCollegiates] = useState(null);
-    const [expedientClients, setExpedientClients] = useState([]);
-    const [expedientCollegiates, setExpedientCollegiates] = useState([]);
     const [expedientPeople, setExpedientPeople] = useState([]);
-
-    const { views, creates } = CrudManager({ url: `personClient` });
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchPeople = async () => {
-            views({ setData: setClients, setLoading, setErrors: setError });
-            // const clientQuery = await axios.get('api/personClient');
-            // const collegiateQuery = await axios.get('api/personCollegiate');
-            // setCollegiates([...collegiateQuery]);
-        }
-        fetchPeople();
-    }, []);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -64,7 +46,7 @@ const CrearExpediente = () => {
                 }
                 break;
             case "budget":
-                if (/^\d{0,9}(\.\d{0,2})?$/.test(value)) {
+                if (/^\d{0,7}(\.\d{0,2})?$/.test(value)) {
                     // Evitar múltiples puntos decimales
                     const decimalParts = value.split('.');
                     if (decimalParts.length <= 2) {
@@ -247,7 +229,7 @@ const CrearExpediente = () => {
                                     <strong>*</strong> Fecha Inicial
                                 </label>
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     name="start_date"
                                     id="start_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
@@ -260,7 +242,7 @@ const CrearExpediente = () => {
                                     Fecha Final
                                 </label>
                                 <input
-                                    type="datetime-local"
+                                    type="date"
                                     name="end_date"
                                     id="end_date"
                                     className="w-full p-2 border border-gray-300 rounded-md"
