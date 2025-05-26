@@ -24,12 +24,22 @@ const Expediente = () => {
         {
             key: 'cliente',
             label: 'Cliente',
-            render: (expediente) => expediente.people[0]?.clients ? expediente.people[0].name : "..."
+            render: (expediente) => {
+                return expediente.people
+                    ?.filter(person => person.client && !person.collegiates)
+                    .map(person => person.name)
+                    .join(', ') || '...';
+            }
         },
         {
             key: 'colegiado',
             label: 'Colegiado',
-            render: (expediente) => expediente.people[0]?.collegiate ? expediente.collegiate[0]?.name : "..."
+            render: (expediente) => {
+                return expediente.people
+                    ?.filter(person => person.collegiates && !person.client)
+                    .map(person => person.name)
+                    .join(', ') || '...';
+            }
         },
         {
             key: 'budget',
@@ -69,7 +79,7 @@ const Expediente = () => {
     }, [expedients]);
 
 
-
+    console.log(expedientes)
 
     return (
         <>
