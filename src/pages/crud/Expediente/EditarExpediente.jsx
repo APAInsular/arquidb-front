@@ -25,6 +25,8 @@ const EditarExpediente = () => {
     const [click, setClick] = useState(false);
     const [expedient, setExpedient] = useState(null);
     const [modalPhase, setModalPhase] = useState(false);
+    const [errors, setErrors] = useState(false);
+    const [errors2, setErrors2] = useState(false);
     const [modalPhaseType, setModalPhaseType] = useState("");
     const [modalDocument, setModalDocument] = useState(false);
     const [expedientPhases, setExpedientPhases] = useState([]);
@@ -114,20 +116,23 @@ const EditarExpediente = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setClick(true);
 
-        // Crear un objeto FormData a partir del formulario
         const formData = new FormData(e.target);
 
-        // Convertir FormData a un objeto plano
         const newExpedient = Object.fromEntries(formData.entries());
         newExpedient.budget = parseFloat(newExpedient.budget);
 
         const oldExpedient = expedients.find(e => e.id == params.id);
 
         try {
-            if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
+            if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) {
+                setClick(false);
+                return setErrors2("La fecha de inicio no puede ser posterior a la fecha de finalización");
+            }
             if (oldExpedient.number != newExpedient.number && expedients.find(e => e.number === newExpedient.number)) {
-                return alert("El número de expediente seleccionado ya existe");
+                setClick(false);
+                return setErrors("El número de expediente seleccionado ya existe");
             }
 
             await axios.get("/sanctum/csrf-cookie");
@@ -147,7 +152,6 @@ const EditarExpediente = () => {
             const deletePromises = oldPhases.map(async phase => await axios.delete(`api/phase/${phase.id}`));
             await Promise.all(deletePromises);
 
-            // Filtrar los documentos que no existen por la id y la phase_id de document
             const newDocuments = expedientDocuments.filter(document => !document.id || !document.phase_id);
             await multiUploadDocuments(newDocuments, params.id);
 
@@ -156,17 +160,24 @@ const EditarExpediente = () => {
             navigate('/expedientes');
             navigate(0);
         } catch (error) {
-            console.error("Error creando el evento:", error);
+            setClick(false);
+            console.error("Error al actualizar expediente:", error);
         }
     };
 
     if (
-        !expedient || !expedientPhases || !expedientPeople || !expedient.start_date
-        || !user || !clients || !collegiates
+        !expedient ||
+        !expedientPhases ||
+        !expedientPeople ||
+        !expedient?.start_date ||
+        !user ||
+        !clients ||
+        !collegiates
     ) return <WebLoader />;
 
-    expedient.start_date = new Date(expedient.start_date).toISOString().slice(0, 10);
-    expedient.end_date = new Date(expedient.end_date).toISOString().slice(0, 10) || null;
+    expedient.start_date = expedient?.start_date ? new Date(expedient.start_date).toISOString().slice(0, 10) : '';
+    expedient.end_date = expedient?.end_date ? new Date(expedient.end_date).toISOString().slice(0, 10) : '';
+
 
     console.log(user);
     console.log(expedient);
@@ -189,27 +200,30 @@ const EditarExpediente = () => {
                                     type={"text"}
                                     name={"title"}
                                     placeholder={"Titulo"}
-                                    value={expedient.title || ''}
+                                    value={expedient?.title || ''}
                                     required
                                 />
 
-                                <InputForm
-                                    onChange={handleInputChange}
-                                    type="text"
-                                    name="number"
-                                    placeholder="Número"
-                                    value={expedient.number || ''}
-                                    minLength={10}
-                                    maxLength={10}
-                                    required
-                                />
-
+                                <div>
+                                    <InputForm
+                                        onChange={handleInputChange}
+                                        type="text"
+                                        name="number"
+                                        placeholder="Número"
+                                        value={expedient?.number || ''}
+                                        minLength={10}
+                                        maxLength={10}
+                                        className={errors ? "border-red-500 bg-red-200" : "border-gray-400"}
+                                        required
+                                    />
+                                    <p className="text-red-500">{errors}</p>
+                                </div>
                                 <InputForm
                                     onChange={handleInputChange}
                                     type="text"
                                     name="description"
                                     placeholder="Descripción"
-                                    value={expedient.description || ''}
+                                    value={expedient?.description || ''}
                                 />
 
                                 <InputForm
@@ -217,7 +231,7 @@ const EditarExpediente = () => {
                                     type="number"
                                     name="budget"
                                     placeholder="Presupuesto"
-                                    value={expedient.budget || ''}
+                                    value={expedient?.budget || ''}
                                     min={0}
                                     step="0.01"
                                     required
@@ -228,7 +242,7 @@ const EditarExpediente = () => {
                                     type="text"
                                     name="site"
                                     placeholder="Emplazamiento"
-                                    value={expedient.site || ''}
+                                    value={expedient?.site || ''}
                                     required
                                 />
 
@@ -237,7 +251,7 @@ const EditarExpediente = () => {
                                     type="text"
                                     name="postal_code"
                                     placeholder="Código Postal"
-                                    value={expedient.postal_code || ''}
+                                    value={expedient?.postal_code || ''}
                                     minLength={5}
                                     maxLength={5}
                                     required
@@ -248,7 +262,8 @@ const EditarExpediente = () => {
                                     type="date"
                                     name="start_date"
                                     placeholder="Fecha Inicial"
-                                    value={expedient.start_date || ''}
+                                    value={expedient?.start_date || ''}
+                                    className={errors2 ? 'border-red-500 bg-red-200' : ''}
                                     required
                                 />
 
@@ -257,10 +272,13 @@ const EditarExpediente = () => {
                                     type="date"
                                     name="end_date"
                                     placeholder="Fecha Final"
-                                    value={expedient.end_date || ''}
+                                    className={errors2 ? 'border-red-500 bg-red-200' : ''}
+                                    value={expedient?.end_date || ''}
                                 />
 
+
                             </div>
+                            <p className="text-red-500"> {errors2}</p>
                         </div>
 
                         <div overflow-y-scrolliv className="">
@@ -282,7 +300,7 @@ const EditarExpediente = () => {
                                 </button>
                             </div>
                             <div className="grid xl:grid-cols-12 lg:grid-cols-10 md:grid-cols-8 sm:grid-cols-6 grid-cols-1  gap-2 pt-2">
-                                {expedientPhases.map(phase => {
+                                {expedientPhases?.map(phase => {
                                     return (
                                         <button type="button" key={phase.phase}
                                             className="bg-rose-900 text-white rounded-md text-center font-medium py-2 px-6 hover:bg-rose-500 focus:ring-2"
@@ -306,7 +324,7 @@ const EditarExpediente = () => {
                                     <>
                                         <select name="collegiates" id="collegiates" onChange={handleInputChange} className="p-2 border-b-2 border-gray-400 bg-gray-200/50 pt-3 rounded-t-md w-full focus:bg-red-50 focus:border-red-800">
                                             <option value="" >...</option>
-                                            {collegiates.map(collegiate => {
+                                            {collegiates?.map(collegiate => {
                                                 return (
                                                     <option key={collegiate.id} value={collegiate.id}>
                                                         {collegiate.name} {collegiate.first_surname}
@@ -314,10 +332,10 @@ const EditarExpediente = () => {
                                                 );
                                             })}
                                         </select>
-                                        {expedientPeople.length > 0 && (
+                                        {expedientPeople?.length > 0 && (
                                             <div className="mt-6 text-md text-gray-600 w-full text-nowrap text-center flex flex-col justify-center">
-                                                {expedientPeople.filter(collegiate => collegiate.role == "collegiate").map(collegiateData => {
-                                                    const collegiate = collegiates.find(c => c.id === collegiateData.id);
+                                                {expedientPeople?.filter(collegiate => collegiate.role == "collegiate").map(collegiateData => {
+                                                    const collegiate = collegiates?.find(c => c.id === collegiateData.id);
                                                     return collegiate ? (
                                                         <div key={collegiateData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
                                                             <p>{collegiate.name} {collegiate.first_surname}</p>
@@ -346,7 +364,7 @@ const EditarExpediente = () => {
                                     <>
                                         <select name="clients" id="clients" onChange={handleInputChange} className="p-2 border-b-2 border-gray-400 bg-gray-200/50 pt-3 rounded-t-md w-full focus:bg-red-50 focus:border-red-800">
                                             <option value="">...</option>
-                                            {clients.map(client => {
+                                            {clients?.map(client => {
                                                 return (
                                                     <option key={client.id} value={client.id}>
                                                         {client.name} {client.first_surname}
@@ -354,9 +372,9 @@ const EditarExpediente = () => {
                                                 );
                                             })}
                                         </select>
-                                        {expedientPeople.length > 0 && (
+                                        {expedientPeople?.length > 0 && (
                                             <div className="mt-6 text-md text-gray-600 w-full text-nowrap text-center flex flex-col justify-center">
-                                                {expedientPeople.filter(client => client.role == "client").map(clientData => {
+                                                {expedientPeople?.filter(client => client.role == "client").map(clientData => {
                                                     const client = clients.find(c => c.id === clientData.id);
                                                     return client ? (
                                                         <div key={clientData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
@@ -375,11 +393,11 @@ const EditarExpediente = () => {
                                 }
                             </div>
                         </div>
-                        <input type="hidden" name="center_id" className="hidden" value={user.center_id} />
+                        <input type="hidden" name="center_id" className="hidden" value={user?.center_id} />
                     </div>
 
                     <div className="text-center w-full sm:mb-11.5 mb-15 gap-2 lg:mx-0">
-                        <button onClick={() => setClick(true)} type="submit" className=" w-full px-4 py-2 bg-red-900 text-white hover:bg-red-300 hover:text-red-900 font-medium rounded cursor-pointer transition-all">
+                        <button type="submit" className="w-full px-4 py-2 bg-red-900 text-white hover:bg-red-300 hover:text-red-900 font-medium rounded cursor-pointer transition-all">
                             {click ?
                                 <div className="flex justify-center items-center ">
                                     <svg className="size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
