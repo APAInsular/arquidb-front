@@ -27,7 +27,7 @@ const Delete = ({ DatoId, onClose, type, url }) => {
             await Promise.all(
                 idsToDelete.map(id => {
                     if (url == "document") {
-                        const path = documents.find(document => document.id == id).name
+                        const path = documents.find(document => document.id == id).path
                         axios.post('api/erase', { path });
                     }
                     return deletes({ setErrors: setError, setStatus: setLoading, ElementId: id })
