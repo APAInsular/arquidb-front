@@ -403,12 +403,12 @@ const VerExpediente = () => {
                                                             )}
                                                         </div>
                                                         <div className="flex flex-row items-center justify-between p-4">
-                                                            <a href={import.meta.env.VITE_APP_BACKEND_URL + "storage/" + document.name} className="flex items-start gap-3 cursor-pointer">
+                                                            <a href={import.meta.env.VITE_APP_BACKEND_URL + "storage/" + document.path} className="flex items-start gap-3 cursor-pointer">
                                                                 <div className="mt-0.5 p-2 rounded-lg bg-indigo-50 text-indigo-600">
                                                                     <File className="w-5 h-5" />
                                                                 </div>
                                                                 <div className="flex-1 min-w-0">
-                                                                    <p className="text-sm font-medium text-gray-900 truncate w-20 text-ellipsis overflow-hidden">{document.name.split('/').pop()}</p>
+                                                                    <p className="text-sm font-medium text-gray-900 truncate w-20 text-ellipsis overflow-hidden">{document.name}</p>
                                                                     <p className="text-xs text-gray-500 mt-1">Fase {expedientDoc.phase.phase}</p>
                                                                 </div>
                                                             </a>
