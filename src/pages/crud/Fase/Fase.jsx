@@ -9,9 +9,6 @@ import Paginate from "../../../components/ui/Paginate";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
 
 const Fase = () => {
-
-
-
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [phases, setPhase] = useState([]);
