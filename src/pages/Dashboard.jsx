@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CrudManager from "../hooks/CrudManager";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import Delete from "../components/modals/crud/Delete";
 import TitleCard from "../components/ui/TitleCard";
 import DefaultTable from "../components/ui/DefaultTable";
@@ -38,7 +38,7 @@ const Dashboard = () => {
         &phase=${phase}
         &client=${client}&collegiate=${collegiate}
         &dateFrom=${dateFrom}&dateTo=${dateTo}
-        ${page ? `&per_page=${page}` : `&all=true`}&page=${pages}`
+        &page=${pages}`
     });
 
     useEffect(() => {
@@ -130,7 +130,7 @@ const Dashboard = () => {
                         value={expedientes?.people?.[0]?.collegiate.length}
                     />
                 </div>
-                <div className="">
+                <div className="mt-2">
                     <Paginate page={pages} setPage={setPages} totalPages={totalPages} />
                 </div>
                 {loading ? (
