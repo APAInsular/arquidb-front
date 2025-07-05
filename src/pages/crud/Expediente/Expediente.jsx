@@ -5,12 +5,30 @@ import Delete from "../../../components/modals/crud/Delete";
 import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
 import DefaultTable from "../../../components/ui/DefaultTable";
+import CrudManager from "../../../hooks/CrudManager";
+import DefaultSearch from "../../../components/ui/DefaultSearch";
+import Paginate from "../../../components/ui/Paginate";
 
 const Expediente = () => {
     const [expedientes, setExpedientes] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { expedients, loading } = useExpedient();
+    const { expedients } = useExpedient();
+
+    const buscador = useCallback((query = '') => {
+        const { views } = CrudManager({ url: `expedient${query ? '?title=' + query : '?title='}&page=${page}` });
+        views({ setData: setExpedientes, setLoading, setErrors: setError, setPages: setTotalPages });
+    }, [page]);
+
+    useEffect(() => {
+        buscador();
+    }, [buscador]);
+
+    if (error) return <p>Error: {error}</p>;
 
     const expedientesColumns = [
         {
@@ -67,27 +85,23 @@ const Expediente = () => {
         }
     ];
 
-    const formattedExpedientes = expedients.map(expediente => ({
+    const formattedExpedientes = expedientes.map(expediente => ({
         ...expediente,
         fullTitle: `${expediente.title} (${expediente.budget}€) - ${expediente.site}, ${expediente.postal_code}`,
     }));
 
-
-    useEffect(() => {
-        if (expedients) {
-            setExpedientes(expedients);
-        }
-    }, [formattedExpedientes]);
-
-
-    console.log("HOLAA", expedients)
+    console.log("HOLAA", expedientes)
 
     return (
         <>
             {deletes && <Delete DatoId={deletes} onClose={() => { setDeletes(false); }} type="Expediente" url={"expedient"} />}
             <div className="flex flex-col h-full">
                 <TitleCard name="Expedientes" link="/" />
-                <div className="w-full flex justify-end">
+                <div className="w-full flex justify-between space-x-1">
+                    <DefaultSearch
+                        title={'Expedientes'}
+                        Buscador={buscador}
+                    />
                     <Link to={"/expedientes/crear"} className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-900 font-medium bg-red-200 w-min mt-2 p-1 rounded-full shadow-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
@@ -95,21 +109,23 @@ const Expediente = () => {
                         <p>Añadir expedientes</p>
                     </Link>
                 </div>
-                <div className="grid grid-cols-3 justify-start gap-2 my-2 mb-15">
+                <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedientes.length}
+                        value={expedients.length}
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedientes?.people?.[0]?.clients.length}
+                        value={expedients?.people?.[0]?.clients.length}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedientes?.people?.[0]?.collegiate.length}
+                        value={expedients?.people?.[0]?.collegiate.length}
                     />
                 </div>
-
+                <div className="">
+                    <Paginate page={page} setPage={setPage} totalPages={totalPages} />
+                </div>
                 {loading ? (
                     <div className="flex justify-center items-center ">
                         <svg className="size-9 animate-spin text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -118,21 +134,17 @@ const Expediente = () => {
                         </svg>
                     </div>)
                     : (
-                        <>
-                            {/* tabla */}
-                            < DefaultTable
-                                columns={expedientesColumns}
-                                data={formattedExpedientes}
-                                setDeletes={setDeletes}
-                                openId={openId}
-                                setOpenId={setOpenId}
-                                tabla={'expedientes'}
-                                someText="title"
-                                someNumber="number"
-                                someDate="start_date"
-                            />
-                        </>
-                    )}
+                        < DefaultTable
+                            columns={expedientesColumns}
+                            data={formattedExpedientes}
+                            setDeletes={setDeletes}
+                            openId={openId}
+                            setOpenId={setOpenId}
+                            tabla={'expedientes'}
+                            someText="title"
+                            someNumber="number"
+                            someDate="start_date"
+                        />)}
             </div>
         </>
     )

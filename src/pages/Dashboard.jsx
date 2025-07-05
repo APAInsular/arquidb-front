@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CrudManager from "../hooks/CrudManager";
 import { useSearchParams } from "react-router-dom";
+import { useExpedient } from "../store/contexts/ExpedientContext";
 import Delete from "../components/modals/crud/Delete";
 import TitleCard from "../components/ui/TitleCard";
 import DefaultTable from "../components/ui/DefaultTable";
@@ -10,6 +11,7 @@ import StatsCard from "../components/ui/StatsCard";
 const Dashboard = () => {
 
     const [searchParams] = useSearchParams();
+    const { expedients } = useExpedient();
 
     const SearchTitle = searchParams.get('search') || '';
     const title = searchParams.get('title') || '';
@@ -119,15 +121,15 @@ const Dashboard = () => {
                 <div className="grid grid-cols-3 gap-2 mt-2">
                     <StatsCard
                         title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedientes?.length}
+                        value={expedients?.length}
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedientes?.people?.[0]?.clients.length}
+                        value={expedients?.people?.[0]?.clients.length}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedientes?.people?.[0]?.collegiate.length}
+                        value={expedients?.people?.[0]?.collegiate.length}
                     />
                 </div>
                 <div className="mt-2">
