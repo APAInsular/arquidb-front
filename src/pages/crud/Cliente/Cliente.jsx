@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import TitleCard from "../../../components/ui/TitleCard";
 import Delete from "../../../components/modals/crud/Delete";
 import { useCallback, useEffect, useState } from "react";
+import { useClient } from "../../../store/contexts/ClientContext";
 import CrudManager from "../../../hooks/CrudManager";
 import StatsCard from "../../../components/ui/StatsCard";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
@@ -12,11 +13,12 @@ const Cliente = () => {
 
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
-    const [clients, setClient] = useState([]);
+    const [clientes, setClientes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
+    const { clients } = useClient();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({
@@ -28,7 +30,7 @@ const Cliente = () => {
                 &observations=${query}` :
                 '?name=&first_surname=&second_surname=&identification_number&observations'}&page=${page}`
         });
-        views({ setData: setClient, setLoading, setErrors: setError, setPages: setTotalPages });
+        views({ setData: setClientes, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
     useEffect(() => {
@@ -56,7 +58,7 @@ const Cliente = () => {
         { key: 'observations', label: 'Observación' }
     ];
 
-    const formattedClients = clients.map(client => ({
+    const formattedClients = clientes.map(client => ({
         ...client,
         fullSurname: `${client.first_surname} ${client.second_surname}`,
     }));

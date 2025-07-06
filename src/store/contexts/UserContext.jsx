@@ -3,28 +3,28 @@ import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
 
 const ArquidbContext = createContext();
-export const useClient = () => useContext(ArquidbContext);
+export const useUser = () => useContext(ArquidbContext);
 
-const ClientContext = ({ children }) => {
-    const { views, creates, updates } = CrudManager({ url: `personClient?all=true` });
+const UserContext = ({ children }) => {
+    const { views, creates, updates } = CrudManager({ url: `users?all=true` });
 
-    const [clients, setClients] = useState([]);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setClients, setLoading, setErrors: setError });
+        views({ setData: setUsers, setLoading, setErrors: setError });
     }, []);
 
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ clients, loading }}>
+        <ArquidbContext.Provider value={{ users, loading }}>
             {/* {loading ? <WebLoader /> : ""} */}
             {children}
         </ArquidbContext.Provider>
     );
 }
 
-export default ClientContext;
+export default UserContext;

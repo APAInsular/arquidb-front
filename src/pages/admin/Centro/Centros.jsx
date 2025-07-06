@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
 import { useCallback, useEffect, useState } from "react";
+import { useCenter } from "../../../store/contexts/CenterContext";
 import Delete from "../../../components/modals/crud/Delete";
 import CrudManager from "../../../hooks/CrudManager";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
@@ -24,17 +25,17 @@ const Centros = () => {
         number: "",
         phone: "",
     });
-    const [centers, setcenters] = useState([]);
+    const [centros, setCentros] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-
+    const { centers } = useCenter();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `centers${query ? `?name=${query}&phone=${query}` : '?name=&phone='}&page=${page}` });
-        views({ setData: setcenters, setLoading, setErrors: setError, setPages: setTotalPages });
+        views({ setData: setCentros, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const Centros = () => {
         { key: 'phone', label: 'Teléfono' },
     ];
 
-    const formattedCenters = centers.map(center => ({
+    const formattedCenters = centros.map(center => ({
         ...center,
     }));
 

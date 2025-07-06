@@ -3,6 +3,8 @@ import './App.css';
 import Layout from './components/layout/Layout';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/auth/Login';
+import UserContext from './store/contexts/UserContext';
+import CenterContext from './store/contexts/CenterContext';
 import ExpedientContext from './store/contexts/ExpedientContext';
 import PhaseContext from './store/contexts/PhaseContext';
 import DocumentContext from './store/contexts/DocumentContext';
@@ -47,60 +49,64 @@ function App() {
     <>
       {/* <AlertErrorPage /> */}
       <LoaderContext>
-        <ExpedientContext>
-          <PhaseContext>
-            <DocumentContext>
-              <ClientContext>
-                <CollegiateContext>
-                  {/* rutas de la pagina */}
-                  <Routes>
-                    {/* El contenedor general con el header y aside */}
-                    <Route path="/" element={<Layout />} >
-                      {/* Paginas */}
-                      <Route path="/" element={<Dashboard />} />
-                      {/* usuario */}
-                      <Route path="/profile" element={<Profile />} />
-                      {/* posible eliminacion  */}
-                      {/* <Route path="/search" element={<PageSearch />} /> */}
-                      <Route path="/expedientes" element={<Expediente />} />
-                      <Route path="/expedientes/:id/show" element={<VerExpediente />} />
-                      <Route path="/expedientes/crear" element={<CrearExpediente />} />
-                      <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
-                      {/* <Route path="/personas" element={<Persona />} /> */}
-                      <Route path="/colegiados" element={<Colegiado />} />
-                      <Route path="/colegiados/:id/show" element={<VerColegiado />} />
-                      <Route path="/colegiados/:id/editar" element={<ActualizarColegiado />} />
-                      <Route path="/colegiados/crear" element={<CrearColegiado />} />
-                      <Route path="/clientes" element={<Cliente />} />
-                      <Route path="/clientes/:id/show" element={<VerCliente />} />
-                      <Route path="/clientes/:id/editar" element={<ActualizarCliente />} />
-                      <Route path="/clientes/crear" element={<CrearCliente />} />
-                      <Route path="/fases" element={<Fase />} />
-                      <Route path="/fases/crear" element={<CrearFase />} />
-                      <Route path="/fases/:id/editar" element={<EditarFase />} />
-                      <Route path="/fases/:id/show" element={<VerFase />} />
-                      <Route element={<AdminRoute />}>
-                        <Route path="/historial" element={<Records />} />
-                        <Route path="/usuarios" element={<Usuarios />} />
-                        <Route path="/usuarios/:id/show" element={<VerUsuario />} />
-                        <Route path="/usuarios/crear" element={<CrearUsuario />} />
-                        <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
-                        <Route path="/centros" element={<Centros />} />
-                        <Route path="/centros/:id/show" element={<VerCentro />} />
-                        <Route path="/centros/crear" element={<CrearCentro />} />
-                        <Route path="/centros/:id/editar" element={<ActualizarCentro />} />
-                      </Route>
-                    </Route>
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/forgot-password" element={<ForgotPassword />} />
-                    <Route path="/password-reset/:token" element={<PasswordReset />} />
-                    <Route path="/*" element={<NotFound />} />
-                  </Routes>
-                </CollegiateContext>
-              </ClientContext>
-            </DocumentContext>
-          </PhaseContext>
-        </ExpedientContext>
+        <UserContext>
+          <CenterContext>
+            <ExpedientContext>
+              <PhaseContext>
+                <DocumentContext>
+                  <ClientContext>
+                    <CollegiateContext>
+                      {/* rutas de la pagina */}
+                      <Routes>
+                        {/* El contenedor general con el header y aside */}
+                        <Route path="/" element={<Layout />} >
+                          {/* Paginas */}
+                          <Route path="/" element={<Dashboard />} />
+                          {/* usuario */}
+                          <Route path="/profile" element={<Profile />} />
+                          {/* posible eliminacion  */}
+                          {/* <Route path="/search" element={<PageSearch />} /> */}
+                          <Route path="/expedientes" element={<Expediente />} />
+                          <Route path="/expedientes/:id/show" element={<VerExpediente />} />
+                          <Route path="/expedientes/crear" element={<CrearExpediente />} />
+                          <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
+                          {/* <Route path="/personas" element={<Persona />} /> */}
+                          <Route path="/colegiados" element={<Colegiado />} />
+                          <Route path="/colegiados/:id/show" element={<VerColegiado />} />
+                          <Route path="/colegiados/:id/editar" element={<ActualizarColegiado />} />
+                          <Route path="/colegiados/crear" element={<CrearColegiado />} />
+                          <Route path="/clientes" element={<Cliente />} />
+                          <Route path="/clientes/:id/show" element={<VerCliente />} />
+                          <Route path="/clientes/:id/editar" element={<ActualizarCliente />} />
+                          <Route path="/clientes/crear" element={<CrearCliente />} />
+                          <Route path="/fases" element={<Fase />} />
+                          <Route path="/fases/crear" element={<CrearFase />} />
+                          <Route path="/fases/:id/editar" element={<EditarFase />} />
+                          <Route path="/fases/:id/show" element={<VerFase />} />
+                          <Route element={<AdminRoute />}>
+                            <Route path="/historial" element={<Records />} />
+                            <Route path="/usuarios" element={<Usuarios />} />
+                            <Route path="/usuarios/:id/show" element={<VerUsuario />} />
+                            <Route path="/usuarios/crear" element={<CrearUsuario />} />
+                            <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
+                            <Route path="/centros" element={<Centros />} />
+                            <Route path="/centros/:id/show" element={<VerCentro />} />
+                            <Route path="/centros/crear" element={<CrearCentro />} />
+                            <Route path="/centros/:id/editar" element={<ActualizarCentro />} />
+                          </Route>
+                        </Route>
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/password-reset/:token" element={<PasswordReset />} />
+                        <Route path="/*" element={<NotFound />} />
+                      </Routes>
+                    </CollegiateContext>
+                  </ClientContext>
+                </DocumentContext>
+              </PhaseContext>
+            </ExpedientContext>
+          </CenterContext>
+        </UserContext>
       </LoaderContext>
     </>
 
