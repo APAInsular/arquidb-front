@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useCollegiate } from "../../../store/contexts/CollegiateContext";
 import Delete from "../../../components/modals/crud/Delete";
 import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
@@ -12,11 +13,12 @@ const Colegiado = () => {
 
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
-    const [collegiates, setCollegiate] = useState([]);
+    const [colegiados, setColegiados] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
+    const { collegiates } = useCollegiate();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({
@@ -28,7 +30,7 @@ const Colegiado = () => {
                 &observations=${query}` :
                 '?name=&first_surname=&second_surname=&identification_number&observations'}&page=${page}`
         });
-        views({ setData: setCollegiate, setLoading, setErrors: setError, setPages: setTotalPages });
+        views({ setData: setColegiados, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
     useEffect(() => {
@@ -66,13 +68,10 @@ const Colegiado = () => {
         },
     ];
 
-    const formattedColegiados = collegiates.map((datos) => ({
+    const formattedColegiados = colegiados.map((datos) => ({
         ...datos,
         fullSurname: `${datos.first_surname} ${datos.second_surname || ''}`,
     }));
-
-    console.log("aaaaa" + collegiates)
-
 
     return (
         <>

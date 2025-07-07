@@ -4,26 +4,26 @@ import WebLoader from '../../routes/loaders/WebLoader';
 import { UseLoader } from './LoaderContext';
 
 const ArquidbContext = createContext();
-export const useExpedient = () => useContext(ArquidbContext);
+export const useCenter = () => useContext(ArquidbContext);
 
-const ExpedientContext = ({ children }) => {
+const CenterContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { views, creates, updates } = CrudManager({ url: `expedient?all=true`, showLoader, hideLoader, showError, hideError });
+    const { views, creates, updates } = CrudManager({ url: `centers?all=true`, showLoader, hideLoader, showError, hideError });
 
-    const [expedients, setExpedients] = useState([]);
+    const [centers, setCenters] = useState([]);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setExpedients, setLoading, setErrors: setError });
+        views({ setData: setCenters, setLoading, setErrors: setError });
     }, []);
 
-    const createExpedient = async (data) => {
+    const createCenter = async (data) => {
         return await creates({ setErrors: setError, setStatus, data });
     }
 
-    const updateExpedient = async (id, data) => {
+    const updateCenter = async (id, data) => {
         await updates({ setErrors: setError, setStatus, id, data });
     }
 
@@ -31,11 +31,11 @@ const ExpedientContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ expedients, createExpedient, updateExpedient, loading, error }}>
+        <ArquidbContext.Provider value={{ centers, createCenter, updateCenter, loading, error }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
     );
-};
+}
 
-export default ExpedientContext;
+export default CenterContext;

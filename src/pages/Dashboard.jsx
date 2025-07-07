@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CrudManager from "../hooks/CrudManager";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import { useExpedient } from "../store/contexts/ExpedientContext";
 import Delete from "../components/modals/crud/Delete";
 import TitleCard from "../components/ui/TitleCard";
 import DefaultTable from "../components/ui/DefaultTable";
@@ -10,6 +11,7 @@ import StatsCard from "../components/ui/StatsCard";
 const Dashboard = () => {
 
     const [searchParams] = useSearchParams();
+    const { expedients } = useExpedient();
 
     const SearchTitle = searchParams.get('search') || '';
     const title = searchParams.get('title') || '';
@@ -21,11 +23,13 @@ const Dashboard = () => {
     const dateTo = searchParams.get('dateTo') || '';
     const page = searchParams.get('page') || '';
 
-    console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
+    // console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
 
     const [pages, setPages] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [expedientes, setExpedientes] = useState([]);
+    const [totalClientes, setTotalClientes] = useState([]);
+    const [totalColegiados, setTotalColegiados] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
@@ -38,16 +42,32 @@ const Dashboard = () => {
         &phase=${phase}
         &client=${client}&collegiate=${collegiate}
         &dateFrom=${dateFrom}&dateTo=${dateTo}
-        ${page ? `&per_page=${page}` : `&all=true`}&page=${pages}`
+        &page=${pages}`
     });
 
     useEffect(() => {
         views({ setData: setExpedientes, setLoading, setError, setPages: setTotalPages });
     }, [pages]);
 
-    if (error) return <p>Error: {error}</p>;
+    useEffect(() => {
+        const clientesSet = new Set();
+        const colegiadosSet = new Set();
 
-    console.log("HOLAAA", expedientes?.map(person => person.people).map(per => per.collegiates))
+        expedients.forEach(expedient => {
+            expedient.people.forEach(person => {
+                if (person.pivot.role === "client") {
+                    clientesSet.add(person.id);
+                } else if (person.pivot.role === "collegiate") {
+                    colegiadosSet.add(person.id);
+                }
+            });
+        });
+
+        setTotalClientes([...clientesSet]);
+        setTotalColegiados([...colegiadosSet]);
+    }, [expedients]);
+
+    if (error) return <p>Error: {error}</p>;
 
     const expedientesColumns = [
         {
@@ -119,18 +139,18 @@ const Dashboard = () => {
                 <div className="grid grid-cols-3 gap-2 mt-2">
                     <StatsCard
                         title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedientes?.length}
+                        value={expedients?.length}
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedientes?.people?.[0]?.clients.length}
+                        value={totalClientes.length}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedientes?.people?.[0]?.collegiate.length}
+                        value={totalColegiados.length}
                     />
                 </div>
-                <div className="">
+                <div className="mt-2">
                     <Paginate page={pages} setPage={setPages} totalPages={totalPages} />
                 </div>
                 {loading ? (

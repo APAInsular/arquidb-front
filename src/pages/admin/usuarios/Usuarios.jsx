@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import TitleCard from "../../../components/ui/TitleCard";
 import StatsCard from "../../../components/ui/StatsCard";
 import { useCallback, useEffect, useState } from "react";
+import { useUser } from "../../../store/contexts/UserContext";
 import Delete from "../../../components/modals/crud/Delete";
 import CrudManager from "../../../hooks/CrudManager";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
@@ -21,17 +22,17 @@ const Usuarios = () => {
         email: "",
         center: "",
     });
-    const [users, setUsers] = useState([]);
+    const [usuarios, setUsuarios] = useState([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-
+    const { users } = useUser();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `users${query ? `?name=${query}&email=${query}` : '?name=&email='}&page=${page}` });
-        views({ setData: setUsers, setLoading, setErrors: setError, setPages: setTotalPages });
+        views({ setData: setUsuarios, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
     useEffect(() => {
@@ -83,7 +84,7 @@ const Usuarios = () => {
         },
     ];
 
-    const formattedUsers = users.map(user => ({
+    const formattedUsers = usuarios.map(user => ({
         ...user,
         centerName: user.center.name,
     }));

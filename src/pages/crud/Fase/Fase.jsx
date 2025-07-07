@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import CrudManager from "../../../hooks/CrudManager";
 import TitleCard from "../../../components/ui/TitleCard";
 import { Link } from "react-router-dom";
+import { usePhase } from "../../../store/contexts/PhaseContext";
 import StatsCard from "../../../components/ui/StatsCard";
 import Delete from "../../../components/modals/crud/Delete";
 import DefaultTable from "../../../components/ui/DefaultTable";
@@ -9,20 +10,18 @@ import Paginate from "../../../components/ui/Paginate";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
 
 const Fase = () => {
-
-
-
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
-    const [phases, setPhase] = useState([]);
+    const [fases, setFases] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
+    const { phases } = usePhase();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `phase${query ? '?title=' + query : '?title='}&page=${page}` });
-        views({ setData: setPhase, setLoading, setErrors: setError, setPages: setTotalPages });
+        views({ setData: setFases, setLoading, setErrors: setError, setPages: setTotalPages });
     }, [page]);
 
     useEffect(() => {
@@ -31,7 +30,7 @@ const Fase = () => {
 
     if (error) return <p>Error: {error}</p>;
 
-    console.log(totalPages)
+    // console.log(totalPages)
 
     const phasesColumns = [
         {
@@ -60,7 +59,7 @@ const Fase = () => {
         },
     ];
 
-    const formattedPhases = phases.map(phase => ({
+    const formattedPhases = fases.map(phase => ({
         ...phase,
         fullTitle: `${phase.title}`,
     }));
