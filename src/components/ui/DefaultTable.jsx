@@ -97,7 +97,7 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla, ...
         setChecked([]);
     }, [data]);
 
-    console.log(state)
+    // console.log(state)
 
     return (
         <>

@@ -30,7 +30,7 @@ const Fase = () => {
 
     if (error) return <p>Error: {error}</p>;
 
-    console.log(totalPages)
+    // console.log(totalPages)
 
     const phasesColumns = [
         {

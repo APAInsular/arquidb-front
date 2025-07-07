@@ -23,11 +23,13 @@ const Dashboard = () => {
     const dateTo = searchParams.get('dateTo') || '';
     const page = searchParams.get('page') || '';
 
-    console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
+    // console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
 
     const [pages, setPages] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [expedientes, setExpedientes] = useState([]);
+    const [totalClientes, setTotalClientes] = useState([]);
+    const [totalColegiados, setTotalColegiados] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
@@ -47,9 +49,25 @@ const Dashboard = () => {
         views({ setData: setExpedientes, setLoading, setError, setPages: setTotalPages });
     }, [pages]);
 
-    if (error) return <p>Error: {error}</p>;
+    useEffect(() => {
+        const clientesSet = new Set();
+        const colegiadosSet = new Set();
 
-    console.log("HOLAAA", expedientes?.map(person => person.people).map(per => per.collegiates))
+        expedients.forEach(expedient => {
+            expedient.people.forEach(person => {
+                if (person.pivot.role === "client") {
+                    clientesSet.add(person.id);
+                } else if (person.pivot.role === "collegiate") {
+                    colegiadosSet.add(person.id);
+                }
+            });
+        });
+
+        setTotalClientes([...clientesSet]);
+        setTotalColegiados([...colegiadosSet]);
+    }, [expedients]);
+
+    if (error) return <p>Error: {error}</p>;
 
     const expedientesColumns = [
         {
@@ -125,11 +143,11 @@ const Dashboard = () => {
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedients?.people?.[0]?.clients.length}
+                        value={totalClientes.length}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedients?.people?.[0]?.collegiate.length}
+                        value={totalColegiados.length}
                     />
                 </div>
                 <div className="mt-2">

@@ -11,6 +11,8 @@ import Paginate from "../../../components/ui/Paginate";
 
 const Expediente = () => {
     const [expedientes, setExpedientes] = useState([]);
+    const [totalClientes, setTotalClientes] = useState([]);
+    const [totalColegiados, setTotalColegiados] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -27,6 +29,24 @@ const Expediente = () => {
     useEffect(() => {
         buscador();
     }, [buscador]);
+
+    useEffect(() => {
+        const clientesSet = new Set();
+        const colegiadosSet = new Set();
+
+        expedients.forEach(expedient => {
+            expedient.people.forEach(person => {
+                if (person.pivot.role === "client") {
+                    clientesSet.add(person.id);
+                } else if (person.pivot.role === "collegiate") {
+                    colegiadosSet.add(person.id);
+                }
+            });
+        });
+
+        setTotalClientes([...clientesSet]);
+        setTotalColegiados([...colegiadosSet]);
+    }, [expedients]);
 
     if (error) return <p>Error: {error}</p>;
 
@@ -90,8 +110,6 @@ const Expediente = () => {
         fullTitle: `${expediente.title} (${expediente.budget}€) - ${expediente.site}, ${expediente.postal_code}`,
     }));
 
-    console.log("HOLAA", expedientes)
-
     return (
         <>
             {deletes && <Delete DatoId={deletes} onClose={() => { setDeletes(false); }} type="Expediente" url={"expedient"} />}
@@ -116,11 +134,11 @@ const Expediente = () => {
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedients?.people?.[0]?.clients.length}
+                        value={totalClientes.length}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedients?.people?.[0]?.collegiate.length}
+                        value={totalColegiados.length}
                     />
                 </div>
                 <div className="">
