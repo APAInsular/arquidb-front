@@ -6,7 +6,7 @@ const ArquidbContext = createContext();
 export const useUser = () => useContext(ArquidbContext);
 
 const UserContext = ({ children }) => {
-    const { views, creates, updates } = CrudManager({ url: `users?all=true` });
+    const { views, creates, updates } = CrudManager({ url: `users`, allData: true });
 
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);

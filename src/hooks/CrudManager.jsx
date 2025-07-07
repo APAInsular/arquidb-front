@@ -1,14 +1,16 @@
 import axios from '../lib/axios'
 
-export default function CrudManager({ url, showLoader, hideLoader, showError, hideError }) {
+export default function CrudManager({ url, showLoader, hideLoader, showError, hideError, allData }) {
 
     const api = "api/"
+    let all = '';
+    if (allData) all = '?all=true';
 
     // Ver los datos 
     const views = async ({ setData, setLoading, setErrors, setPages }) => {
         setLoading(true);
         await axios
-            .get(api + url)
+            .get(api + url + all)
             .then(res => {
                 setData(res.data.data ?? res.data);
                 if (typeof setPages === 'function') {

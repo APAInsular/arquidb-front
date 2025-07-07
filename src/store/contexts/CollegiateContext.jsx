@@ -6,7 +6,7 @@ const ArquidbContext = createContext();
 export const useCollegiate = () => useContext(ArquidbContext);
 
 const CollegiateContext = ({ children }) => {
-    const { views, creates, updates } = CrudManager({ url: `personCollegiate?all=true` });
+    const { views, creates, updates } = CrudManager({ url: `personCollegiate`, allData: true });
 
     const [collegiates, setCollegiates] = useState([]);
     const [loading, setLoading] = useState(false);
