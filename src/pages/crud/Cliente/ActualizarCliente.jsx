@@ -28,6 +28,7 @@ const ActualizarCliente = () => {
 
         if (response) {
             navigate('/clientes');
+            navigate(0);
         }
     };
 

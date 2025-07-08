@@ -22,6 +22,7 @@ const CrearCliente = () => {
 
         if (response) {
             navigate('/clientes');
+            navigate(0);
         }
     };
 
