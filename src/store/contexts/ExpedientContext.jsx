@@ -8,7 +8,7 @@ export const useExpedient = () => useContext(ArquidbContext);
 
 const ExpedientContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { views, creates, updates } = CrudManager({ url: `expedient?all=true`, showLoader, hideLoader, showError, hideError });
+    const { views, creates, updates } = CrudManager({ url: `expedient`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [expedients, setExpedients] = useState([]);
     const [loading, setLoading] = useState(false);

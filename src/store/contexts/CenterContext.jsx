@@ -8,7 +8,7 @@ export const useCenter = () => useContext(ArquidbContext);
 
 const CenterContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { views, creates, updates } = CrudManager({ url: `centers?all=true`, showLoader, hideLoader, showError, hideError });
+    const { views, creates, updates } = CrudManager({ url: `centers`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [centers, setCenters] = useState([]);
     const [loading, setLoading] = useState(false);

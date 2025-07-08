@@ -9,7 +9,7 @@ export const usePhase = () => useContext(ArquidbContext);
 
 const PhaseContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { views, creates, updates } = CrudManager({ url: `phase?all=true`, showLoader, hideLoader, showError, hideError });
+    const { views, creates, updates } = CrudManager({ url: `phase`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [phases, setPhases] = useState([]);
     const [loading, setLoading] = useState(false);
