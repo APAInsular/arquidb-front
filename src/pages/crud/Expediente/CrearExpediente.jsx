@@ -270,7 +270,7 @@ const CrearExpediente = () => {
                                             {collegiates.map(collegiate => {
                                                 return (
                                                     <option key={collegiate.id} value={collegiate.id}>
-                                                        {collegiate.name} {collegiate.first_surname}
+                                                        {collegiate.identification_number} {collegiate.name} {collegiate.first_surname}
                                                     </option>
                                                 );
                                             })}
@@ -281,7 +281,7 @@ const CrearExpediente = () => {
                                                     const collegiate = collegiates.find(c => c.id === collegiateData.id);
                                                     return collegiate ? (
                                                         <div key={collegiateData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
-                                                            <p>{collegiate.name} {collegiate.first_surname}</p>
+                                                            <p>{collegiate.identification_number} {collegiate.name} {collegiate.first_surname}</p>
                                                             <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldCollegiate => oldCollegiate != collegiateData))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -310,7 +310,7 @@ const CrearExpediente = () => {
                                             {clients.map(client => {
                                                 return (
                                                     <option key={client.id} value={client.id}>
-                                                        {client.name} {client.first_surname}
+                                                        {client.identification_number} {client.name} {client.first_surname}
                                                     </option>
                                                 );
                                             })}
@@ -321,7 +321,7 @@ const CrearExpediente = () => {
                                                     const client = clients.find(c => c.id === clientData.id);
                                                     return client ? (
                                                         <div key={clientData.id} className="flex items-center justify-between p-2 border-b-2 border-gray-300 rounded-t-md bg-gray-50 mb-1">
-                                                            <p>{client.name} {client.first_surname}</p>
+                                                            <p>{client.identification_number} {client.name} {client.first_surname}</p>
                                                             <p className="cursor-pointer" onClick={() => setExpedientPeople(expedientPeople.filter(oldClient => oldClient != clientData))}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -336,7 +336,6 @@ const CrearExpediente = () => {
                                 }
                             </div>
                         </div>
-                        
                         <input type="hidden" name="center_id" className="hidden" value={user.center_id} />
                     </div>
 
