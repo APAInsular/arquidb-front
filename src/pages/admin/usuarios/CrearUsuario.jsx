@@ -25,6 +25,7 @@ const CrearUsuario = () => {
 
         if (response) {
             navigate('/usuarios');
+            navigate(0);
         }
 
     };

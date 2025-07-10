@@ -59,6 +59,8 @@ const Fase = () => {
         },
     ];
 
+    const totalDocuments = phases?.reduce((acc, fase) => acc + (fase.documents?.length || 0), 0);
+
     const formattedPhases = fases.map(phase => ({
         ...phase,
         fullTitle: `${phase.title}`,
@@ -96,7 +98,7 @@ const Fase = () => {
                     />
                     <StatsCard
                         title={"Total Documentos (Cualquier Documento)"}
-                        value={phases?.documents?.length}
+                        value={totalDocuments}
                     />
                 </div>
                 <div className="">

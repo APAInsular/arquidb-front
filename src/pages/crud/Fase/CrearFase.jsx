@@ -19,6 +19,7 @@ const CrearFase = () => {
 
         if (response?.success) {
             navigate('/');
+            navigate(0);
         }
     };
 

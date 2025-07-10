@@ -18,12 +18,14 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
         await axios
             .get(api + url + all, {
                 headers: {
-                    Authorization: `Bearer ${token}`,
-                    Accept: 'application/json'
-                }
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+                withCredentials: true, // Asegúrate de que esto esté configurado si necesitas cookies
+            }
             })
             .then(res => {
                 setData(res.data.data ?? res.data);
+                console.log(res.data.data ?? res.data)
                 if (typeof setPages === 'function') {
                     setPages(res?.data?.data?.last_page ?? res?.data?.last_page);
                 }
