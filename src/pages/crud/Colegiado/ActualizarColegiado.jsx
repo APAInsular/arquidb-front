@@ -28,6 +28,7 @@ const ActualizarColegiado = () => {
 
         if (response) {
             navigate('/colegiados');
+            navigate(0);
         }
     };
 

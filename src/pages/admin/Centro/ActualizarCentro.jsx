@@ -29,6 +29,7 @@ const ActualizarCentro = () => {
 
         if (response) {
             navigate('/centros');
+            navigate(0);
         }
     };
 

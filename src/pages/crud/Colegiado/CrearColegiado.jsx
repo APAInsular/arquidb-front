@@ -22,6 +22,7 @@ const CrearColegiado = () => {
 
         if (response) {
             navigate('/colegiados');
+            navigate(0);
         }
     };
 
