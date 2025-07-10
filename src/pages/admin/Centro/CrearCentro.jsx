@@ -24,6 +24,7 @@ const CrearCentro = () => {
 
         if (response) {
             navigate('/centros');
+            navigate(0);
         }
 
     };

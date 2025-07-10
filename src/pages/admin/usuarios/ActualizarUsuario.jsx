@@ -29,6 +29,7 @@ const ActualizarUsuario = () => {
 
         if (response) {
             navigate('/usuarios');
+            navigate(0);
         }
     };
 

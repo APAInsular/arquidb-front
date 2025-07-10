@@ -26,6 +26,7 @@ const EditarFase = () => {
 
         if (response) {
             navigate('/fases');
+            navigate(0);
         }
     };
 
