@@ -81,6 +81,7 @@ const Header = ({ onClicks }) => {
                 {/* Logo */}
                 <div className="w-full flex flex-row justify-between items-center">
                     <div>
+                        <p>hola</p>
                         <img src={Logo} className=" brightness-120 rounded-md" alt="COACFUE" width={50} height={50} />
                     </div>
                     <div onClick={onClicks}
