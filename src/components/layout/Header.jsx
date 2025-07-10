@@ -82,8 +82,7 @@ const Header = ({ onClicks }) => {
                 <div className="w-full flex flex-row justify-between items-center">
                     <div>
                         <Link to="/">
-                            <p>hola</p>
-                        <img
+                            <img
                                 src={Logo}
                                 className="brightness-120 rounded-md cursor-pointer"
                                 alt="COACFUE"
