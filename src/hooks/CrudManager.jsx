@@ -15,6 +15,7 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
             })
             .then(res => {
                 setData(res.data.data ?? res.data);
+                console.log(res.data.data ?? res.data)
                 if (typeof setPages === 'function') {
                     setPages(res?.data?.data?.last_page ?? res?.data?.last_page);
                 }
