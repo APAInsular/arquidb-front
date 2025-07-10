@@ -17,11 +17,8 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
 
         await axios
             .get(api + url + all, {
-                headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-                withCredentials: true, // Asegúrate de que esto esté configurado si necesitas cookies
-            }
+                
+                withCredentials: true  // ← Esto es lo importante
             })
             .then(res => {
                 setData(res.data.data ?? res.data);
