@@ -98,7 +98,7 @@ const Expediente = () => {
             render: (expediente) => (
                 <div className="text-center">
                     {Array.isArray(expediente.phases) && expediente.phases.length > 0
-                        ? expediente.phases[0].documents?.length || 0
+                        ? expediente.phases.reduce((acc, fase) => acc + (fase.documents?.length || 0), 0)
                         : 0}
                 </div>
             )
