@@ -19,7 +19,7 @@ const Fase = () => {
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
     const [phaseAccounts, setPhaseAccounts] = useState(null);
-    const { phaseCount } = usePhase();
+    const { countPhase } = usePhase();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `phase${query ? '?title=' + query : '?title='}&page=${page}` });
@@ -33,7 +33,7 @@ const Fase = () => {
     useEffect(() => {
         const fetchCount = async () => {
             try {
-                const result = await phaseCount();
+                const result = await countPhase();
                 setPhaseAccounts(result);
             } catch (err) {
                 console.error("Error getting phase count", err);
@@ -43,8 +43,8 @@ const Fase = () => {
         fetchCount();
     }, []);
 
-    if (error) return <p>Error: {error}</p>;
     if (!phaseAccounts) return <WebLoader />;
+    if (error) return <p>Error: {error}</p>;
 
     const phasesColumns = [
         {

@@ -8,18 +8,18 @@ import DefaultTable from "../../../components/ui/DefaultTable";
 import CrudManager from "../../../hooks/CrudManager";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
 import Paginate from "../../../components/ui/Paginate";
+import WebLoader from "../../../routes/loaders/WebLoader";
 
 const Expediente = () => {
     const [expedientes, setExpedientes] = useState([]);
-    const [totalClientes, setTotalClientes] = useState([]);
-    const [totalColegiados, setTotalColegiados] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { expedients } = useExpedient();
+    const [expedientAccounts, setExpedientAccounts] = useState(null);
+    const { countExpedient } = useExpedient();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `expedient${query ? '?title=' + query : '?title='}&page=${page}` });
@@ -31,23 +31,19 @@ const Expediente = () => {
     }, [buscador]);
 
     useEffect(() => {
-        const clientesSet = new Set();
-        const colegiadosSet = new Set();
+        const fetchCount = async () => {
+            try {
+                const result = await countExpedient();
+                setExpedientAccounts(result);
+            } catch (err) {
+                console.error("Error getting expedient count", err);
+            }
+        };
 
-        expedients.forEach(expedient => {
-            expedient.people.forEach(person => {
-                if (person.pivot.role === "client") {
-                    clientesSet.add(person.id);
-                } else if (person.pivot.role === "collegiate") {
-                    colegiadosSet.add(person.id);
-                }
-            });
-        });
+        fetchCount();
+    }, []);
 
-        setTotalClientes([...clientesSet]);
-        setTotalColegiados([...colegiadosSet]);
-    }, [expedients]);
-
+    if (!expedientAccounts) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;
 
     const expedientesColumns = [
@@ -130,15 +126,15 @@ const Expediente = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedients.length}
+                        value={expedientAccounts.expedients_account}
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={totalClientes.length}
+                        value={expedientAccounts.clients_account}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={totalColegiados.length}
+                        value={expedientAccounts.collegiates_account}
                     />
                 </div>
                 <div className="">

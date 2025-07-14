@@ -32,7 +32,7 @@ const PhaseContext = ({ children }) => {
         return await axios.post('api/phase/titles', data).then(res => res.data);
     }
 
-    const phaseCount = async () => {
+    const countPhase = async () => {
         return await counts({ setErrors: setError, setStatus });
     }
 
@@ -40,7 +40,7 @@ const PhaseContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles, phaseCount }}>
+        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles, countPhase }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
