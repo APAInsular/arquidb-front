@@ -137,7 +137,8 @@ const VerExpediente = () => {
         }
     };
 
-    console.log(`Expediente: ${expedient}`)
+    console.log(`Expediente:`)
+    console.log(expedient)
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
 
