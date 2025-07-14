@@ -13,6 +13,8 @@ import { ArrowBigRightDashIcon, ArrowLeftRightIcon, Download, Edit, File, FileCh
 import { UseLoader } from "../../../store/contexts/LoaderContext";
 import { useAuth } from "../../../hooks/Auth";
 
+import axios from "../../../lib/axios";
+
 const VerExpediente = () => {
 
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
@@ -35,14 +37,28 @@ const VerExpediente = () => {
     const [deleteId, setDeleteId] = useState(false);
 
     useEffect(() => {
-        if (expedients) {
-            const foundExpedient = expedients.find(e => e.id == params.id);
-            console.log(expedients)
-            console.log('Expediente encontrado')
-            console.log(foundExpedient)
-            setExpedient(foundExpedient || {});
-        }
-    }, [expedients, params.id]);
+        //url + api/expedient/params.id
+
+        const getExpediente = async () => {
+            try {
+                const response = await axios.get(`/api/expedient/${params.id}`);
+                console.log(response.data);
+                setExpedient(response.data)
+            } catch (error) {
+                console.error('Error al obtener el expediente:', error);
+            }
+        };
+
+        getExpediente();
+
+        // if (expedients) {
+        //     const foundExpedient = expedients.find(e => e.id == params.id);
+        //     console.log(expedients)
+        //     console.log('Expediente encontrado')
+        //     console.log(foundExpedient)
+        //     setExpedient(foundExpedient || {});
+        // }
+    }, [params.id, expedient]);
 
     useEffect(() => {
         if (phases && expedient.id) {
