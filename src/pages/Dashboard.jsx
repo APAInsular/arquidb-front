@@ -48,7 +48,6 @@ const Dashboard = () => {
         views({ setData: setExpedientes, setLoading, setError, setPages: setTotalPages });
     }, [pages]);
 
-    if (!expedientAccounts) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;
 
     const expedientesColumns = [

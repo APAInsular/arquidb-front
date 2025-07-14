@@ -18,7 +18,7 @@ const Colegiado = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { collegiates } = useCollegiate();
+    const { collegiateAccounts } = useCollegiate();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({
@@ -98,16 +98,8 @@ const Colegiado = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={collegiates.length}
+                        value={collegiateAccounts.collegiates_account}
                     />
-                    {/* <StatsCard
-                        title={"Total Admin (Solo usuarios Admin)"}
-                        value={collegiates.length}
-                    />
-                    <StatsCard
-                        title={"Total Visores (Solo usuario Visores)"}
-                        value={collegiates.length}
-                    /> */}
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />

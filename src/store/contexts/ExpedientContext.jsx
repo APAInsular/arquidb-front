@@ -34,7 +34,7 @@ const ExpedientContext = ({ children }) => {
         setExpedientAccounts(result);
     }
 
-    // if (loading) return <WebLoader />;
+    if (!expedientAccounts) return <WebLoader />;
     if (error) return console.log(error);
 
     return (

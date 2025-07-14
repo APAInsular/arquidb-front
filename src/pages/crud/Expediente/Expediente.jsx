@@ -29,7 +29,6 @@ const Expediente = () => {
         buscador();
     }, [buscador]);
 
-    if (!expedientAccounts) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;
 
     const expedientesColumns = [

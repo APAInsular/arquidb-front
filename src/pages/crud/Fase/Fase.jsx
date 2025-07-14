@@ -8,7 +8,6 @@ import Delete from "../../../components/modals/crud/Delete";
 import DefaultTable from "../../../components/ui/DefaultTable";
 import Paginate from "../../../components/ui/Paginate";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
-import WebLoader from "../../../routes/loaders/WebLoader";
 
 const Fase = () => {
     const [page, setPage] = useState(1);
@@ -29,7 +28,6 @@ const Fase = () => {
         buscador();
     }, [buscador]);
 
-    if (!phaseAccounts) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;
 
     const phasesColumns = [

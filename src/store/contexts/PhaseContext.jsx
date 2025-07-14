@@ -39,7 +39,7 @@ const PhaseContext = ({ children }) => {
         setPhaseAccounts(result);
     }
 
-    // if (loading) return <WebLoader />;
+    if (!phaseAccounts) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
