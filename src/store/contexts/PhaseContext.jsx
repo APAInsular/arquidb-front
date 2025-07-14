@@ -9,7 +9,7 @@ export const usePhase = () => useContext(ArquidbContext);
 
 const PhaseContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { views, creates, updates } = CrudManager({ url: `phase`, showLoader, hideLoader, showError, hideError, allData: true });
+    const { views, creates, updates, counts } = CrudManager({ url: `phase`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [phases, setPhases] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -32,11 +32,15 @@ const PhaseContext = ({ children }) => {
         return await axios.post('api/phase/titles', data).then(res => res.data);
     }
 
+    const countPhase = async () => {
+        return await counts({ setErrors: setError, setStatus });
+    }
+
     // if (loading) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles }}>
+        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles, countPhase }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
