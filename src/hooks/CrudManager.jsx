@@ -95,11 +95,29 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
             });
     };
 
+    const counts = async ({ setErrors, setStatus }) => {
+        setErrors(null);
+        setStatus(true);
+        return await axios
+            .get(api + url + 'Count')
+            .then(res => {
+                return res.data
+            })
+            .catch(error => {
+                setStatus(false);
+                setErrors(error.response.data.errors);
+                showError();
+                setTimeout(() => hideError(), 4000);
+                throw error;
+            });
+    };
+
     return {
         views,
         creates,
         updates,
-        deletes
+        deletes,
+        counts
     };
 
 }; 
