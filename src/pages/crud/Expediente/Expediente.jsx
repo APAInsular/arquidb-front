@@ -18,8 +18,7 @@ const Expediente = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const [expedientAccounts, setExpedientAccounts] = useState(null);
-    const { countExpedient } = useExpedient();
+    const { expedientAccounts } = useExpedient();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `expedient${query ? '?title=' + query : '?title='}&page=${page}` });
@@ -29,19 +28,6 @@ const Expediente = () => {
     useEffect(() => {
         buscador();
     }, [buscador]);
-
-    useEffect(() => {
-        const fetchCount = async () => {
-            try {
-                const result = await countExpedient();
-                setExpedientAccounts(result);
-            } catch (err) {
-                console.error("Error getting expedient count", err);
-            }
-        };
-
-        fetchCount();
-    }, []);
 
     if (!expedientAccounts) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;

@@ -11,12 +11,14 @@ const ExpedientContext = ({ children }) => {
     const { views, creates, updates, counts } = CrudManager({ url: `expedient`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [expedients, setExpedients] = useState([]);
+    const [expedientAccounts, setExpedientAccounts] = useState(null);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         views({ setData: setExpedients, setLoading, setErrors: setError });
+        countExpedient();
     }, []);
 
     const createExpedient = async (data) => {
@@ -28,14 +30,15 @@ const ExpedientContext = ({ children }) => {
     }
 
     const countExpedient = async () => {
-        return await counts({ setErrors: setError, setStatus });
+        const result = await counts({ setErrors: setError, setStatus });
+        setExpedientAccounts(result);
     }
 
     // if (loading) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ expedients, createExpedient, updateExpedient, countExpedient, loading, error }}>
+        <ArquidbContext.Provider value={{ expedients, expedientAccounts, createExpedient, updateExpedient, loading, error }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
