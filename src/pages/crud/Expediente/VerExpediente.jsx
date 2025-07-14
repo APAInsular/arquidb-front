@@ -37,6 +37,8 @@ const VerExpediente = () => {
     useEffect(() => {
         if (expedients) {
             const foundExpedient = expedients.find(e => e.id == params.id);
+            console.log('Expediente encontrado')
+            console.log(foundExpedient)
             setExpedient(foundExpedient || {});
         }
     }, [expedients, params.id]);
