@@ -8,6 +8,7 @@ import Delete from "../../../components/modals/crud/Delete";
 import DefaultTable from "../../../components/ui/DefaultTable";
 import Paginate from "../../../components/ui/Paginate";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
+import WebLoader from "../../../routes/loaders/WebLoader";
 
 const Fase = () => {
     const [page, setPage] = useState(1);
@@ -17,7 +18,8 @@ const Fase = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { phases } = usePhase();
+    const [phaseAccounts, setPhaseAccounts] = useState(null);
+    const { countPhase } = usePhase();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `phase${query ? '?title=' + query : '?title='}&page=${page}` });
@@ -28,9 +30,21 @@ const Fase = () => {
         buscador();
     }, [buscador]);
 
-    if (error) return <p>Error: {error}</p>;
+    useEffect(() => {
+        const fetchCount = async () => {
+            try {
+                const result = await countPhase();
+                setPhaseAccounts(result);
+            } catch (err) {
+                console.error("Error getting phase count", err);
+            }
+        };
 
-    // console.log(totalPages)
+        fetchCount();
+    }, []);
+
+    if (!phaseAccounts) return <WebLoader />;
+    if (error) return <p>Error: {error}</p>;
 
     const phasesColumns = [
         {
@@ -58,8 +72,6 @@ const Fase = () => {
             )
         },
     ];
-
-    const totalDocuments = phases?.reduce((acc, fase) => acc + (fase.documents?.length || 0), 0);
 
     const formattedPhases = fases.map(phase => ({
         ...phase,
@@ -94,11 +106,11 @@ const Fase = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Fases (Cualquier Fase)"}
-                        value={phases?.length}
+                        value={phaseAccounts.phases_account}
                     />
                     <StatsCard
                         title={"Total Documentos (Cualquier Documento)"}
-                        value={totalDocuments}
+                        value={phaseAccounts.documents_account}
                     />
                 </div>
                 <div className="">
