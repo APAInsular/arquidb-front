@@ -38,8 +38,8 @@ const VerExpediente = () => {
         if (expedients) {
             const foundExpedient = expedients.find(e => e.id == params.id);
             console.log('Expediente encontrado')
-            console.log(foundExpedient)
-            setExpedient(foundExpedient || {});
+            console.log(expedients.find(e => e.id == params.id))
+            setExpedient(expedients.find(e => e.id == params.id) || {});
         }
     }, [expedients, params.id]);
 
