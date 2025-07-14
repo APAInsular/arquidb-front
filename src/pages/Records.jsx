@@ -52,7 +52,7 @@ const Records = () => {
                                             'Collegiates': 'Colegiado',
                                             'users': 'Usuario',
                                             'expedient': 'Expediente',
-                                            'centers': 'Centros'
+                                            'centers': 'Centro'
                                         };
                                         return (
                                             <tr key={datos.id} className="hover:bg-[#bb2b46]/60 hover:text-white even:bg-[#bb2b46]/8  mt-2 cursor-pointer transition-all shrink-0 overflow-x-scroll text-start text-nowrap">
