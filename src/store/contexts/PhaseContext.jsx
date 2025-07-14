@@ -12,12 +12,14 @@ const PhaseContext = ({ children }) => {
     const { views, creates, updates, counts } = CrudManager({ url: `phase`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [phases, setPhases] = useState([]);
+    const [phaseAccounts, setPhaseAccounts] = useState(null);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         views({ setData: setPhases, setLoading, setErrors: setError });
+        countPhase();
     }, []);
 
     const createPhase = async (data) => {
@@ -33,14 +35,15 @@ const PhaseContext = ({ children }) => {
     }
 
     const countPhase = async () => {
-        return await counts({ setErrors: setError, setStatus });
+        const result = await counts({ setErrors: setError, setStatus });
+        setPhaseAccounts(result);
     }
 
     // if (loading) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ phases, createPhase, updatePhase, getPhaseTitles, countPhase }}>
+        <ArquidbContext.Provider value={{ phases, phaseAccounts, createPhase, updatePhase, getPhaseTitles }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
