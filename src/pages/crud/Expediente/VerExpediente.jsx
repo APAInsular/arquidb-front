@@ -18,7 +18,7 @@ const VerExpediente = () => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
     const { user } = useAuth({ middleware: 'auth' });
     const params = useParams();
-    const { expedients } = useExpedient();
+    const { showExpedient } = useExpedient();
     const { phases } = usePhase();
     const { documents } = useDocument();
     const navigate = useNavigate();
@@ -35,11 +35,12 @@ const VerExpediente = () => {
     const [deleteId, setDeleteId] = useState(false);
 
     useEffect(() => {
-        if (expedients) {
-            const foundExpedient = expedients.find(e => e.id == params.id);
+        const findExpedient = async () => {
+            const foundExpedient = await showExpedient(params.id);
             setExpedient(foundExpedient || {});
         }
-    }, [expedients, params.id]);
+        findExpedient();
+    }, [params.id]);
 
     useEffect(() => {
         if (phases && expedient.id) {

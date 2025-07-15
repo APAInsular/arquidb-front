@@ -26,6 +26,27 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
             .finally(() => { setLoading(false); });
     };
 
+    const shows = async ({ setErrors, setStatus, ...props }) => {
+        setErrors(null);
+        setStatus(true);
+
+        const endpoint = props.id ? `${api}${url}/${props.id}` : `${api}${url}`;
+
+        return axios
+            .get(endpoint)
+            .then(res => {
+                return res.data
+            })
+            .catch(error => {
+                if (error.response && error.response.data.errors) {
+                    setErrors(Object.values(error.response.data.errors).flat());
+                }
+                setStatus(false);
+                setErrors(error);
+                throw error;
+            });
+    };
+
     // Crear los datos
     const creates = async ({ setErrors, setStatus, ...props }) => {
         setErrors(null);
@@ -114,6 +135,7 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
 
     return {
         views,
+        shows,
         creates,
         updates,
         deletes,

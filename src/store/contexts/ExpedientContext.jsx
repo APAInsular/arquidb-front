@@ -8,7 +8,7 @@ export const useExpedient = () => useContext(ArquidbContext);
 
 const ExpedientContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { views, creates, updates, counts } = CrudManager({ url: `expedient`, showLoader, hideLoader, showError, hideError, allData: true });
+    const { views, shows, creates, updates, counts } = CrudManager({ url: `expedient`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [expedients, setExpedients] = useState([]);
     const [expedientAccounts, setExpedientAccounts] = useState(null);
@@ -20,6 +20,10 @@ const ExpedientContext = ({ children }) => {
         views({ setData: setExpedients, setLoading, setErrors: setError });
         countExpedient();
     }, []);
+
+    const showExpedient = async (id) => {
+        return await shows({ setErrors: setError, setStatus, id });
+    }
 
     const createExpedient = async (data) => {
         return await creates({ setErrors: setError, setStatus, data });
@@ -38,7 +42,7 @@ const ExpedientContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ expedients, expedientAccounts, createExpedient, updateExpedient, loading, error }}>
+        <ArquidbContext.Provider value={{ expedients, expedientAccounts, showExpedient, createExpedient, updateExpedient, loading, error }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
