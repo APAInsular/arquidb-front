@@ -16,7 +16,7 @@ import InputForm from "../../../components/ui/InputForm";
 const EditarExpediente = () => {
     const params = useParams();
     const { user } = useAuth({ middleware: 'auth' });
-    const { expedients, updateExpedient, error: expedientError } = useExpedient();
+    const { expedients, showExpedient, updateExpedient, error: expedientError } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { documents, multiUploadDocuments } = useDocument();
     const { clients, clientsLoading } = useClient();
@@ -35,8 +35,12 @@ const EditarExpediente = () => {
     const [expedientPeople, setExpedientPeople] = useState([]);
 
     useEffect(() => {
-        if (expedients) setExpedient(expedients.find(e => e.id == params.id));
-    }, [expedients]);
+        const findExpedient = async () => {
+            const foundExpedient = await showExpedient(params.id);
+            setExpedient(foundExpedient || {});
+        }
+        findExpedient();
+    }, [params.id]);
 
     useEffect(() => {
         if (phases && expedient) {
@@ -123,7 +127,7 @@ const EditarExpediente = () => {
         const newExpedient = Object.fromEntries(formData.entries());
         newExpedient.budget = parseFloat(newExpedient.budget);
 
-        const oldExpedient = expedients.find(e => e.id == params.id);
+        const oldExpedient = await showExpedient(params.id);
 
         try {
             if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) {
