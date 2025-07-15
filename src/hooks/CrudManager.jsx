@@ -9,15 +9,26 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
     // Ver los datos 
     const views = async ({ setData, setLoading, setErrors, setPages }) => {
         setLoading(true);
+
+        // Obtener token de localStorage (o de donde lo guardes)
+        const token = localStorage.getItem('token'); // Asegúrate que esté guardado así
+
+        console.log("Usando token:", token); // 🪵 Debug: Verificar token cargado
+
         await axios
-            .get(api + url + all)
+            .get(api + url + all, {
+                
+                withCredentials: true  // ← Esto es lo importante
+            })
             .then(res => {
                 setData(res.data.data ?? res.data);
+                console.log(res.data.data ?? res.data)
                 if (typeof setPages === 'function') {
                     setPages(res?.data?.data?.last_page ?? res?.data?.last_page);
                 }
             })
             .catch(error => {
+                console.error("❌ Error en petición:", error);
                 if (error.response && error.response.data.errors) {
                     setErrors(Object.values(error.response.data.errors).flat());
                 }

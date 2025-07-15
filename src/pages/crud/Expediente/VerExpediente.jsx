@@ -13,6 +13,8 @@ import { ArrowBigRightDashIcon, ArrowLeftRightIcon, Download, Edit, File, FileCh
 import { UseLoader } from "../../../store/contexts/LoaderContext";
 import { useAuth } from "../../../hooks/Auth";
 
+import axios from "../../../lib/axios";
+
 const VerExpediente = () => {
 
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
@@ -35,12 +37,18 @@ const VerExpediente = () => {
     const [deleteId, setDeleteId] = useState(false);
 
     useEffect(() => {
-        const findExpedient = async () => {
-            const foundExpedient = await showExpedient(params.id);
-            setExpedient(foundExpedient || {});
-        }
-        findExpedient();
-    }, [params.id]);
+        const getExpediente = async () => {
+            try {
+                const response = await axios.get(`/api/expedient/${params.id}`);
+                console.log(response.data);
+                setExpedient(response.data)
+            } catch (error) {
+                console.error('Error al obtener el expediente:', error);
+            }
+        };
+
+        getExpediente();
+    }, [params.id, expedient]);
 
     useEffect(() => {
         if (phases && expedient.id) {
@@ -137,6 +145,9 @@ const VerExpediente = () => {
             setTimeout(() => hideError(), 4000);
         }
     };
+
+    console.log(`Expediente:`)
+    console.log(expedient)
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
 
