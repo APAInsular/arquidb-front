@@ -31,7 +31,7 @@ const Centros = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { centers } = useCenter();
+    const { centerAccounts } = useCenter();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `centers${query ? `?name=${query}&phone=${query}` : '?name=&phone='}&page=${page}` });
@@ -104,7 +104,7 @@ const Centros = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Centros (Cualquier centro)"}
-                        value={centers.length}
+                        value={centerAccounts.centers_account}
                     />
                     {/* <StatsCard
                         title={"Total Admin (Solo usuarios Admin)"}

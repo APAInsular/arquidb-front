@@ -8,15 +8,17 @@ export const useCenter = () => useContext(ArquidbContext);
 
 const CenterContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
-    const { views, creates, updates } = CrudManager({ url: `centers`, showLoader, hideLoader, showError, hideError, allData: true });
+    const { views, creates, updates, counts } = CrudManager({ url: `centers`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [centers, setCenters] = useState([]);
+    const [centerAccounts, setCenterAccounts] = useState(null);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         views({ setData: setCenters, setLoading, setErrors: setError });
+        countCenter();
     }, []);
 
     const createCenter = async (data) => {
@@ -27,11 +29,16 @@ const CenterContext = ({ children }) => {
         await updates({ setErrors: setError, setStatus, id, data });
     }
 
-    // if (loading) return <WebLoader />;
+    const countCenter = async () => {
+        const result = await counts({ setErrors: setError, setStatus });
+        setCenterAccounts(result);
+    }
+
+    if (!centerAccounts) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ centers, createCenter, updateCenter, loading, error }}>
+        <ArquidbContext.Provider value={{ centers, centerAccounts, createCenter, updateCenter, loading, error }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
