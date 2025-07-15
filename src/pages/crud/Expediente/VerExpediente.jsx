@@ -18,7 +18,7 @@ const VerExpediente = () => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
     const { user } = useAuth({ middleware: 'auth' });
     const params = useParams();
-    const { expedients } = useExpedient();
+    const { showExpedient } = useExpedient();
     const { phases } = usePhase();
     const { documents } = useDocument();
     const navigate = useNavigate();
@@ -35,8 +35,6 @@ const VerExpediente = () => {
     const [deleteId, setDeleteId] = useState(false);
 
     useEffect(() => {
-        //url + api/expedient/params.id
-
         const getExpediente = async () => {
             try {
                 const response = await axios.get(`/api/expedient/${params.id}`);
@@ -48,14 +46,6 @@ const VerExpediente = () => {
         };
 
         getExpediente();
-
-        // if (expedients) {
-        //     const foundExpedient = expedients.find(e => e.id == params.id);
-        //     console.log(expedients)
-        //     console.log('Expediente encontrado')
-        //     console.log(foundExpedient)
-        //     setExpedient(foundExpedient || {});
-        // }
     }, [params.id, expedient]);
 
     useEffect(() => {

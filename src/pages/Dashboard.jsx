@@ -7,11 +7,12 @@ import TitleCard from "../components/ui/TitleCard";
 import DefaultTable from "../components/ui/DefaultTable";
 import Paginate from "../components/ui/Paginate";
 import StatsCard from "../components/ui/StatsCard";
+import WebLoader from "../routes/loaders/WebLoader";
 
 const Dashboard = () => {
 
     const [searchParams] = useSearchParams();
-    const { expedients } = useExpedient();
+    const { expedientAccounts } = useExpedient();
 
     const SearchTitle = searchParams.get('search') || '';
     const title = searchParams.get('title') || '';
@@ -28,8 +29,6 @@ const Dashboard = () => {
     const [pages, setPages] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [expedientes, setExpedientes] = useState([]);
-    const [totalClientes, setTotalClientes] = useState([]);
-    const [totalColegiados, setTotalColegiados] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
@@ -48,24 +47,6 @@ const Dashboard = () => {
     useEffect(() => {
         views({ setData: setExpedientes, setLoading, setError, setPages: setTotalPages });
     }, [pages]);
-
-    useEffect(() => {
-        const clientesSet = new Set();
-        const colegiadosSet = new Set();
-
-        expedients.forEach(expedient => {
-            expedient.people.forEach(person => {
-                if (person.pivot.role === "client") {
-                    clientesSet.add(person.id);
-                } else if (person.pivot.role === "collegiate") {
-                    colegiadosSet.add(person.id);
-                }
-            });
-        });
-
-        setTotalClientes([...clientesSet]);
-        setTotalColegiados([...colegiadosSet]);
-    }, [expedients]);
 
     if (error) return <p>Error: {error}</p>;
 
@@ -139,15 +120,15 @@ const Dashboard = () => {
                 <div className="grid grid-cols-3 gap-2 mt-2">
                     <StatsCard
                         title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedients?.length}
+                        value={expedientAccounts.expedients_account}
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={totalClientes.length}
+                        value={expedientAccounts.clients_account}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={totalColegiados.length}
+                        value={expedientAccounts.collegiates_account}
                     />
                 </div>
                 <div className="mt-2">

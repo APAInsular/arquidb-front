@@ -18,7 +18,7 @@ const Cliente = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { clients } = useClient();
+    const { clientAccounts } = useClient();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({
@@ -37,7 +37,6 @@ const Cliente = () => {
         buscador();
     }, [buscador]);
 
-    // if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
 
     const clientColumns = [
@@ -88,16 +87,8 @@ const Cliente = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={clients.length}
+                        value={clientAccounts.clients_account}
                     />
-                    {/* <StatsCard
-                        title={"Total Admin (Solo usuarios Admin)"}
-                        value={collegiates.length}
-                    />
-                    <StatsCard
-                        title={"Total Visores (Solo usuario Visores)"}
-                        value={collegiates.length}
-                    /> */}
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />

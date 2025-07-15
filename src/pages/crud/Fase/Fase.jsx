@@ -8,7 +8,6 @@ import Delete from "../../../components/modals/crud/Delete";
 import DefaultTable from "../../../components/ui/DefaultTable";
 import Paginate from "../../../components/ui/Paginate";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
-import WebLoader from "../../../routes/loaders/WebLoader";
 
 const Fase = () => {
     const [page, setPage] = useState(1);
@@ -18,8 +17,7 @@ const Fase = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const [phaseAccounts, setPhaseAccounts] = useState(null);
-    const { countPhase } = usePhase();
+    const { phaseAccounts } = usePhase();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `phase${query ? '?title=' + query : '?title='}&page=${page}` });
@@ -30,20 +28,6 @@ const Fase = () => {
         buscador();
     }, [buscador]);
 
-    useEffect(() => {
-        const fetchCount = async () => {
-            try {
-                const result = await countPhase();
-                setPhaseAccounts(result);
-            } catch (err) {
-                console.error("Error getting phase count", err);
-            }
-        };
-
-        fetchCount();
-    }, []);
-
-    if (!phaseAccounts) return <WebLoader />;
     if (error) return <p>Error: {error}</p>;
 
     const phasesColumns = [
