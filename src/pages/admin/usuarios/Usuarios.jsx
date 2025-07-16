@@ -28,7 +28,7 @@ const Usuarios = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { users } = useUser();
+    const { userAccounts } = useUser();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `users${query ? `?name=${query}&email=${query}` : '?name=&email='}&page=${page}` });
@@ -40,9 +40,6 @@ const Usuarios = () => {
     }, [buscador]);
 
     if (error) return <p>Error: {error}</p>;
-
-    const visator = users.filter(item => item.roles.some(role => role.name === "visor"));
-    const admin = users.filter(item => item.roles.some(role => role.name === "superAdmin"));
 
     const userColumns = [
         {
@@ -136,15 +133,15 @@ const Usuarios = () => {
                 <div className="grid grid-cols-3 justify-start gap-2 my-2">
                     <StatsCard
                         title={"Total Usuarios (Cualquier usuario)"}
-                        value={users.length}
+                        value={userAccounts.users_account}
                     />
                     <StatsCard
                         title={"Total Admin (Solo usuarios Admin)"}
-                        value={admin.length}
+                        value={userAccounts.super_admins_account}
                     />
                     <StatsCard
                         title={"Total Visores (Solo usuario Visores)"}
-                        value={visator.length}
+                        value={userAccounts.visors_account}
                     />
                 </div>
                 <div className="">
