@@ -16,7 +16,7 @@ import InputForm from "../../../components/ui/InputForm";
 const EditarExpediente = () => {
     const params = useParams();
     const { user } = useAuth({ middleware: 'auth' });
-    const { expedients, showExpedient, updateExpedient, error: expedientError } = useExpedient();
+    const { showExpedient, updateExpedient, findExpedientNumber, error: expedientError } = useExpedient();
     const { phases, createPhase, getPhaseTitles } = usePhase();
     const { documents, multiUploadDocuments } = useDocument();
     const { clients, clientsLoading } = useClient();
@@ -128,13 +128,14 @@ const EditarExpediente = () => {
         newExpedient.budget = parseFloat(newExpedient.budget);
 
         const oldExpedient = await showExpedient(params.id);
+        const searchByNumber = await findExpedientNumber(newExpedient.number);
 
         try {
             if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) {
                 setClick(false);
                 return setErrors2("La fecha de inicio no puede ser posterior a la fecha de finalización");
             }
-            if (oldExpedient.number != newExpedient.number && expedients.find(e => e.number === newExpedient.number)) {
+            if (oldExpedient.number != newExpedient.number && searchByNumber) {
                 setClick(false);
                 return setErrors("El número de expediente seleccionado ya existe");
             }

@@ -2,6 +2,7 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
 import { UseLoader } from './LoaderContext';
+import axios from '../../lib/axios';
 
 const ArquidbContext = createContext();
 export const useExpedient = () => useContext(ArquidbContext);
@@ -33,6 +34,10 @@ const ExpedientContext = ({ children }) => {
         await updates({ setErrors: setError, setStatus, id, data });
     }
 
+    const findExpedientNumber = async (number) => {
+        return await axios.get(`api/expedients/find-by-number?number=${number}`).then(res => res.data);
+    }
+
     const countExpedient = async () => {
         const result = await counts({ setErrors: setError, setStatus });
         setExpedientAccounts(result);
@@ -42,7 +47,7 @@ const ExpedientContext = ({ children }) => {
     if (error) return console.log(error);
 
     return (
-        <ArquidbContext.Provider value={{ expedients, expedientAccounts, showExpedient, createExpedient, updateExpedient, loading, error }}>
+        <ArquidbContext.Provider value={{ expedients, expedientAccounts, showExpedient, createExpedient, updateExpedient, findExpedientNumber, loading, error }}>
             {loading ? <WebLoader /> : ""}
             {children}
         </ArquidbContext.Provider>
