@@ -13,8 +13,6 @@ import { ArrowBigRightDashIcon, ArrowLeftRightIcon, Download, Edit, File, FileCh
 import { UseLoader } from "../../../store/contexts/LoaderContext";
 import { useAuth } from "../../../hooks/Auth";
 
-import axios from "../../../lib/axios";
-
 const VerExpediente = () => {
 
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
