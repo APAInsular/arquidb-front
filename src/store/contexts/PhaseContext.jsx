@@ -12,7 +12,7 @@ const PhaseContext = ({ children }) => {
     const { views, creates, updates, counts } = CrudManager({ url: `phase`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [phases, setPhases] = useState([]);
-    const [phaseAccounts, setPhaseAccounts] = useState(null);
+    const [phaseAccounts, setPhaseAccounts] = useState(0);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
@@ -39,7 +39,6 @@ const PhaseContext = ({ children }) => {
         setPhaseAccounts(result);
     }
 
-    if (!phaseAccounts) return <WebLoader />;
     if (error) return console.log(error);
 
     return (

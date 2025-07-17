@@ -16,8 +16,8 @@ import InputForm from "../../../components/ui/InputForm";
 
 const CrearExpediente = () => {
     const { user } = useAuth({ middleware: 'auth' });
-    const { expedients, createExpedient } = useExpedient();
-    const { phases, createPhase, getPhaseTitles } = usePhase();
+    const { createExpedient, findExpedientNumber } = useExpedient();
+    const { createPhase, getPhaseTitles } = usePhase();
     const { multiUploadDocuments } = useDocument();
     const { clients, loading: clientsLoading } = useClient();
     const { collegiates, loading: collegiatesLoading } = useCollegiate();
@@ -97,11 +97,12 @@ const CrearExpediente = () => {
         const newExpedient = Object.fromEntries(formData.entries());
         newExpedient.budget = parseFloat(newExpedient.budget);
 
+        const searchByNumber = await findExpedientNumber(newExpedient.number);
         console.log(newExpedient);
 
         try {
             if (newExpedient.end_date && newExpedient.start_date > newExpedient.end_date) return alert("Error en las fechas");
-            if (expedients.find(e => e.number === newExpedient.number)) return alert("El número de expediente seleccionado ya existe");
+            if (searchByNumber) return alert("El número de expediente seleccionado ya existe");
 
             await axios.get("/sanctum/csrf-cookie");
             const response = await createExpedient(newExpedient);

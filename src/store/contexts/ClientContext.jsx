@@ -9,7 +9,7 @@ const ClientContext = ({ children }) => {
     const { views, creates, updates, counts } = CrudManager({ url: `personClient`, allData: true });
 
     const [clients, setClients] = useState([]);
-    const [clientAccounts, setClientAccounts] = useState(null);
+    const [clientAccounts, setClientAccounts] = useState(0);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
@@ -24,7 +24,6 @@ const ClientContext = ({ children }) => {
         setClientAccounts(result);
     }
 
-    if (!clientAccounts) return <WebLoader />;
     if (error) return console.log(error);
 
     return (

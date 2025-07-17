@@ -11,7 +11,7 @@ const CenterContext = ({ children }) => {
     const { views, creates, updates, counts } = CrudManager({ url: `centers`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [centers, setCenters] = useState([]);
-    const [centerAccounts, setCenterAccounts] = useState(null);
+    const [centerAccounts, setCenterAccounts] = useState(0);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
@@ -34,7 +34,6 @@ const CenterContext = ({ children }) => {
         setCenterAccounts(result);
     }
 
-    if (!centerAccounts) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
