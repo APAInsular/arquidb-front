@@ -137,7 +137,7 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
             })
             .catch(error => {
                 setStatus(false);
-                console.log(error.response)
+                console.log(error.response.data)
                 setErrors(error.response.data.errors);
                 showError();
                 setTimeout(() => hideError(), 4000);
