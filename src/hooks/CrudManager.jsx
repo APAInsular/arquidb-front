@@ -17,7 +17,7 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
 
         await axios
             .get(api + url + all, {
-                
+
                 withCredentials: true  // ← Esto es lo importante
             })
             .then(res => {
@@ -130,14 +130,27 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
     const counts = async ({ setErrors, setStatus }) => {
         setErrors(null);
         setStatus(true);
+
+        const token = localStorage.getItem('auth_token');
+
         return await axios
-            .get(api + url + 'Count')
+            .get(api + url + 'Count', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                },
+                withCredentials: true, // opcional si usas cookies también, pero seguro con Sanctum
+            })
             .then(res => {
-                return res.data
+                return res.data;
             })
             .catch(error => {
                 setStatus(false);
-                setErrors(error.response.data.errors);
+                if (error.response && error.response.data && error.response.data.errors) {
+                    setErrors(error.response.data.errors);
+                } else {
+                    setErrors({ general: 'Error de conexión o servidor' });
+                }
                 showError();
                 setTimeout(() => hideError(), 4000);
                 throw error;
