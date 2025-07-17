@@ -130,19 +130,43 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
     const counts = async ({ setErrors, setStatus }) => {
         setErrors(null);
         setStatus(true);
-        return await axios
-            .get(api + url + 'Count')
-            .then(res => {
-                return res.data
-            })
-            .catch(error => {
-                setStatus(false);
-                setErrors(error.response.data.errors);
-                showError();
-                setTimeout(() => hideError(), 4000);
-                throw error;
+
+        const token = localStorage.getItem('auth_token');
+        if (!token) {
+            setErrors({ auth: 'No hay token, por favor inicia sesión' });
+            setStatus(false);
+            return null;
+        }
+
+        try {
+            const res = await axios.get(api + url + 'Count', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: 'application/json',
+                }
             });
+            setStatus(false);
+            return res.data;
+        } catch (error) {
+            setStatus(false);
+            if (error.response) {
+                if (error.response.status === 401) {
+                    setErrors({ auth: 'Sesión expirada, por favor inicia sesión de nuevo.' });
+                    // Aquí podrías redirigir a login o limpiar token:
+                    // localStorage.removeItem('auth_token');
+                    // window.location.href = '/login';
+                } else if (error.response.data && error.response.data.errors) {
+                    setErrors(error.response.data.errors);
+                } else {
+                    setErrors({ general: 'Error desconocido en la petición' });
+                }
+            } else {
+                setErrors({ general: 'Error de red o servidor no disponible' });
+            }
+            throw error;
+        }
     };
+
 
     return {
         views,
