@@ -12,7 +12,7 @@ const ExpedientContext = ({ children }) => {
     const { views, shows, creates, updates, counts } = CrudManager({ url: `expedient`, showLoader, hideLoader, showError, hideError, allData: true });
 
     const [expedients, setExpedients] = useState([]);
-    const [expedientAccounts, setExpedientAccounts] = useState(null);
+    const [expedientAccounts, setExpedientAccounts] = useState(0);
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState(null);
     const [error, setError] = useState(null);
@@ -43,7 +43,6 @@ const ExpedientContext = ({ children }) => {
         setExpedientAccounts(result);
     }
 
-    if (!expedientAccounts) return <WebLoader />;
     if (error) return console.log(error);
 
     return (
