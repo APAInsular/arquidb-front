@@ -330,7 +330,7 @@ const VerExpediente = () => {
                                                         format(new Date(phaseSelected?.sign_date), "dd 'de' MMM, yyyy") :
                                                         "-"}
                                                 </p>
-                                            ) : <p>Aun no hay fecha</p>}
+                                            ) : <p className="font-medium">Aun no hay fecha</p>}
                                         </div>
                                     </div>
                                     <div className="col-span-2">

@@ -170,7 +170,16 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla, ...
                                             </th>
 
                                             {columns.map((col) => (
-                                                <th key={col.key} className="p-2 text-center text-white">{col.label}</th>
+                                                <th
+                                                    key={col.key}
+                                                    className="p-2 text-center text-white 
+                                                    min-w-[80px] max-w-[120px] 
+                                                    sm:min-w-[120px] sm:max-w-[160px] 
+                                                    md:min-w-[140px] md:max-w-[200px] 
+                                                    overflow-hidden text-ellipsis whitespace-nowrap"
+                                                >
+                                                    {col.label}
+                                                </th>
                                             ))}
 
                                             <th className="p-2"></th>
@@ -202,7 +211,14 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla, ...
                                                 </td>
 
                                                 {columns.map((col) => (
-                                                    <td key={col.key} className="py-1.5 px-4">
+                                                    <td
+                                                        key={col.key}
+                                                        className="py-1.5 px-4 
+                                                        min-w-[80px] max-w-[120px] 
+                                                        sm:min-w-[120px] sm:max-w-[160px] 
+                                                        md:min-w-[140px] md:max-w-[200px] 
+                                                        overflow-hidden text-ellipsis whitespace-nowrap"
+                                                    >
                                                         {col.render ? col.render(row) : row[col.key]}
                                                     </td>
                                                 ))}

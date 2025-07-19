@@ -154,7 +154,7 @@ const FormColegiado = ({ colegiado, onSubmit, status, errors }) => {
                                 type="text"
                                 errors={errors?.response?.data?.errors?.["collegiate.situation"]}
                                 name="collegiate.situation"
-                                placeholder="Tipo"
+                                placeholder="Situación"
                                 value={formData.collegiate?.situation}
                                 onChange={handleChange}
                                 className=""
