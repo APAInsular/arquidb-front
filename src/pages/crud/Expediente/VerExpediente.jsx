@@ -46,7 +46,7 @@ const VerExpediente = () => {
         };
 
         getExpediente();
-    }, [params.id, expedient]);
+    }, [params.id]);
 
     useEffect(() => {
         if (phases && expedient.id) {
@@ -87,9 +87,6 @@ const VerExpediente = () => {
                 return acc;
             }, []);
             setExpedientDocuments(groupedDocs);
-            // setExpedientDocuments(documents.filter(document =>
-            //     expedientPhases.find(phase => phase.id === document.phase_id)
-            // ));
         }
     }, [expedientPhases, documents]);
 
@@ -146,6 +143,7 @@ const VerExpediente = () => {
 
     console.log(`Expediente:`)
     console.log(expedient)
+    console.log(expedientPhases)
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
 
@@ -332,12 +330,23 @@ const VerExpediente = () => {
                                                         format(new Date(phaseSelected?.sign_date), "dd 'de' MMM, yyyy") :
                                                         "-"}
                                                 </p>
-                                            ) : <p>Aun no hay fecha</p>}
+                                            ) : <p className="font-medium">Aun no hay fecha</p>}
                                         </div>
                                     </div>
                                     <div className="col-span-2">
                                         <p className="text-sm text-gray-500">Visador</p>
-                                        <p className="font-medium">Info</p>
+                                        {(() => {
+                                            const users = phaseSelected.documents.reduce((acc, doc) => {
+                                                if (doc.user && !acc.includes(doc.user.name)) acc.push(doc.user.name);
+                                                return acc;
+                                            }, []);
+
+                                            return users.length > 0
+                                                ? users.map((name, index) => (
+                                                    <p key={index} className="font-medium">{name}</p>
+                                                ))
+                                                : <p className="font-medium">No tiene visador</p>;
+                                        })()}
                                     </div>
                                 </div>
                             )}
