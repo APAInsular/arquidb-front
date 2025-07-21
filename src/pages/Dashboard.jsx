@@ -9,6 +9,8 @@ import Paginate from "../components/ui/Paginate";
 import StatsCard from "../components/ui/StatsCard";
 import WebLoader from "../routes/loaders/WebLoader";
 
+import axios from "../lib/axios";
+
 const Dashboard = () => {
 
     const [searchParams] = useSearchParams();
@@ -33,6 +35,22 @@ const Dashboard = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
+
+    // useEffect(() => {
+    //     async function fetchCounts() {
+    //         try {
+    //             const { data } = await axios.get('/api/expedientCount');
+    //             // Suponiendo que la respuesta tiene esta estructura:
+    //             // { expedients_account: number, clients_account: number, collegiates_account: number }
+    //             setExpedientCount(data.expedients_account);
+    //             setClientsCount(data.clients_account);
+    //             setCollegiatesCount(data.collegiates_account);
+    //         } catch (error) {
+    //             console.error('Error al obtener counts:', error);
+    //         }
+    //     }
+    //     fetchCounts();
+    // }, []);
 
     const { views } = CrudManager({
         url: `expedient?
@@ -120,15 +138,15 @@ const Dashboard = () => {
                 <div className="grid grid-cols-3 gap-2 mt-2">
                     <StatsCard
                         title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedientAccounts.expedients_account}
+                        value={expedientAccounts.expedientCount}
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedientAccounts.clients_account}
+                        value={expedientAccounts.clientsCount}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedientAccounts.collegiates_account}
+                        value={expedientAccounts.collegiatesCount}
                     />
                 </div>
                 <div className="mt-2">
