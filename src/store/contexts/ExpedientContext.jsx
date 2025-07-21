@@ -18,7 +18,7 @@ const ExpedientContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setExpedients, setLoading, setErrors: setError });
+        // views({ setData: setExpedients, setLoading, setErrors: setError });
         countExpedient();
     }, []);
 
