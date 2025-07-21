@@ -151,8 +151,7 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla, ...
                             </button>
                         </div>
 
-
-                        < div className="flex-1 overflow-y-scroll rounded-sm" >
+                        <div className="flex-1 overflow-y-scroll rounded-sm">
                             <div className="pb-2">
                                 <table className="space-y-2 w-full mb-5">
                                     <thead>
@@ -218,6 +217,7 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla, ...
                                                         sm:min-w-[120px] sm:max-w-[160px] 
                                                         md:min-w-[140px] md:max-w-[200px] 
                                                         overflow-hidden text-ellipsis whitespace-nowrap"
+                                                        title={row[col.key]}
                                                     >
                                                         {col.render ? col.render(row) : row[col.key]}
                                                     </td>
@@ -231,7 +231,7 @@ const DefaultTable = ({ columns, data, setDeletes, openId, setOpenId, tabla, ...
                                     </tbody>
                                 </table>
                             </div>
-                        </div >
+                        </div>
                     </>
                 )}
         </>
