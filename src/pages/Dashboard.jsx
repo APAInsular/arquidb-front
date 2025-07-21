@@ -14,7 +14,7 @@ import axios from "../lib/axios";
 const Dashboard = () => {
 
     const [searchParams] = useSearchParams();
-    //const { expedientAccounts } = useExpedient();
+    const { expedientAccounts } = useExpedient();
 
     const SearchTitle = searchParams.get('search') || '';
     const title = searchParams.get('title') || '';
@@ -26,10 +26,6 @@ const Dashboard = () => {
     const dateTo = searchParams.get('dateTo') || '';
     const page = searchParams.get('page') || '';
 
-    const [expedientCount, setExpedientCount] = useState(null);
-    const [clientsCount, setClientsCount] = useState(null);
-    const [collegiatesCount, setCollegiatesCount] = useState(null);
-
     // console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
 
     const [pages, setPages] = useState(1);
@@ -40,21 +36,21 @@ const Dashboard = () => {
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
 
-    useEffect(() => {
-        async function fetchCounts() {
-            try {
-                const { data } = await axios.get('/api/expedientCount');
-                // Suponiendo que la respuesta tiene esta estructura:
-                // { expedients_account: number, clients_account: number, collegiates_account: number }
-                setExpedientCount(data.expedients_account);
-                setClientsCount(data.clients_account);
-                setCollegiatesCount(data.collegiates_account);
-            } catch (error) {
-                console.error('Error al obtener counts:', error);
-            }
-        }
-        fetchCounts();
-    }, []);
+    // useEffect(() => {
+    //     async function fetchCounts() {
+    //         try {
+    //             const { data } = await axios.get('/api/expedientCount');
+    //             // Suponiendo que la respuesta tiene esta estructura:
+    //             // { expedients_account: number, clients_account: number, collegiates_account: number }
+    //             setExpedientCount(data.expedients_account);
+    //             setClientsCount(data.clients_account);
+    //             setCollegiatesCount(data.collegiates_account);
+    //         } catch (error) {
+    //             console.error('Error al obtener counts:', error);
+    //         }
+    //     }
+    //     fetchCounts();
+    // }, []);
 
     const { views } = CrudManager({
         url: `expedient?
@@ -142,15 +138,15 @@ const Dashboard = () => {
                 <div className="grid grid-cols-3 gap-2 mt-2">
                     <StatsCard
                         title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedientCount}
+                        value={expedientAccounts.expedientCount}
                     />
                     <StatsCard
                         title={"Total Clientes (Cualquier Cliente)"}
-                        value={clientsCount}
+                        value={expedientAccounts.clientsCount}
                     />
                     <StatsCard
                         title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={collegiatesCount}
+                        value={expedientAccounts.collegiatesCount}
                     />
                 </div>
                 <div className="mt-2">
