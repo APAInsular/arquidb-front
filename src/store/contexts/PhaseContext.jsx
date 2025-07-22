@@ -19,7 +19,7 @@ const PhaseContext = ({ children }) => {
 
     useEffect(() => {
         views({ setData: setPhases, setLoading, setErrors: setError });
-        countPhase();
+        // countPhase();
     }, []);
 
     const createPhase = async (data) => {

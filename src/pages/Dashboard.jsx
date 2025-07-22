@@ -7,9 +7,6 @@ import TitleCard from "../components/ui/TitleCard";
 import DefaultTable from "../components/ui/DefaultTable";
 import Paginate from "../components/ui/Paginate";
 import StatsCard from "../components/ui/StatsCard";
-import WebLoader from "../routes/loaders/WebLoader";
-
-import axios from "../lib/axios";
 
 const Dashboard = () => {
 

@@ -19,7 +19,7 @@ const ExpedientContext = ({ children }) => {
 
     useEffect(() => {
         // views({ setData: setExpedients, setLoading, setErrors: setError });
-        countExpedient();
+        // countExpedient();
     }, []);
 
     const showExpedient = async (id) => {
