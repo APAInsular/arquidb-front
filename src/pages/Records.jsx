@@ -49,7 +49,7 @@ const Records = () => {
                                         };
                                         const tablasTraducidas = {
                                             'client': 'Cliente',
-                                            'collegiates': 'Colegiado',
+                                            'collegiate': 'Colegiado',
                                             'users': 'Usuario',
                                             'expedient': 'Expediente',
                                             'phases': 'Fase',
