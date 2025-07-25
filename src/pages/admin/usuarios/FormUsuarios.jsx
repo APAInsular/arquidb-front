@@ -153,14 +153,18 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
                     {/* <div> */}
                     {formData?.role?.map((role, i) => (
                         <div key={i} className="mb-4">
-                            <InputForm
+                            <select
                                 type="text"
                                 name={`role-${i}`}
                                 placeholder={`Rol ${i + 1}`}
                                 value={role}
                                 onChange={(e) => handleArrayChange(e, i, "role")}
                                 required
-                            />
+                            >
+                                <option value="superAdmin">Admin</option>
+                                <option value="visor">Visor</option>
+                                <option value="user">User</option>
+                            </select>
                             {formData?.role?.length > 1 && (
                                 <div className="flexitems-center">
                                     <button
