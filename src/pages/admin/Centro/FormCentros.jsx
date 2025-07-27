@@ -8,9 +8,9 @@ const FormCentros = ({ center, onSubmit, status, errors, falses }) => {
         name: center?.name || "",
         phone: center?.phone || "",
         locality: center?.locality || "",
-        municipality: center?.phone || "",
-        number: center?.locality || "",
-        street: center?.phone || "",
+        municipality: center?.municipality || "",
+        number: center?.number || "",
+        street: center?.street || "",
     });
 
     useEffect(() => {
@@ -20,9 +20,9 @@ const FormCentros = ({ center, onSubmit, status, errors, falses }) => {
                 name: center?.name || "",
                 phone: center?.phone || "",
                 locality: center?.locality || "",
-                municipality: center?.phone || "",
-                number: center?.locality || "",
-                street: center?.phone || "",
+                municipality: center?.municipality || "",
+                number: center?.number || "",
+                street: center?.street || "",
             }));
         }
     }, [center]);
