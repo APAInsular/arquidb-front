@@ -154,7 +154,7 @@ const Header = ({ onClicks }) => {
                             )}
                         </div>
                         {/* historial */}
-                        {user?.roles.map(u => u.name) == "superAdmin" && (
+                        {user?.roles.map(u => u.name == "superAdmin") && (
                             <div>
                                 <NavLink to={'/historial'}>
                                     <BotonIcons size={48}
