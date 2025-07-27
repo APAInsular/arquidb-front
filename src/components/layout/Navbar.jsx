@@ -5,7 +5,7 @@ import BotonNavbar from "../ui/BotonNavbar";
 const Navbar = () => {
 
     const { user } = useAuth({ middleware: 'auth' });
-    console.log(user)
+
     return (
         <>
             <ul className=" space-y-2 navbar-2">
