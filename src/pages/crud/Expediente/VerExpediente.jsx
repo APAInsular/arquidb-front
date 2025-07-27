@@ -363,7 +363,7 @@ const VerExpediente = () => {
                                     <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                                 </div>
                                 <div>
-                                    {user?.roles.map(u => u.name) == "visor" ? (
+                                    {user?.roles.map(u => u.name == "visor") ? (
                                         <button
                                             type="button"
                                             onClick={signSelectedDocuments}
@@ -396,7 +396,7 @@ const VerExpediente = () => {
                                                         <div className="flex items-center space-x-2">
                                                             {!document.user_id ? (
                                                                 <>
-                                                                    {user?.roles.map(u => u.name) == "visor" ? (
+                                                                    {user?.roles.map(u => u.name == "visor") ? (
                                                                         <>
                                                                             <input
                                                                                 type="checkbox"

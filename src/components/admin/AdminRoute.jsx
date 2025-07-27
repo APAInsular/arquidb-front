@@ -11,7 +11,7 @@ const AdminRoute = () => {
         return <WebLoader />;
     }
 
-    if (user && user.roles.map(u => u.name) == "superAdmin") {
+    if (user && user.roles.map(u => u.name == "superAdmin")) {
         return <Outlet />;
     } else {
         return <Navigate to="/" replace />;
