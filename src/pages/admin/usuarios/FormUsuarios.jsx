@@ -61,10 +61,12 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
     };
 
     const addField = (field, defaultValue) => {
-        setFormData({
-            ...formData,
-            [field]: [...formData[field], defaultValue]
-        });
+        if (formData.role.length < 2) {
+            setFormData({
+                ...formData,
+                [field]: [...formData[field], defaultValue]
+            });
+        }
     };
 
     const removeField = (field, index) => {
@@ -185,14 +187,14 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
                         </div>
                     ))}
                     {/* </div> */}
-                    <button onClick={() => addField("role", "")}
+                    {formData.role.length < 2 && <button onClick={() => addField("role", "")}
                         className="flex space-x-3 flex-row items-center justify-center text-sm text-gray-700 hover:underline bg-gray-200 p-2 rounded-sm font-medium w-full cursor-pointer shadow shadow-gray-300"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
                         </svg>
                         <p>Añadir Rol</p>
-                    </button>
+                    </button>}
                 </div>
             </div>
 
