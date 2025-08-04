@@ -35,7 +35,9 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
             formData.append('files[]', file);
         });
 
-        console.log(formData)
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
 
         setUploading(true);
         setError(null);
