@@ -17,7 +17,9 @@ const DocumentContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setDocuments, setLoading, setErrors: setError });
+        if (localStorage.getItem("auth_token")) {
+            views({ setData: setDocuments, setLoading, setErrors: setError });
+        }
     }, []);
 
     const createDocument = async (data, expedientId) => {

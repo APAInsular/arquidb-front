@@ -15,8 +15,10 @@ const ClientContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setClients, setLoading, setErrors: setError });
-        countClient();
+        if (localStorage.getItem("auth_token")) {
+            views({ setData: setClients, setLoading, setErrors: setError });
+            countClient();
+        }
     }, []);
 
     const countClient = async () => {

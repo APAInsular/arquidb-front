@@ -17,8 +17,10 @@ const CenterContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setCenters, setLoading, setErrors: setError });
-        countCenter();
+        if (localStorage.getItem("auth_token")) {
+            views({ setData: setCenters, setLoading, setErrors: setError });
+            countCenter();
+        }
     }, []);
 
     const createCenter = async (data) => {
