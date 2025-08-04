@@ -100,21 +100,6 @@ const Centros = () => {
                         </Link>
                     </div>
                 </div>
-                {/* card  */}
-                <div className="grid grid-cols-3 justify-start gap-2 my-2">
-                    <StatsCard
-                        title={"Total Centros (Cualquier centro)"}
-                        value={centerAccounts.centers_account}
-                    />
-                    {/* <StatsCard
-                        title={"Total Admin (Solo usuarios Admin)"}
-                        value={admin.length}
-                    />
-                    <StatsCard
-                        title={"Total Visores (Solo usuario Visores)"}
-                        value={visator.length}
-                    /> */}
-                </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
                 </div>
