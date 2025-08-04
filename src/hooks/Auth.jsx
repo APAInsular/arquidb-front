@@ -104,8 +104,8 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
             .catch(error => {
                 if (error.response.status !== 422) throw error
                 setErrors(Object.values(error.response.data.errors).flat())
-                showError();
-                setTimeout(() => hideError(), 4000);
+                // showError();
+                // setTimeout(() => hideError(), 4000);
                 setStatus(false)
             })
     }

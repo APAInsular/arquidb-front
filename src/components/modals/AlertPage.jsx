@@ -11,7 +11,7 @@ const AlertPage = ({ onClose }) => {
                                 <div className="bg-green-700 m-2 p-1 rounded-sm">
                                     <LaptopMinimalCheckIcon className="text-green-300 w-6 h-6" />
                                 </div>
-                                <div className="text-green-800 text-md flex flex-row items-center"><p className="font-medium">Hecho</p>, Inserción correcta</div>
+                                <div className="text-green-800 text-md flex flex-row items-center"><p className="font-medium">Hecho</p>, Operación correcta</div>
                             </div>
                             <button className="bg-green-400/50 rounded-xl p-1.5 px-1.5 me-1.5 " onClick={() => setShowSuccessAlert(false)}>
                                 <X onClick={onClose} className="w-6 h-6 text-green-800 font-bold" />
