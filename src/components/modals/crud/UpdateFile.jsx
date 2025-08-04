@@ -25,31 +25,32 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
         e.preventDefault();
 
         if (!files || files.length === 0) {
-            setError('Por favor selecciona un archivo');
+            setError('Por favor selecciona al menos un archivo');
             return;
         }
+
+        const formData = new FormData();
+        formData.append('phase_id', phase.id);
+        files.forEach(file => {
+            formData.append('files[]', file);
+        });
 
         setUploading(true);
         setError(null);
         setSuccess(false);
-        try {
-            const newDocuments = files.map(file => {
-                const newDocument = {
-                    file: file,
-                    name: file.name,
-                    phase: phase
-                };
 
-                if (!phaseDocuments.some(document => document.name == newDocument.name)) {
-                    return newDocument;
+        try {
+            const response = await axios.post('/api/multiupload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
                 }
             });
 
-            setPhaseDocuments([...phaseDocuments, ...newDocuments]);
+            setPhaseDocuments([...phaseDocuments, ...response.data.documents]);
             setSuccess(true);
-            // setFileUrl(response.data.url);
         } catch (err) {
-            //setError(err.response?.data?.message || 'Error al subir el archivo');
+            console.error('Upload error:', err);
+            setError(err.response?.data?.message || 'Error al subir el archivo');
         } finally {
             setUploading(false);
             setTimeout(() => {
