@@ -30,7 +30,7 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
         }
 
         const formData = new FormData();
-        formData.append('phase_id', phase.id);
+        formData.append('phase_id', phase);
         files.forEach(file => {
             formData.append('files[]', file);
         });
