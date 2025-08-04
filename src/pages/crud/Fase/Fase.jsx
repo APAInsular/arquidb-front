@@ -17,7 +17,6 @@ const Fase = () => {
     const [error, setError] = useState(null);
     const [deletes, setDeletes] = useState(false);
     const [openId, setOpenId] = useState(null);
-    const { phaseAccounts } = usePhase();
 
     const buscador = useCallback((query = '') => {
         const { views } = CrudManager({ url: `phase${query ? '?title=' + query : '?title='}&page=${page}` });
@@ -85,17 +84,6 @@ const Fase = () => {
                         </svg>
                         <p>Añadir Fase</p>
                     </Link>
-                </div>
-                {/* card  */}
-                <div className="grid grid-cols-3 justify-start gap-2 my-2">
-                    <StatsCard
-                        title={"Total Fases (Cualquier Fase)"}
-                        value={phaseAccounts.phases_account}
-                    />
-                    <StatsCard
-                        title={"Total Documentos (Cualquier Documento)"}
-                        value={phaseAccounts.documents_account}
-                    />
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />

@@ -94,13 +94,6 @@ const Colegiado = () => {
                         <p>Añadir colegiado</p>
                     </Link>
                 </div>
-                {/* card  */}
-                <div className="grid grid-cols-3 justify-start gap-2 my-2">
-                    <StatsCard
-                        title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={collegiateAccounts.collegiates_account}
-                    />
-                </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
                 </div>

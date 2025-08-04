@@ -108,20 +108,6 @@ const Expediente = () => {
                         <p>Añadir expedientes</p>
                     </Link>
                 </div>
-                <div className="grid grid-cols-3 justify-start gap-2 my-2">
-                    <StatsCard
-                        title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedientAccounts.expedients_account}
-                    />
-                    <StatsCard
-                        title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedientAccounts.clients_account}
-                    />
-                    <StatsCard
-                        title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedientAccounts.collegiates_account}
-                    />
-                </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
                 </div>
