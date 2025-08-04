@@ -82,8 +82,6 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
         onSubmit(formData);
     };
 
-    console.log(errors)
-
     return (
         <form onSubmit={handleSubmit} className="overflow-y-scroll space-y-6 flex flex-col justify-between h-full">
             <div>

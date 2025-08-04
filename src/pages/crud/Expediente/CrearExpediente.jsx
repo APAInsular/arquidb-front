@@ -129,10 +129,6 @@ const CrearExpediente = () => {
 
     if (!user || !clients || !collegiates) return <WebLoader />;
 
-    console.log(clients);
-    console.log(expedientPeople);
-    console.log(collegiates);
-
     return (
         <>
             <div className="h-full overflow-y-hidden">

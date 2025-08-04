@@ -183,10 +183,6 @@ const EditarExpediente = () => {
     expedient.start_date = expedient?.start_date ? new Date(expedient.start_date).toISOString().slice(0, 10) : '';
     expedient.end_date = expedient?.end_date ? new Date(expedient.end_date).toISOString().slice(0, 10) : '';
 
-
-    console.log(user);
-    console.log(expedient);
-
     return (
         <>
             <div className="h-full overflow-y-hidden">

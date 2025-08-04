@@ -12,7 +12,6 @@ const CrearFase = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (formData) => {
-        console.log(formData);
         const response = await creates({
             data: formData, setErrors, setStatus
         });
