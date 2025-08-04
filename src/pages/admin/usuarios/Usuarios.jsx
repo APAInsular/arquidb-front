@@ -129,21 +129,6 @@ const Usuarios = () => {
                         </Link>
                     </div>
                 </div>
-                {/* card  */}
-                <div className="grid grid-cols-3 justify-start gap-2 my-2">
-                    <StatsCard
-                        title={"Total Usuarios (Cualquier usuario)"}
-                        value={userAccounts.users_account}
-                    />
-                    <StatsCard
-                        title={"Total Admin (Solo usuarios Admin)"}
-                        value={userAccounts.super_admins_account}
-                    />
-                    <StatsCard
-                        title={"Total Visores (Solo usuario Visores)"}
-                        value={userAccounts.visors_account}
-                    />
-                </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
                 </div>

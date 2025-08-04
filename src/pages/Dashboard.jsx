@@ -132,20 +132,6 @@ const Dashboard = () => {
             )}
             <div className="flex flex-col h-full">
                 <TitleCard name="Home" />
-                <div className="grid grid-cols-3 gap-2 mt-2">
-                    <StatsCard
-                        title={"Total Expedientes (Cualquier Expediente)"}
-                        value={expedientAccounts.expedientCount}
-                    />
-                    <StatsCard
-                        title={"Total Clientes (Cualquier Cliente)"}
-                        value={expedientAccounts.clientsCount}
-                    />
-                    <StatsCard
-                        title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={expedientAccounts.collegiatesCount}
-                    />
-                </div>
                 <div className="mt-2">
                     <Paginate page={pages} setPage={setPages} totalPages={totalPages} />
                 </div>

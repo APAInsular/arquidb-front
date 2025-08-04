@@ -53,19 +53,6 @@ const Colegiado = () => {
             render: (datos) => `${datos.first_surname} ${datos.second_surname || ''}`,
         },
         { key: 'identification_number', label: 'Identificación' },
-        {
-            key: 'birth_date',
-            label: 'Fecha de nacimiento',
-            render: (datos) =>
-                datos?.collegiates?.birth_date
-                    ? datos.collegiates.birth_date.slice(0, 10).split('-').reverse().join('/')
-                    : '',
-        },
-        {
-            key: 'nationality',
-            label: 'Nacionalidad',
-            render: (datos) => datos?.collegiates?.nationality || '',
-        },
     ];
 
     const formattedColegiados = colegiados.map((datos) => ({
@@ -93,13 +80,6 @@ const Colegiado = () => {
                         </svg>
                         <p>Añadir colegiado</p>
                     </Link>
-                </div>
-                {/* card  */}
-                <div className="grid grid-cols-3 justify-start gap-2 my-2">
-                    <StatsCard
-                        title={"Total Colegiados (Cualquier Colegiado)"}
-                        value={collegiateAccounts.collegiates_account}
-                    />
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />

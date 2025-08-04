@@ -418,7 +418,12 @@ const VerExpediente = () => {
                                                             )}
                                                         </div>
                                                         <div className="flex flex-row items-center justify-between p-4">
-                                                            <a href={import.meta.env.VITE_APP_BACKEND_URL + "/storage/" + document.path} className="flex items-start gap-3 cursor-pointer">
+                                                            <a
+                                                                href={'https://367be3a2035528943240074d0096e0cd.r2.cloudflarestorage.com/' + document.path}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex items-start gap-3 cursor-pointer"
+                                                            >
                                                                 <div className="mt-0.5 p-2 rounded-lg bg-indigo-50 text-indigo-600">
                                                                     <File className="w-5 h-5" />
                                                                 </div>
