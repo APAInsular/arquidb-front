@@ -12,7 +12,7 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
         // Falta filtrar en EditarExpediente
         const documentFilter = expedientDocuments.filter(document => {
             if (document.phase_id) {
-                const phaseCode = phases.find(phase => phase.id === document.phase_id).phase;
+                const phaseCode = phases.find(phase => phase.id === document.phase_id);
                 return phaseCode === phase;
             } else return document.phase === phase;
         });
