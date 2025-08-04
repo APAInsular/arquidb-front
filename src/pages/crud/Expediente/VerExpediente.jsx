@@ -388,6 +388,9 @@ const VerExpediente = () => {
                                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                             {filteredDocuments.map((expedientDoc) => (
                                                 expedientDoc.documents.map(document => (
+                                                    console.log(document);
+                                                    //abro console log
+                                                    return (
                                                     <div key={document.id} className="group bg-white rounded-lg border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                                                         <div className="flex items-center space-x-2">
                                                             {!document.user_id ? (
@@ -418,7 +421,6 @@ const VerExpediente = () => {
                                                             )}
                                                         </div>
                                                         <div className="flex flex-row items-center justify-between p-4">
-                                                            console.log(document)
                                                             <a
                                                                 href={document.url}
                                                                 target="_blank"
@@ -441,6 +443,8 @@ const VerExpediente = () => {
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    //Cierre console log
+                                                    );
                                                 ))
                                             ))}
                                         </div>
