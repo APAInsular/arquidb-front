@@ -418,6 +418,7 @@ const VerExpediente = () => {
                                                             )}
                                                         </div>
                                                         <div className="flex flex-row items-center justify-between p-4">
+                                                            console.log(document)
                                                             <a
                                                                 href={document.url}
                                                                 target="_blank"
