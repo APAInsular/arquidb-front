@@ -387,7 +387,7 @@ const VerExpediente = () => {
                                     filteredDocuments.length > 0 ? (
                                         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                             {filteredDocuments.map((expedientDoc) => (
-                                                expedientDoc.documents.map(document => (
+                                                expedientDoc.documents.map(document => {
                                                     console.log(document);
                                                     //abro console log
                                                     return (
@@ -445,7 +445,7 @@ const VerExpediente = () => {
                                                     </div>
                                                     //Cierre console log
                                                     );
-                                                ))
+                                                })
                                             ))}
                                         </div>
                                     ) : (
