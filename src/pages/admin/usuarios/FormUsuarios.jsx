@@ -161,6 +161,7 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
                                 onChange={(e) => handleArrayChange(e, i, "role")}
                                 required
                             >
+                                <option value="">...</option>
                                 <option value="superAdmin">Admin</option>
                                 <option value="visor">Visor</option>
                                 <option value="user">User</option>
