@@ -22,8 +22,6 @@ const Login = () => {
 
     }
 
-    console.log(status)
-
     return (
         <>
             {/* contenedor  */}

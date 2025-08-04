@@ -13,14 +13,11 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
         // Obtener token de localStorage (o de donde lo guardes)
         const token = localStorage.getItem('token'); // Asegúrate que esté guardado así
 
-        console.log("Usando token:", token); // 🪵 Debug: Verificar token cargado
-
         await axios
             .get(api + url + all, {
             })
             .then(res => {
                 setData(res.data.data ?? res.data);
-                console.log(res.data.data ?? res.data)
                 if (typeof setPages === 'function') {
                     setPages(res?.data?.data?.last_page ?? res?.data?.last_page);
                 }
