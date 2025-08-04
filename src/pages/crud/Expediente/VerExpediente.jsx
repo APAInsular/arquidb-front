@@ -419,7 +419,7 @@ const VerExpediente = () => {
                                                         </div>
                                                         <div className="flex flex-row items-center justify-between p-4">
                                                             <a
-                                                                href={'https://367be3a2035528943240074d0096e0cd.r2.cloudflarestorage.com/' + document.path}
+                                                                href={document.url}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 className="flex items-start gap-3 cursor-pointer"
