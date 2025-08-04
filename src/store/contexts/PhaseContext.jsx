@@ -18,8 +18,10 @@ const PhaseContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setPhases, setLoading, setErrors: setError });
-        // countPhase();
+        if (localStorage.getItem("auth_token")) {
+            views({ setData: setPhases, setLoading, setErrors: setError });
+            // countPhase();
+        }
     }, []);
 
     const showPhase = async (id) => {

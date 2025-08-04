@@ -31,8 +31,6 @@ const VerColegiado = () => {
     const person = collegiate.person || {};
     const colleg = collegiate.collegiate?.[0] || {};
 
-    console.log(collegiate);
-
     return (
         <>
             <TitleCard name={"Colegiados"} action={"Ver"} />

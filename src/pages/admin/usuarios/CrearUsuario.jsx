@@ -16,8 +16,6 @@ const CrearUsuario = () => {
     const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
 
-    console.log(errors);
-
     const handleUpdate = async (formData) => {
         const response = await creates({
             data: formData, setErrors, setStatus

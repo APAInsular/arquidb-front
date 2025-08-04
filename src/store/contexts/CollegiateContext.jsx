@@ -15,8 +15,10 @@ const CollegiateContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setCollegiates, setLoading, setErrors: setError });
-        countCollegiate();
+        if (localStorage.getItem("auth_token")) {
+            views({ setData: setCollegiates, setLoading, setErrors: setError });
+            countCollegiate();
+        }
     }, []);
 
     const countCollegiate = async () => {

@@ -15,8 +15,10 @@ const UserContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        views({ setData: setUsers, setLoading, setErrors: setError });
-        countUser();
+        if (localStorage.getItem("auth_token")) {
+            views({ setData: setUsers, setLoading, setErrors: setError });
+            countUser();
+        }
     }, []);
 
     const countUser = async () => {

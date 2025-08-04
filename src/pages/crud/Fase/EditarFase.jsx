@@ -19,7 +19,6 @@ const EditarFase = () => {
     const navigate = useNavigate();
 
     const handleSubmit = async (formData) => {
-        console.log(formData);
         const response = await updates({
             data: formData, setErrors, setStatus
         });
