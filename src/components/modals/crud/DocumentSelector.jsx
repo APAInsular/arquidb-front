@@ -25,8 +25,6 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
         setModalDocument(false);
     }
 
-    console.log(phaseDocuments);
-
     return (
         <>
             {showUpdateFile && <UpdateFile onClose={() => setShowUpdateFile(false)} phase={phase} phaseDocuments={phaseDocuments} setPhaseDocuments={setPhaseDocuments} />}

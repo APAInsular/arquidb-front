@@ -39,8 +39,6 @@ const ChangePassword = ({ onClose }) => {
         changePassword({ setErrors, setStatus, data: formData })
     }
 
-    console.log("HOLAA", errors?.[1]?.password)
-
     return (
         <>
             <div className="fixed inset-0 z-50 flex justify-center items-center bg-black/50 bg-opacity-50">

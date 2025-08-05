@@ -107,11 +107,7 @@ const CrearExpediente = () => {
             await axios.get("/sanctum/csrf-cookie");
             const response = await createExpedient(newExpedient);
 
-            console.log(response.data.id);
-
             const newPhases = await getPhaseTitles({ expedientPhases, expedientId: response.data.id });
-
-            console.log(newPhases);
 
             const createPromises = newPhases.map(phase => createPhase(phase));
             await Promise.all(createPromises);

@@ -10,8 +10,6 @@ const ProfileUser = ({ user }) => {
 
     const [modal, setModal] = useState(false);
 
-    console.log(user)
-
     const handleTheme = (value) => {
 
         let theme = document.querySelector('.layout')

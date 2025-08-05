@@ -23,8 +23,6 @@ const Dashboard = () => {
     const dateTo = searchParams.get('dateTo') || '';
     const page = searchParams.get('page') || '';
 
-    // console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
-
     const [pages, setPages] = useState(1);
     const [totalPages, setTotalPages] = useState([]);
     const [expedientes, setExpedientes] = useState([]);
