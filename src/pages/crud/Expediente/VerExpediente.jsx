@@ -124,13 +124,13 @@ const VerExpediente = () => {
     const getUrlDocument = (id) => {
         axios.get(`/api/documents/${id}/url`)
             .then(response => {
-                const url = response.data.url;
-                window.open(url, '_blank'); // Abre el documento en una nueva pestaña
+                console.log('URL pública:', response.data.url);
+                window.open(response.data.url, '_blank');
             })
             .catch(error => {
                 console.error('Error al obtener la URL:', error);
             });
-    };
+    }
 
     const signSelectedDocuments = async () => {
         if (documentsToSign.length === 0) {
@@ -435,8 +435,10 @@ const VerExpediente = () => {
                                                             </div>
                                                             <div className="flex flex-row items-center justify-between p-4">
                                                                 <a
-                                                                    onClick={() => getUrlDocument(document.id)}
-                                                                    className="flex items-start gap-3 cursor-pointer text-blue-600 underline"
+                                                                    href={'https://fls-9f8da280-58b4-44b8-a280-6a2a64683384.laravel.cloud/' + document.path}
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                    className="flex items-start gap-3 cursor-pointer"
                                                                 >
                                                                     <div className="mt-0.5 p-2 rounded-lg bg-indigo-50 text-indigo-600">
                                                                         <File className="w-5 h-5" />
