@@ -34,6 +34,8 @@ const VerExpediente = () => {
     const [modalDelete, setModalDelete] = useState(false);
     const [deleteId, setDeleteId] = useState(false);
 
+    const [urlDocument, setUrlDocument] = useState(null);
+
     useEffect(() => {
         const getExpediente = async () => {
             try {
@@ -118,6 +120,17 @@ const VerExpediente = () => {
             }
         });
     };
+
+    const getUrlDocument = (id) => {
+        axios.get(`/api/documents/${id}/url`)
+            .then(response => {
+                console.log('URL pública:', response.data.url);
+                window.open(response.data.url, '_blank');
+            })
+            .catch(error => {
+                console.error('Error al obtener la URL:', error);
+            });
+    }
 
     const signSelectedDocuments = async () => {
         if (documentsToSign.length === 0) {
@@ -422,7 +435,7 @@ const VerExpediente = () => {
                                                             </div>
                                                             <div className="flex flex-row items-center justify-between p-4">
                                                                 <a
-                                                                    href={'https://367be3a2035528943240074d0096e0cd.r2.cloudflarestorage.com/' + document.path}
+                                                                    onClick={() => { getUrlDocument(document.id) }}
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
                                                                     className="flex items-start gap-3 cursor-pointer"
