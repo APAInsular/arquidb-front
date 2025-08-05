@@ -125,7 +125,7 @@ const VerExpediente = () => {
         axios.get(`/api/documents/${id}/url`)
             .then(response => {
                 console.log('URL pública:', response.data.url);
-                window.open(response.data.url, '_blank');
+                return response.data.url
             })
             .catch(error => {
                 console.error('Error al obtener la URL:', error);
@@ -435,7 +435,7 @@ const VerExpediente = () => {
                                                             </div>
                                                             <div className="flex flex-row items-center justify-between p-4">
                                                                 <a
-                                                                    onClick={() => { getUrlDocument(document.id) }}
+                                                                    href={getUrlDocument(document.id)}
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
                                                                     className="flex items-start gap-3 cursor-pointer"
