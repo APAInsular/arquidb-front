@@ -27,7 +27,6 @@ const VerCentro = () => {
     if (loading) { return <PulseLoader /> };
     if (error) { return <WebError /> };
 
-    console.log(centers)
     return (
         <>
             <TitleCard name={"Centros"} action={"Ver"} />

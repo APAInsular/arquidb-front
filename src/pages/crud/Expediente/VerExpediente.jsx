@@ -38,8 +38,7 @@ const VerExpediente = () => {
         const getExpediente = async () => {
             try {
                 const response = await axios.get(`/api/expedient/${params.id}`);
-                console.log(response.data);
-                setExpedient(response.data)
+                setExpedient(response.data);
             } catch (error) {
                 console.error('Error al obtener el expediente:', error);
             }

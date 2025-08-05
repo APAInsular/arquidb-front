@@ -5,8 +5,6 @@ import WebLoader from "../../routes/loaders/WebLoader";
 const AdminRoute = () => {
     const { user, isLoading } = useAuth({ middleware: 'auth' });
 
-    // console.log("Usuario cargado:", user, "Cargando:", isLoading);
-
     if (isLoading || user === undefined) {
         return <WebLoader />;
     }

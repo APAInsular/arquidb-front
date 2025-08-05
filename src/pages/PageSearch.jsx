@@ -23,8 +23,6 @@ const PageSearch = () => {
     const dateTo = searchParams.get('dateTo') || '';
     const page = searchParams.get('page') || '';
 
-    console.log(number, title, phase, client, collegiate, dateFrom, dateTo, SearchTitle)
-
     const [expedientes, setExpedientes] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
