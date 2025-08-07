@@ -36,7 +36,8 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
                 />
             )}
             <Default className="text-center w-1/3">
-                <div className="bg-white text-blue-500 p-2 flex flex-col h-full">
+                <div className="bg-white text-blue-500 p-2 flex flex-col h-[80vh]"> {/* Altura fija del panel */}
+                    {/* Encabezado */}
                     <div className="mb-4 text-black p-2">
                         <div className="flex justify-between border-b space-x-4">
                             <button type="button" onClick={() => setModalDocument(false)}>X</button>
@@ -44,6 +45,7 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
                         </div>
                     </div>
 
+                    {/* Botón + */}
                     <button
                         type="button"
                         onClick={() => setShowUpdateFile(true)}
@@ -52,8 +54,8 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
                         +
                     </button>
 
-                    {/* Contenedor con scroll */}
-                    <div className="flex-1 overflow-y-auto mb-4 px-2">
+                    {/* Zona scrollable de documentos */}
+                    <div className="overflow-y-auto flex-1 px-2">
                         {phaseDocuments.map((document, index) => (
                             <div
                                 key={document.id || index}
@@ -64,13 +66,16 @@ const DocumentSelector = ({ phase, setModalDocument, expedientDocuments, setExpe
                         ))}
                     </div>
 
-                    <button
-                        type="button"
-                        onClick={() => handleClick()}
-                        className="bg-blue-600 text-white rounded-full py-2 px-6 w-full hover:bg-blue-700 focus:ring-2 focus:ring-blue-400"
-                    >
-                        Enviar
-                    </button>
+                    {/* Botón Enviar */}
+                    <div className="mt-4">
+                        <button
+                            type="button"
+                            onClick={() => handleClick()}
+                            className="bg-blue-600 text-white rounded-full py-2 px-6 w-full hover:bg-blue-700 focus:ring-2 focus:ring-blue-400"
+                        >
+                            Enviar
+                        </button>
+                    </div>
                 </div>
             </Default>
         </>
