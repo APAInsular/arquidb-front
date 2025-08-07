@@ -71,10 +71,10 @@ const Fase = () => {
                 <TitleCard name={"Fases"} />
                 {/* poco necesario  */}
                 <div className="w-full flex justify-between space-x-1">
-                    <DefaultSearch
+                    {/* <DefaultSearch
                         title={'Fases'}
                         Buscador={buscador}
-                    />
+                    /> */}
                     <Link
                         // to={"/fases/crear"}
                         // cursor-pointer hover:bg-red-800 hover:text-red-300
