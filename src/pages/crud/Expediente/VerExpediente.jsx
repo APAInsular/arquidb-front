@@ -370,7 +370,7 @@ const VerExpediente = () => {
                                     </div>
                                     <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                                 </div>
-                                <div>
+                                {/* <div>
                                     {user?.roles.map(u => u.name == "visor") ? (
                                         <button
                                             type="button"
@@ -391,7 +391,7 @@ const VerExpediente = () => {
                                             <p>Visar</p>
                                         </button>
                                     )}
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="mt-6 mb-10">
