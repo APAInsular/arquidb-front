@@ -17,7 +17,6 @@ const UpdateFile = ({ onClose, phase, phaseDocuments, setPhaseDocuments }) => {
     const [fileUrl, setFileUrl] = useState('');
 
     const handleFileChange = (e) => {
-        console.log(Array.from(e.target.files));
         setFiles(Array.from(e.target.files));
     };
 

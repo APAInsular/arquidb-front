@@ -26,7 +26,6 @@ const PhaseSelector = ({ expedientPhases, setExpedientPhases, setModalPhase, inp
 
             }
         } else alert("La fase debe tener cuatro dígitos.");
-        console.log(phase);
     };
 
     const handleInputChange = (e) => {

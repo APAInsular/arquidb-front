@@ -26,8 +26,6 @@ const VerCliente = () => {
     const address = clients?.address || {};
     const agent = clients?.client?.[0]?.agent || "-";
 
-    console.log(clients)
-
     return (
         <>
             {/* Main Card */}
