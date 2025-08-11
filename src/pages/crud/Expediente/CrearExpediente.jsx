@@ -116,7 +116,7 @@ const CrearExpediente = () => {
 
             if (expedientPeople.length > 0) await axios.post(`api/expedients/${response.data.id}/people`, { people: expedientPeople });
 
-            navigate('/expedientes');
+            navigate(`/expedientes/${response.data.id}/show`);
             navigate(0);
         } catch (error) {
             console.error("Error creando el expediente:", error);

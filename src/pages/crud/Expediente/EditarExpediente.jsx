@@ -162,7 +162,7 @@ const EditarExpediente = () => {
 
             await axios.post(`api/expedients/${params.id}/people`, { people: expedientPeople });
 
-            navigate('/expedientes');
+            navigate(`/expedientes/${params.id}/show`);
             navigate(0);
         } catch (error) {
             setClick(false);
