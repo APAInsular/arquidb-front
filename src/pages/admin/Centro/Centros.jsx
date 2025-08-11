@@ -67,10 +67,10 @@ const Centros = () => {
                 <TitleCard name="Centros" link="/" />
                 {/* añadir algo */}
                 <div className="w-full flex justify-between space-x-1">
-                    <DefaultSearch
+                    {/* <DefaultSearch
                         title={'Centro'}
                         Buscador={buscador}
-                    />
+                    /> */}
 
                     {generalSearch && (
                         <div onClick={(e) => e.stopPropagation()}>
