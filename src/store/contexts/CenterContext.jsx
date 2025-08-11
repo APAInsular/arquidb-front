@@ -2,6 +2,7 @@ import { useState, useEffect, createContext, useContext } from 'react';
 import CrudManager from '../../hooks/CrudManager';
 import WebLoader from '../../routes/loaders/WebLoader';
 import { UseLoader } from './LoaderContext';
+import { useAuth } from '../../hooks/Auth';
 
 const ArquidbContext = createContext();
 export const useCenter = () => useContext(ArquidbContext);
@@ -9,6 +10,7 @@ export const useCenter = () => useContext(ArquidbContext);
 const CenterContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
     const { views, creates, updates, counts } = CrudManager({ url: `centers`, showLoader, hideLoader, showError, hideError, allData: true });
+    const { user } = useAuth({ middleware: 'auth' });
 
     const [centers, setCenters] = useState([]);
     const [centerAccounts, setCenterAccounts] = useState(0);
@@ -17,7 +19,7 @@ const CenterContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (localStorage.getItem("auth_token")) {
+        if (localStorage.getItem("auth_token") && user?.roles.map(u => u.name == "superAdmin")) {
             views({ setData: setCenters, setLoading, setErrors: setError });
             countCenter();
         }
