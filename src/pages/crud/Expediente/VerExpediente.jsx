@@ -370,7 +370,7 @@ console.log(user)
                                     </div>
                                     <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                                 </div>
-                                {/* <div>
+                                <div>
                                     {user?.roles.some(u => u.permissions.some(p => p.name == "sign documents")) ? (
                                         <button
                                             type="button"
@@ -391,7 +391,7 @@ console.log(user)
                                             <p>Visar</p>
                                         </button>
                                     )}
-                                </div> */}
+                                </div>
                             </div>
 
                             <div className="mt-6 mb-10">
