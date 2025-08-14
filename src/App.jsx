@@ -34,6 +34,7 @@ import ActualizarUsuario from './pages/admin/usuarios/ActualizarUsuario';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import VerFase from './pages/crud/Fase/VerFase';
 import AdminRoute from './components/admin/AdminRoute';
+import SuperAdminRoute from './components/admin/SuperAdminRoute';
 import PasswordReset from './pages/auth/PasswordReset';
 import NotFound from './pages/NotFound';
 import LoaderContext from './store/contexts/LoaderContext';
@@ -89,6 +90,8 @@ function App() {
                             <Route path="/usuarios/:id/show" element={<VerUsuario />} />
                             <Route path="/usuarios/crear" element={<CrearUsuario />} />
                             <Route path="/usuarios/:id/editar" element={<ActualizarUsuario />} />
+                          </Route>
+                          <Route element={<SuperAdminRoute />}>
                             <Route path="/centros" element={<Centros />} />
                             <Route path="/centros/:id/show" element={<VerCentro />} />
                             <Route path="/centros/crear" element={<CrearCentro />} />

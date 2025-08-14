@@ -154,7 +154,7 @@ const VerExpediente = () => {
     };
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
-
+console.log(user)
     return (
         <>
             <TitleCard name={"Expedientes"} action={expedient.title} />
@@ -371,7 +371,7 @@ const VerExpediente = () => {
                                     <h3 className="text-lg font-semibold text-gray-800">Documentos asociados</h3>
                                 </div>
                                 {/* <div>
-                                    {user?.roles.some(u => u.name == "visor") ? (
+                                    {user?.roles.some(u => u.permissions.some(p => p.name == "sign documents")) ? (
                                         <button
                                             type="button"
                                             onClick={signSelectedDocuments}
@@ -407,7 +407,7 @@ const VerExpediente = () => {
                                                             <div className="flex items-center space-x-2">
                                                                 {!document.user_id ? (
                                                                     <>
-                                                                        {user?.roles.some(u => u.name == "visor") ? (
+                                                                        {user?.roles.some(u => u.permissions.some(p => p.name == "sign documents")) ? (
                                                                             <>
                                                                                 <input
                                                                                     type="checkbox"

@@ -154,7 +154,7 @@ const Header = ({ onClicks }) => {
                             )}
                         </div>
                         {/* historial */}
-                        {user?.roles.some(u => u.name == "superAdmin") && (
+                        {user?.roles.some(u => u.name == "superAdmin" || u.name == "admin") && (
                             <div>
                                 <NavLink to={'/historial'}>
                                     <BotonIcons size={48}
@@ -164,7 +164,8 @@ const Header = ({ onClicks }) => {
                                         }
                                     />
                                 </NavLink>
-                            </div>)}
+                            </div>
+                        )}
                         {/* avatar */}
                         <div className="relative" onClick={user ? () => handleClick(1) : undefined}>
                             <Avatar name={user?.name.at(0).toUpperCase()} foto="" size={48} text={"text-white text-xl"} />

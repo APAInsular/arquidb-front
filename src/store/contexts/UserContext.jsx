@@ -8,7 +8,6 @@ export const useUser = () => useContext(ArquidbContext);
 
 const UserContext = ({ children }) => {
     const { views, creates, updates, counts } = CrudManager({ url: `users`, allData: true });
-    const { user } = useAuth({ middleware: 'auth' });
 
     const [users, setUsers] = useState([]);
     const [userAccounts, setUserAccounts] = useState(0);
@@ -17,7 +16,7 @@ const UserContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (localStorage.getItem("auth_token") && user?.roles.map(u => u.name == "superAdmin")) {
+        if (localStorage.getItem("auth_token")) {
             views({ setData: setUsers, setLoading, setErrors: setError });
             countUser();
         }

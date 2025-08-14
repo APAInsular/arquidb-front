@@ -40,6 +40,14 @@ const Navbar = () => {
                             />
                         </li>
                     </>
+                ) : user?.roles.some(u => u.name == "admin") ? (
+                    <li>
+                        <BotonNavbar
+                            navegate={"/usuarios"}
+                            icon={<UserCheck2Icon />}
+                            name={"Usuarios"}
+                        />
+                    </li>
                 ) : null}
                 <li>
                     <BotonNavbar

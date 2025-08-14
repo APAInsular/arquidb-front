@@ -49,7 +49,7 @@ const ActualizarUsuario = () => {
                 <p>{error}</p>
             ) : (
                 <FormUsuarios
-                    user={user}
+                    userData={user}
                     onSubmit={handleSubmit}
                     status={status}
                     errors={errors}

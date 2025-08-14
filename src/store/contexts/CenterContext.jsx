@@ -10,7 +10,6 @@ export const useCenter = () => useContext(ArquidbContext);
 const CenterContext = ({ children }) => {
     const { showLoader, hideLoader, showError, hideError } = UseLoader();
     const { views, creates, updates, counts } = CrudManager({ url: `centers`, showLoader, hideLoader, showError, hideError, allData: true });
-    const { user } = useAuth({ middleware: 'auth' });
 
     const [centers, setCenters] = useState([]);
     const [centerAccounts, setCenterAccounts] = useState(0);
@@ -19,7 +18,7 @@ const CenterContext = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        if (localStorage.getItem("auth_token") && user?.roles.map(u => u.name == "superAdmin")) {
+        if (localStorage.getItem("auth_token")) {
             views({ setData: setCenters, setLoading, setErrors: setError });
             countCenter();
         }
