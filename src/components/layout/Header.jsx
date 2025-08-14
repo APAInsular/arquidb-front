@@ -164,7 +164,8 @@ const Header = ({ onClicks }) => {
                                         }
                                     />
                                 </NavLink>
-                            </div>)}
+                            </div>
+                        )}
                         {/* avatar */}
                         <div className="relative" onClick={user ? () => handleClick(1) : undefined}>
                             <Avatar name={user?.name.at(0).toUpperCase()} foto="" size={48} text={"text-white text-xl"} />

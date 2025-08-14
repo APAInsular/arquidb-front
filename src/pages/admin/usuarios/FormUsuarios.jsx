@@ -1,21 +1,23 @@
 import { useState, useEffect } from "react";
 import InputForm from "../../../components/ui/InputForm";
 import CrudManager from "../../../hooks/CrudManager";
+import { useAuth } from "../../../hooks/Auth";
 
-const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
+const FormUsuarios = ({ userData, onSubmit, status, errors, falses }) => {
 
     const { views } = CrudManager({ url: `centers` });
+    const { user } = useAuth({ middleware: 'auth' });
 
     const [centers, setCenters] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setErrors] = useState([]);
 
     const [formData, setFormData] = useState({
-        name: user?.name || "",
-        email: user?.email || "",
-        password: user?.password || "",
-        center_id: user?.center_id || "",
-        role: user?.roles?.length ? user.roles.map(r => r.name) : [""],
+        name: userData?.name || "",
+        email: userData?.email || "",
+        password: userData?.password || "",
+        center_id: userData?.center_id || "",
+        role: userData?.roles?.length ? userData.roles.map(r => r.name) : [""],
     });
 
     useEffect(() => {
@@ -23,16 +25,16 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
     }, []);
 
     useEffect(() => {
-        if (user) {
+        if (userData) {
             setFormData(prev => ({
                 ...prev,
-                name: user.name || "",
-                email: user.email || "",
-                center_id: user.center_id || "",
-                role: user?.roles?.length ? user.roles.map(r => r.name) : [""],
+                name: userData.name || "",
+                email: userData.email || "",
+                center_id: userData.center_id || "",
+                role: userData?.roles?.length ? userData.roles.map(r => r.name) : [""],
             }));
         }
-    }, [user]);
+    }, [userData]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -124,30 +126,32 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
                         {errors?.response?.data?.errors?.password && <p className="text-red-500 text-sm mt-1">{errors.response.data.errors.password}</p>}
                     </div>}
 
-                <div className="mb-4">
-                    <label htmlFor="center_id" className="block text-md font-medium text-gray-700 mb-1">
-                        Centros
-                    </label>
-                    {loading ? (
-                        <div className="animate-pulse h-10 bg-gray-200 rounded"></div>
-                    ) : (
-                        <select
-                            id="center_id"
-                            name="center_id"
-                            value={formData.center_id}
-                            onChange={handleCenterChange}
-                            className="w-full border-b-2 bg-gray-200/60 focus:bg-rose-100/60 rounded-t-lg border-gray-500/70 py-3 focus:border-b-red-700 outline-none"
-                            required
-                        >
-                            <option value="">...</option>
-                            {centers.map(center => (
-                                <option key={center.id} value={center.id}>
-                                    {center.name}
-                                </option>
-                            ))}
-                        </select>
-                    )}
-                </div>
+                {user?.roles.some(u => u.name == "superAdmin") && (
+                    <div className="mb-4">
+                        <label htmlFor="center_id" className="block text-md font-medium text-gray-700 mb-1">
+                            Centros
+                        </label>
+                        {loading ? (
+                            <div className="animate-pulse h-10 bg-gray-200 rounded"></div>
+                        ) : (
+                            <select
+                                id="center_id"
+                                name="center_id"
+                                value={formData.center_id}
+                                onChange={handleCenterChange}
+                                className="w-full border-b-2 bg-gray-200/60 focus:bg-rose-100/60 rounded-t-lg border-gray-500/70 py-3 focus:border-b-red-700 outline-none"
+                                required
+                            >
+                                <option value="">...</option>
+                                {centers.map(center => (
+                                    <option key={center.id} value={center.id}>
+                                        {center.name}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
+                    </div>
+                )}
 
                 <div>
                     {/* <div> */}
@@ -162,7 +166,9 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
                                 required
                             >
                                 <option value="">...</option>
-                                <option value="superAdmin">Super Admin</option>
+                                {user?.roles.some(u => u.name == "superAdmin") && (
+                                    <option value="superAdmin">Super Admin</option>
+                                )}
                                 <option value="admin">Admin</option>
                                 <option value="visor">Visor</option>
                                 <option value="user">User</option>
