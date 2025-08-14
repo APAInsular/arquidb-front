@@ -162,7 +162,8 @@ const FormUsuarios = ({ user, onSubmit, status, errors, falses }) => {
                                 required
                             >
                                 <option value="">...</option>
-                                <option value="superAdmin">Admin</option>
+                                <option value="superAdmin">Super Admin</option>
+                                <option value="admin">Admin</option>
                                 <option value="visor">Visor</option>
                                 <option value="user">User</option>
                             </select>
