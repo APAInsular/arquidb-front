@@ -101,12 +101,12 @@ const Expediente = () => {
                         title={'Expedientes'}
                         Buscador={buscador}
                     /> */}
-                    {/* <Link to={"/expedientes/crear"} className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-900 font-medium bg-red-200 w-min mt-2 p-1 rounded-full shadow-2xl">
+                    <Link to={"/expedientes/crear"} className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 cursor-pointer hover:bg-red-800 hover:text-red-300 transition-all text-red-900 font-medium bg-red-200 w-min mt-2 p-1 rounded-full shadow-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                             <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
                         </svg>
                         <p>Añadir expedientes</p>
-                    </Link> */}
+                    </Link>
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
