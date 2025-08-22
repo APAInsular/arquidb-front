@@ -9,7 +9,7 @@ import CrudManager from "../../../hooks/CrudManager";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
 import Paginate from "../../../components/ui/Paginate";
 import WebLoader from "../../../routes/loaders/WebLoader";
-import UserFilter from "../../../components/admin/UserFilter";
+import UserFilter from "../../../components/crud/UserFilter";
 
 const Expediente = () => {
     const [expedientes, setExpedientes] = useState([]);
