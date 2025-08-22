@@ -5,6 +5,7 @@ import { UserCircle2, BookOpen, GraduationCap, Globe, Banknote, Briefcase, Calen
 import TitleCard from "../../../components/ui/TitleCard";
 import PulseLoader from "../../../routes/loaders/PulseLoader";
 import WebError from "../../../routes/errors/WebError";
+import UserFilter from "../../../components/crud/UserFilter";
 
 const VerColegiado = () => {
     const params = useParams();
@@ -56,10 +57,12 @@ const VerColegiado = () => {
                                     {person.identification_type} / {person.identification_number}
                                 </p>
                             </div>
-                            <Link className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/colegiados/${params.id}/editar`}>
-                                <Edit />
-                                Editar
-                            </Link>
+                            <UserFilter>
+                                <Link className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/colegiados/${params.id}/editar`}>
+                                    <Edit />
+                                    Editar
+                                </Link>
+                            </UserFilter>
                         </div>
                         <div className="mt-4 flex flex-wrap gap-2">
                             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-medium bg-blue-100 text-blue-800">

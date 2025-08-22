@@ -5,6 +5,7 @@ import { Mail, Phone, MapPin, UserCircle2, Calendar, Info, Home, Globe, Navigati
 import TitleCard from "../../../components/ui/TitleCard";
 import PulseLoader from "../../../routes/loaders/PulseLoader";
 import WebError from "../../../routes/errors/WebError";
+import UserFilter from "../../../components/crud/UserFilter";
 
 const VerCliente = () => {
 
@@ -51,10 +52,12 @@ const VerCliente = () => {
                                 {person?.identification_type} / {person?.identification_number}
                             </p>
                         </div>
-                        <NavLink className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/clientes/${params.id}/editar`}>
-                            <Edit />
-                            Editar
-                        </NavLink>
+                        <UserFilter>
+                            <NavLink className="flex flex-row gap-4 bg-sky-600 text-sky-200 transition-all border-sky-100 hover:text-sky-900 hover:border-sky-800 border-2 hover:bg-sky-200 p-2 rounded-md font-medium px-4" to={`/clientes/${params.id}/editar`}>
+                                <Edit />
+                                Editar
+                            </NavLink>
+                        </UserFilter>
                     </div>
                     <div className="mt-4 flex flex-wrap gap-2">
                         <span className=" shadow inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-medium bg-orange-100 text-orange-800">
@@ -105,7 +108,7 @@ const VerCliente = () => {
                                         <Info className="w-4 h-4" />
                                         <span>Observaciones</span>
                                     </div>
-                                    <p className="mt-1 text-gray-700">{person?.observations}</p>
+                                    <p className="mt-1 text-gray-700 overflow-hidden text-ellipsis whitespace-nowrap">{person?.observations}</p>
                                 </div>
                             )}
                         </div>

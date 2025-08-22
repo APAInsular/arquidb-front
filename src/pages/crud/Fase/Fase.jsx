@@ -8,6 +8,7 @@ import Delete from "../../../components/modals/crud/Delete";
 import DefaultTable from "../../../components/ui/DefaultTable";
 import Paginate from "../../../components/ui/Paginate";
 import DefaultSearch from "../../../components/ui/DefaultSearch";
+import UserFilter from "../../../components/crud/UserFilter";
 
 const Fase = () => {
     const [page, setPage] = useState(1);
@@ -75,15 +76,17 @@ const Fase = () => {
                         title={'Fases'}
                         Buscador={buscador}
                     /> */}
-                    <Link
-                        // to={"/fases/crear"}
-                        // cursor-pointer hover:bg-red-800 hover:text-red-300
-                        className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 transition-all text-gray-500 font-medium bg-gray-300 w-min mt-2 p-1 rounded-full shadow-2xl cursor-not-allowed ">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                            <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
-                        </svg>
-                        <p>Añadir Fase</p>
-                    </Link>
+                    <UserFilter>
+                        <Link
+                            // to={"/fases/crear"}
+                            // cursor-pointer hover:bg-red-800 hover:text-red-300
+                            className="text-nowrap flex flex-row items-center px-5 py-1.5 space-x-3 transition-all text-gray-500 font-medium bg-gray-300 w-min mt-2 p-1 rounded-full shadow-2xl cursor-not-allowed ">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                                <path fillRule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clipRule="evenodd" />
+                            </svg>
+                            <p>Añadir fase</p>
+                        </Link>
+                    </UserFilter>
                 </div>
                 <div className="">
                     <Paginate page={page} setPage={setPage} totalPages={totalPages} />
