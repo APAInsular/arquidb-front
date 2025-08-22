@@ -259,7 +259,9 @@ const VerColegiado = () => {
                                 </div>
 
                                 <div className="prose prose-sm max-w-none text-gray-700 bg-white p-4 rounded-lg border border-gray-200">
-                                    {person.observations || 'No hay observaciones registradas'}
+                                    <p className="overflow-hidden text-ellipsis whitespace-nowrap">
+                                        {person.observations || 'No hay observaciones registradas'}
+                                    </p>
                                 </div>
                             </div>
                         </div>
