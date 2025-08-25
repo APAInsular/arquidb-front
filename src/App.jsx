@@ -33,6 +33,7 @@ import CrearUsuario from './pages/admin/usuarios/CrearUsuario';
 import ActualizarUsuario from './pages/admin/usuarios/ActualizarUsuario';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import VerFase from './pages/crud/Fase/VerFase';
+import VisorRoute from './components/admin/VisorRoute';
 import AdminRoute from './components/admin/AdminRoute';
 import SuperAdminRoute from './components/admin/SuperAdminRoute';
 import PasswordReset from './pages/auth/PasswordReset';
@@ -69,21 +70,22 @@ function App() {
                           {/* <Route path="/search" element={<PageSearch />} /> */}
                           <Route path="/expedientes" element={<Expediente />} />
                           <Route path="/expedientes/:id/show" element={<VerExpediente />} />
-                          <Route path="/expedientes/crear" element={<CrearExpediente />} />
-                          <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
-                          {/* <Route path="/personas" element={<Persona />} /> */}
-                          <Route path="/colegiados" element={<Colegiado />} />
-                          <Route path="/colegiados/:id/show" element={<VerColegiado />} />
-                          <Route path="/colegiados/:id/editar" element={<ActualizarColegiado />} />
-                          <Route path="/colegiados/crear" element={<CrearColegiado />} />
+                          <Route path="/fases" element={<Fase />} />
+                          <Route path="/fases/:id/show" element={<VerFase />} />
                           <Route path="/clientes" element={<Cliente />} />
                           <Route path="/clientes/:id/show" element={<VerCliente />} />
-                          <Route path="/clientes/:id/editar" element={<ActualizarCliente />} />
-                          <Route path="/clientes/crear" element={<CrearCliente />} />
-                          <Route path="/fases" element={<Fase />} />
-                          <Route path="/fases/crear" element={<CrearFase />} />
-                          <Route path="/fases/:id/editar" element={<EditarFase />} />
-                          <Route path="/fases/:id/show" element={<VerFase />} />
+                          <Route path="/colegiados" element={<Colegiado />} />
+                          <Route path="/colegiados/:id/show" element={<VerColegiado />} />
+                          <Route element={<VisorRoute />}>
+                            <Route path="/expedientes/crear" element={<CrearExpediente />} />
+                            <Route path="/expedientes/:id/editar" element={<EditarExpediente />} />
+                            <Route path="/fases/crear" element={<CrearFase />} />
+                            <Route path="/fases/:id/editar" element={<EditarFase />} />
+                            <Route path="/clientes/crear" element={<CrearCliente />} />
+                            <Route path="/clientes/:id/editar" element={<ActualizarCliente />} />
+                            <Route path="/colegiados/crear" element={<CrearColegiado />} />
+                            <Route path="/colegiados/:id/editar" element={<ActualizarColegiado />} />
+                          </Route>
                           <Route element={<AdminRoute />}>
                             <Route path="/historial" element={<Records />} />
                             <Route path="/usuarios" element={<Usuarios />} />

@@ -12,6 +12,7 @@ import TitleCard from "../../../components/ui/TitleCard";
 import { ArrowBigRightDashIcon, ArrowLeftRightIcon, Download, Edit, File, FileCheck2, FileText, LucideAward, User, UserRoundIcon, Users } from "lucide-react";
 import { UseLoader } from "../../../store/contexts/LoaderContext";
 import { useAuth } from "../../../hooks/Auth";
+import UserFilter from "../../../components/crud/UserFilter";
 
 const VerExpediente = () => {
 
@@ -154,7 +155,7 @@ const VerExpediente = () => {
     };
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
-console.log(user)
+
     return (
         <>
             <TitleCard name={"Expedientes"} action={expedient.title} />
@@ -210,12 +211,14 @@ console.log(user)
                                     <h3 className="text-lg font-semibold text-gray-800">Información Personal</h3>
                                 </div>
                                 <div className="flex items-center">
-                                    <Link to={`/expedientes/${expedient.id}/editar`}
-                                        className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                                    >
-                                        <Edit className="w-5 h-5" />
-                                        <p>Editar expediente</p>
-                                    </Link>
+                                    <UserFilter>
+                                        <Link to={`/expedientes/${expedient.id}/editar`}
+                                            className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                                        >
+                                            <Edit className="w-5 h-5" />
+                                            <p>Editar expediente</p>
+                                        </Link>
+                                    </UserFilter>
                                 </div>
                             </div>
                             <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-2 gap-5 p-2">
@@ -294,15 +297,17 @@ console.log(user)
                             </div>
 
                             <div className="text-start mb-6 border-t-1 pt-5 border-gray-200 rounded-t-lg">
-                                <button
-                                    type="button"
-                                    className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500"
-                                    onClick={() => phaseEditorActivate()}
-                                    disabled={expedientPhases.length === 0}
-                                >
-                                    <Edit className="w-5 h-5" />
-                                    <p>Editar fase</p>
-                                </button>
+                                <UserFilter>
+                                    <button
+                                        type="button"
+                                        className="flex flex-row space-x-4 items-center justify-center cursor-pointer bg-blue-700 text-white rounded-md py-2 px-4 hover:bg-blue-900 focus:ring-2 focus:ring-blue-500"
+                                        onClick={() => phaseEditorActivate()}
+                                        disabled={expedientPhases.length === 0}
+                                    >
+                                        <Edit className="w-5 h-5" />
+                                        <p>Editar fase</p>
+                                    </button>
+                                </UserFilter>
                             </div>
 
                             {phaseSelected && (
