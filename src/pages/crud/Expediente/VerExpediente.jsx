@@ -155,7 +155,7 @@ const VerExpediente = () => {
     };
 
     if (!expedient || !expedientPhases || !clients || !collegiates) return <WebLoader />;
-    console.log(user)
+
     return (
         <>
             <TitleCard name={"Expedientes"} action={expedient.title} />
