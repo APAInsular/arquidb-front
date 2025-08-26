@@ -19,7 +19,7 @@ export default function CrudManager({ url, showLoader, hideLoader, showError, hi
             .then(res => {
                 setData(res.data.data ?? res.data);
                 if (typeof setPages === 'function') {
-                    setPages(res?.data?.data?.last_page ?? res?.data?.last_page);
+                    setPages(res?.data?.data?.last_page ?? res?.data?.last_page ?? res?.data?.meta?.last_page);
                 }
             })
             .catch(error => {

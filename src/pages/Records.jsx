@@ -3,20 +3,23 @@ import CrudManager from "../hooks/CrudManager";
 import TitleCard from "../components/ui/TitleCard";
 import PulseLoader from "../routes/loaders/PulseLoader";
 import WebError from "../routes/errors/WebError";
+import Paginate from "../components/ui/Paginate";
 
 const Records = () => {
 
     const [records, setRecords] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const { views } = CrudManager({
-        url: `record`
+        url: `record?page=${page}`
     });
 
     useEffect(() => {
-        views({ setData: setRecords, setLoading, setError });
-    }, []);
+        views({ setData: setRecords, setLoading, setErrors: setError, setPages: setTotalPages });
+    }, [page]);
 
     if (loading) { return <PulseLoader /> };
     if (error) { return <WebError /> };
@@ -25,6 +28,7 @@ const Records = () => {
         <>
             <TitleCard name="Historial" enlace="/" />
             <div className="flex flex-col h-full mt-2">
+                <Paginate page={page} setPage={setPage} totalPages={totalPages} />
                 <div className="flex-1 overflow-y-scroll rounded-none">
                     {records.length >= 1 ? (
                         <div className="text-center pb-2">
